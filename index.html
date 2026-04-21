@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Hands On Deck</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="topbar">
+    <div>
+      <strong>All Hands On Deck</strong><br />
+      <span id="tagline" class="muted">Loading highly questionable staffing philosophy...</span>
+    </div>
+    <div class="money" id="moneyDisplay">Credits: 0</div>
+  </div>
+
+  <div class="layout">
+    <div>
+      <div class="panel">
+        <div class="section-title">
+          <h2>Packs</h2>
+          <div class="muted">Open 3 random workers</div>
+        </div>
+        <div class="buttons">
+          <button id="freePackBtn">Open Free Pack</button>
+          <button id="buyPackBtn" class="secondary">Buy Pack (50)</button>
+          <button id="saveBtn" class="secondary">Save</button>
+          <button id="resetBtn" class="secondary">Reset</button>
+        </div>
+        <div class="card-grid" id="packResults"></div>
+      </div>
+
+      <div class="panel" style="margin-top:16px;">
+        <div class="section-title">
+          <h2>Roster</h2>
+          <div class="muted">Assign workers to the least appropriate jobs possible</div>
+        </div>
+        <div class="card-grid" id="roster"></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="panel business-panel">
+        <h2>Businesses</h2>
+        <div id="businessContainer"></div>
+      </div>
+
+      <div class="panel" style="margin-top:16px;">
+        <h3>Latest Headline</h3>
+        <div class="headline-box">
+          <div class="headline" id="headlineTitle">Welcome aboard</div>
+          <div id="headlineBody" class="muted">
+            Open a pack and start making questionable staffing decisions.
+          </div>
+        </div>
+      </div>
+
+      <div class="panel" style="margin-top:16px;">
+        <h3>Notes</h3>
+        <ul class="small">
+          <li>Moisture Farm is your bulk labor destination.</li>
+          <li>Planet Express unlocks later and rewards better job fit.</li>
+          <li>High morale boosts output. Low morale hurts it.</li>
+          <li>Idle workers lose morale and may ask for release.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="taglines.js"></script>
+  <script src="config.js"></script>
+  <script src="characters.js"></script>
+  <script src="businesses.js"></script>
+  <script src="app.js"></script>
+
+  <script>
+    function setRandomTagline() {
+      if (!Array.isArray(TAGLINES) || TAGLINES.length === 0) {
+        document.getElementById("tagline").textContent =
+          "From every universe... into the wrong jobs.";
+        return;
+      }
+
+      const tagline = TAGLINES[Math.floor(Math.random() * TAGLINES.length)];
+      document.getElementById("tagline").textContent = tagline;
+    }
+
+    setRandomTagline();
+  </script>
+</body>
+</html>
