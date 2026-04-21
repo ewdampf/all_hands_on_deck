@@ -148,6 +148,38 @@ button:disabled {
 .good { color: #34d399; }
 .bad { color: #f87171; }
 
+.status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.status-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
+.status-badge.unassigned {
+  background: rgba(251, 191, 36, 0.18);
+  color: #fbbf24;
+  border: 1px solid rgba(251, 191, 36, 0.45);
+}
+
+.card.unassigned-card {
+  box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.22), 0 0 14px rgba(251, 191, 36, 0.08);
+}
+
+.small-button {
+  font-size: 0.8rem;
+  padding: 8px 10px;
+}
+
 /* ===== Business ===== */
 .business-panel {
   display: flex;

@@ -228,10 +228,46 @@ function renderRoster() {
     return;
   }
 
-  roster.innerHTML = state.cards.map(card => {
-    const assignedText = card.assignedBusinessId
-      ? `Assigned: ${getBusinessDef(card.assignedBusinessId)?.name || "Unknown"}`
-      : "Unassigned";
+  const rarityOrder = {
+    ultra: 0,
+    rare: 1,
+    uncommon: 2,
+    common: 3
+  };
+
+  const sortedCards = [...state.cards].sort((a, b) => {
+    const aUnassigned = !a.assignedBusinessId;
+    const bUnassigned = !b.assignedBusinessId;
+
+    if (aUnassigned && !bUnassigned) return -1;
+    if (!aUnassigned && bUnassigned) return 1;
+
+    if (aUnassigned && bUnassigned) {
+      if (a.morale !== b.morale) return a.morale - b.morale;
+      if (rarityOrder[a.rarity] !== rarityOrder[b.rarity]) {
+        return rarityOrder[a.rarity] - rarityOrder[b.rarity];
+      }
+      return a.name.localeCompare(b.name);
+    }
+
+    if (a.assignedBusinessId !== b.assignedBusinessId) {
+      const aBusiness = getBusinessDef(a.assignedBusinessId)?.name || "";
+      const bBusiness = getBusinessDef(b.assignedBusinessId)?.name || "";
+      return aBusiness.localeCompare(bBusiness);
+    }
+
+    if (rarityOrder[a.rarity] !== rarityOrder[b.rarity]) {
+      return rarityOrder[a.rarity] - rarityOrder[b.rarity];
+    }
+
+    return a.name.localeCompare(b.name);
+  });
+
+  roster.innerHTML = sortedCards.map(card => {
+    const isUnassigned = !card.assignedBusinessId;
+    const assignedText = isUnassigned
+      ? "Unassigned"
+      : `Assigned: ${getBusinessDef(card.assignedBusinessId)?.name || "Unknown"}`;
 
     const assignmentButtons = BUSINESSES
       .filter(business => getBusinessState(business.id)?.unlocked)
@@ -243,12 +279,15 @@ function renderRoster() {
       .join("");
 
     return `
-      <div class="card ${card.rarity}">
+      <div class="card ${card.rarity} ${isUnassigned ? "unassigned-card" : ""}">
+        <div class="status-row">
+          ${isUnassigned ? `<div class="status-badge unassigned">UNASSIGNED</div>` : `<div></div>`}
+          <div class="small ${getMoraleClass(card.morale)}">Morale: ${card.morale}</div>
+        </div>
         <div class="name">${card.name}</div>
         <div class="muted">${card.franchise}</div>
         <div class="small">${card.rarity.toUpperCase()}</div>
         <div class="small">Power: ${card.basePower}</div>
-        <div class="small ${getMoraleClass(card.morale)}">Morale: ${card.morale}</div>
         <div class="small">Traits: ${card.traits.join(", ")}</div>
         <div class="small muted">${assignedText}</div>
         <div class="small muted">${card.flavor}</div>
