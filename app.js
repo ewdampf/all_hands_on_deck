@@ -108,22 +108,65 @@ function loadGame() {
 
   try {
     const loaded = JSON.parse(raw);
-    state = loaded;
+
+    state = {
+      ...state,
+      ...loaded
+    };
+
+    if (typeof state.tokens !== "number" || Number.isNaN(state.tokens)) {
+      state.tokens = CONFIG.GAME.STARTING_TOKENS;
+    }
+
+    if (typeof state.credits !== "number" || Number.isNaN(state.credits)) {
+      state.credits = CONFIG.GAME.STARTING_CREDITS;
+    }
+
+    if (typeof state.nextCardInstanceId !== "number" || Number.isNaN(state.nextCardInstanceId)) {
+      state.nextCardInstanceId = 1;
+    }
+
+    if (!Array.isArray(state.cards)) {
+      state.cards = [];
+    }
+
+    if (!Array.isArray(state.businesses)) {
+      state.businesses = BUSINESSES.map(business => ({
+        id: business.id,
+        unlocked: business.unlockedByDefault,
+        capacityLevel: 0,
+        efficiencyLevel: 0,
+        adActiveUntil: 0,
+        adCooldownUntil: 0,
+        assignedCardIds: []
+      }));
+    }
+
+    if (typeof state.freePackLastClaimedAt !== "number") {
+      state.freePackLastClaimedAt = null;
+    }
 
     state.businesses.forEach(businessState => {
       if (!Array.isArray(businessState.assignedCardIds)) {
         businessState.assignedCardIds = [];
       }
-      if (typeof businessState.capacityLevel !== "number") businessState.capacityLevel = 0;
-      if (typeof businessState.efficiencyLevel !== "number") businessState.efficiencyLevel = 0;
-      if (typeof businessState.adActiveUntil !== "number") businessState.adActiveUntil = 0;
-      if (typeof businessState.adCooldownUntil !== "number") businessState.adCooldownUntil = 0;
+      if (typeof businessState.capacityLevel !== "number") {
+        businessState.capacityLevel = 0;
+      }
+      if (typeof businessState.efficiencyLevel !== "number") {
+        businessState.efficiencyLevel = 0;
+      }
+      if (typeof businessState.adActiveUntil !== "number") {
+        businessState.adActiveUntil = 0;
+      }
+      if (typeof businessState.adCooldownUntil !== "number") {
+        businessState.adCooldownUntil = 0;
+      }
     });
   } catch (error) {
     console.error("Failed to load save:", error);
   }
 }
-
 function resetGame() {
   localStorage.removeItem(CONFIG.GAME.AUTO_SAVE_KEY);
   location.reload();
@@ -140,6 +183,10 @@ function claimDailyToken() {
   if (!getDailyPackAvailable()) {
     setHeadline("Daily token unavailable", "Your next free token is not ready yet.");
     return;
+  }
+
+  if (typeof state.tokens !== "number" || Number.isNaN(state.tokens)) {
+    state.tokens = 0;
   }
 
   state.tokens += CONFIG.DAILY.FREE_TOKEN_AMOUNT;
