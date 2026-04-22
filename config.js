@@ -188,8 +188,8 @@ const CONFIG = {
   },
 
   OUTPUT: {
-    CANNON_FODDER_GROUP_BONUS: 0.05,
-    CANNON_FODDER_GROUP_BONUS_CAP: 0.40,
+    CANNON_FODDER_GROUP_BONUS: 0.06,
+    CANNON_FODDER_GROUP_BONUS_CAP: 0.50,
     CANNON_FODDER_FARM_BONUS: 0.10,
 
     HERO_OUTPUT_MODIFIER: 0.10,
@@ -243,6 +243,17 @@ BUSINESSES: {
     NAME: "Planet Express"
   }
 },
+
+  CHARACTER_TAGS: {
+    MILITARY: "military",
+    ROBOT: "robot",
+    SCAVENGER: "scavenger",
+    GUARD: "guard",
+    PILOT: "pilot",
+    TRIBAL: "tribal",
+    DESERT: "desert",
+    REBEL: "rebel"
+  },
 
   TRAITS: {
     CANNON_FODDER: "cannon_fodder",
