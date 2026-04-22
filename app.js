@@ -1,14 +1,22 @@
 let state = {
   credits: CONFIG.GAME.STARTING_CREDITS,
-  freePackUsed: false,
-  nextCardInstanceId: 1,
+  tokens: CONFIG.GAME.STARTING_TOKENS,
+  freePackLastClaimedAt: null,
 
+  nextCardInstanceId: 1,
   cards: [],
 
   businesses: BUSINESSES.map(business => ({
     id: business.id,
     unlocked: business.unlockedByDefault,
-    assignedCardIds: Array(business.slotCount).fill(null)
+
+    capacityLevel: 0,
+    efficiencyLevel: 0,
+
+    adActiveUntil: 0,
+    adCooldownUntil: 0,
+
+    assignedCardIds: []
   })),
 
   headline: {
@@ -29,6 +37,16 @@ function getCardByInstanceId(instanceId) {
   return state.cards.find(card => card.instanceId === instanceId);
 }
 
+function getTierDef(tier) {
+  return CONFIG.BUSINESS_TIERS[tier];
+}
+
+function getTagDefs(tags) {
+  return tags
+    .map(tag => CONFIG.BUSINESS_TAG_RULES[tag])
+    .filter(Boolean);
+}
+
 function cloneCharacter(template) {
   return {
     instanceId: state.nextCardInstanceId++,
@@ -45,23 +63,34 @@ function cloneCharacter(template) {
   };
 }
 
-function pickRandomCharacter() {
-  const roll = Math.random();
-  let rarity = "common";
-
-  if (roll < CONFIG.PACKS.COMMON_CHANCE) {
-    rarity = "common";
-  } else if (roll < CONFIG.PACKS.COMMON_CHANCE + CONFIG.PACKS.UNCOMMON_CHANCE) {
-    rarity = "uncommon";
-  } else if (roll < CONFIG.PACKS.COMMON_CHANCE + CONFIG.PACKS.UNCOMMON_CHANCE + CONFIG.PACKS.RARE_CHANCE) {
-    rarity = "rare";
-  } else {
-    rarity = "ultra";
-  }
-
+function getRandomCharacterByRarity(rarity) {
   const pool = CHARACTERS.filter(character => character.rarity === rarity);
   const template = pool[Math.floor(Math.random() * pool.length)];
   return cloneCharacter(template);
+}
+
+function rollRandomRarity() {
+  const roll = Math.random();
+  const odds = CONFIG.PACKS.ODDS;
+
+  if (roll < odds.common) return "common";
+  if (roll < odds.common + odds.uncommon) return "uncommon";
+  if (roll < odds.common + odds.uncommon + odds.rare) return "rare";
+  return "ultra";
+}
+
+function generatePack(packDef) {
+  const results = [];
+
+  packDef.guarantees.forEach(guaranteedRarity => {
+    results.push(getRandomCharacterByRarity(guaranteedRarity));
+  });
+
+  while (results.length < packDef.cardCount) {
+    results.push(getRandomCharacterByRarity(rollRandomRarity()));
+  }
+
+  return results;
 }
 
 function setHeadline(title, body) {
@@ -80,6 +109,16 @@ function loadGame() {
   try {
     const loaded = JSON.parse(raw);
     state = loaded;
+
+    state.businesses.forEach(businessState => {
+      if (!Array.isArray(businessState.assignedCardIds)) {
+        businessState.assignedCardIds = [];
+      }
+      if (typeof businessState.capacityLevel !== "number") businessState.capacityLevel = 0;
+      if (typeof businessState.efficiencyLevel !== "number") businessState.efficiencyLevel = 0;
+      if (typeof businessState.adActiveUntil !== "number") businessState.adActiveUntil = 0;
+      if (typeof businessState.adCooldownUntil !== "number") businessState.adCooldownUntil = 0;
+    });
   } catch (error) {
     console.error("Failed to load save:", error);
   }
@@ -90,32 +129,51 @@ function resetGame() {
   location.reload();
 }
 
-function openPack(isFree = false) {
-  if (isFree && state.freePackUsed) {
-    setHeadline("Free pack already opened", "You already opened your free pack for this save.");
+function getDailyPackAvailable() {
+  if (!state.freePackLastClaimedAt) return true;
+
+  const elapsed = Date.now() - state.freePackLastClaimedAt;
+  return elapsed >= CONFIG.DAILY.TOKEN_RESET_HOURS * 60 * 60 * 1000;
+}
+
+function claimDailyToken() {
+  if (!getDailyPackAvailable()) {
+    setHeadline("Daily token unavailable", "Your next free token is not ready yet.");
     return;
   }
 
-  if (!isFree && state.credits < CONFIG.PACKS.STANDARD_PACK_COST) {
-    setHeadline("Not enough credits", "You need more credits to buy another pack.");
-    return;
-  }
+  state.tokens += CONFIG.DAILY.FREE_TOKEN_AMOUNT;
+  state.freePackLastClaimedAt = Date.now();
 
-  if (isFree) {
-    state.freePackUsed = true;
+  setHeadline("Daily token claimed", `You received ${CONFIG.DAILY.FREE_TOKEN_AMOUNT} token.`);
+  renderAll();
+  saveGame();
+}
+
+function openPackByType(packKey, isFreeDaily = false) {
+  const packDef = CONFIG.PACKS[packKey];
+  if (!packDef) return;
+
+  if (isFreeDaily) {
+    if (!getDailyPackAvailable()) {
+      setHeadline("Free daily pack unavailable", "You already claimed your daily token recently.");
+      return;
+    }
+
+    state.freePackLastClaimedAt = Date.now();
   } else {
-    state.credits -= CONFIG.PACKS.STANDARD_PACK_COST;
+    if (state.tokens < packDef.tokenCost) {
+      setHeadline("Not enough tokens", `You need ${packDef.tokenCost} tokens for ${packDef.name}.`);
+      return;
+    }
+
+    state.tokens -= packDef.tokenCost;
   }
 
-  const results = [];
-  for (let i = 0; i < CONFIG.PACKS.FREE_PACK_SIZE; i++) {
-    const card = pickRandomCharacter();
-    state.cards.push(card);
-    results.push(card);
-  }
+  const results = generatePack(packDef);
+  state.cards.push(...results);
 
   renderPackResults(results);
-
   setHeadline(
     "Fresh recruits arrive",
     `${results.map(card => card.name).join(", ")} joined your roster.`
@@ -138,6 +196,47 @@ function unassignCard(card) {
   card.assignedBusinessId = null;
 }
 
+function getBaseBusinessSlots(businessDef) {
+  return getTierDef(businessDef.tier).baseSlots;
+}
+
+function getBusinessSlotMultiplier(businessDef) {
+  const tagDefs = getTagDefs(businessDef.tags);
+  return tagDefs.reduce((mult, tagDef) => mult * (tagDef.slotMultiplier ?? 1), 1);
+}
+
+function getBusinessRevenueMultiplierFromTags(businessDef) {
+  const tagDefs = getTagDefs(businessDef.tags);
+  return tagDefs.reduce((mult, tagDef) => mult * (tagDef.revenueMultiplier ?? 1), 1);
+}
+
+function getBusinessPrestigeMultiplierFromTags(businessDef) {
+  const tagDefs = getTagDefs(businessDef.tags);
+  return tagDefs.reduce((mult, tagDef) => mult * (tagDef.prestigeMultiplier ?? 1), 1);
+}
+
+function getMaxSlotsForBusiness(businessId) {
+  const businessDef = getBusinessDef(businessId);
+  const businessState = getBusinessState(businessId);
+
+  const tierSlots = getBaseBusinessSlots(businessDef);
+  const tagAdjustedSlots = Math.floor(tierSlots * getBusinessSlotMultiplier(businessDef));
+  return tagAdjustedSlots + (businessState.capacityLevel * CONFIG.UPGRADES.CAPACITY_SLOT_BONUS_PER_LEVEL);
+}
+
+function normalizeBusinessSlots(businessId) {
+  const businessState = getBusinessState(businessId);
+  const maxSlots = getMaxSlotsForBusiness(businessId);
+
+  while (businessState.assignedCardIds.length < maxSlots) {
+    businessState.assignedCardIds.push(null);
+  }
+
+  if (businessState.assignedCardIds.length > maxSlots) {
+    businessState.assignedCardIds = businessState.assignedCardIds.slice(0, maxSlots);
+  }
+}
+
 function assignCardToBusiness(cardInstanceId, businessId) {
   const card = getCardByInstanceId(cardInstanceId);
   const businessState = getBusinessState(businessId);
@@ -149,6 +248,8 @@ function assignCardToBusiness(cardInstanceId, businessId) {
     setHeadline("Business locked", `${businessDef.name} has not been unlocked yet.`);
     return;
   }
+
+  normalizeBusinessSlots(businessId);
 
   if (card.assignedBusinessId === businessId) {
     unassignCard(card);
@@ -228,12 +329,7 @@ function renderRoster() {
     return;
   }
 
-  const rarityOrder = {
-    ultra: 0,
-    rare: 1,
-    uncommon: 2,
-    common: 3
-  };
+  const rarityOrder = { ultra: 0, rare: 1, uncommon: 2, common: 3 };
 
   const sortedCards = [...state.cards].sort((a, b) => {
     const aUnassigned = !a.assignedBusinessId;
@@ -244,9 +340,7 @@ function renderRoster() {
 
     if (aUnassigned && bUnassigned) {
       if (a.morale !== b.morale) return a.morale - b.morale;
-      if (rarityOrder[a.rarity] !== rarityOrder[b.rarity]) {
-        return rarityOrder[a.rarity] - rarityOrder[b.rarity];
-      }
+      if (rarityOrder[a.rarity] !== rarityOrder[b.rarity]) return rarityOrder[a.rarity] - rarityOrder[b.rarity];
       return a.name.localeCompare(b.name);
     }
 
@@ -256,10 +350,7 @@ function renderRoster() {
       return aBusiness.localeCompare(bBusiness);
     }
 
-    if (rarityOrder[a.rarity] !== rarityOrder[b.rarity]) {
-      return rarityOrder[a.rarity] - rarityOrder[b.rarity];
-    }
-
+    if (rarityOrder[a.rarity] !== rarityOrder[b.rarity]) return rarityOrder[a.rarity] - rarityOrder[b.rarity];
     return a.name.localeCompare(b.name);
   });
 
@@ -304,18 +395,15 @@ function calculateBusinessPrestige(businessId) {
   let prestige = 0;
 
   cards.forEach(card => {
-    if (card.traits.includes(CONFIG.TRAITS.HERO)) {
-      prestige += CONFIG.PRESTIGE.HERO_BONUS;
-    }
-    if (card.rarity === "ultra") {
-      prestige += CONFIG.PRESTIGE.ULTRA_BONUS;
-    }
-    if (card.morale >= CONFIG.MORALE.HIGH_THRESHOLD) {
-      prestige += CONFIG.PRESTIGE.HIGH_MORALE_BONUS;
-    }
+    if (card.traits.includes(CONFIG.TRAITS.HERO)) prestige += CONFIG.PRESTIGE.HERO_BONUS;
+    if (card.rarity === "ultra") prestige += CONFIG.PRESTIGE.ULTRA_BONUS;
+    if (card.morale >= CONFIG.MORALE.HIGH_THRESHOLD) prestige += CONFIG.PRESTIGE.HIGH_MORALE_BONUS;
   });
 
-  return Math.floor(prestige * businessDef.prestigeMultiplier);
+  const tierMultiplier = getTierDef(businessDef.tier).basePrestigeMultiplier;
+  const tagMultiplier = getBusinessPrestigeMultiplierFromTags(businessDef);
+
+  return Math.floor(prestige * tierMultiplier * tagMultiplier);
 }
 
 function moraleModifier(morale) {
@@ -325,13 +413,17 @@ function moraleModifier(morale) {
   return CONFIG.MORALE.VERY_LOW_MODIFIER;
 }
 
+function getAdMultiplier(businessState) {
+  return Date.now() < businessState.adActiveUntil ? CONFIG.ADVERTISING.INCOME_MULTIPLIER : 1;
+}
+
 function calculateCardOutput(card, businessId) {
   const businessDef = getBusinessDef(businessId);
+  const businessState = getBusinessState(businessId);
   const assignedCards = getAssignedCardsForBusiness(businessId);
   const cannonCount = assignedCards.filter(c => c.traits.includes(CONFIG.TRAITS.CANNON_FODDER)).length;
 
   let output = card.basePower;
-
   output *= (1 + moraleModifier(card.morale));
 
   if (card.traits.includes(CONFIG.TRAITS.CANNON_FODDER)) {
@@ -347,7 +439,6 @@ function calculateCardOutput(card, businessId) {
 
   if (card.traits.includes(CONFIG.TRAITS.HERO)) {
     output *= 1 + CONFIG.OUTPUT.HERO_OUTPUT_MODIFIER;
-
     if (card.morale < CONFIG.MORALE.LOW_THRESHOLD) {
       output *= CONFIG.OUTPUT.HERO_LOW_MORALE_PENALTY;
     }
@@ -357,11 +448,19 @@ function calculateCardOutput(card, businessId) {
     output *= 1 + CONFIG.OUTPUT.SUPPORT_OUTPUT_MODIFIER;
   }
 
-  if (card.preferredJob !== businessDef.jobType && card.preferredJob !== CONFIG.JOB_TYPES.HEROIC) {
-    output *= CONFIG.OUTPUT.OFF_ROLE_OUTPUT_PENALTY;
+  let offRolePenalty = CONFIG.OUTPUT.OFF_ROLE_OUTPUT_PENALTY;
+  if (businessState.efficiencyLevel >= 2) {
+    offRolePenalty += CONFIG.MORALE.EFFICIENCY_LEVEL_2_WRONG_JOB_RELIEF;
   }
 
-  output *= businessDef.baseMultiplier;
+  if (card.preferredJob !== businessDef.jobType && card.preferredJob !== CONFIG.JOB_TYPES.HEROIC) {
+    output *= offRolePenalty;
+  }
+
+  output *= getTierDef(businessDef.tier).baseIncomeMultiplier;
+  output *= getBusinessRevenueMultiplierFromTags(businessDef);
+  output *= 1 + (businessState.efficiencyLevel * CONFIG.UPGRADES.EFFICIENCY_OUTPUT_BONUS_PER_LEVEL);
+  output *= getAdMultiplier(businessState);
 
   return output;
 }
@@ -376,8 +475,85 @@ function calculateBusinessIncome(businessId) {
   });
 
   total *= (1 + prestige / 100);
+  total *= CONFIG.ECONOMY.GLOBAL_INCOME_MULTIPLIER;
 
   return Math.floor(total);
+}
+
+function getUpgradeCost(businessId, upgradeType) {
+  const businessDef = getBusinessDef(businessId);
+  const businessState = getBusinessState(businessId);
+  const tierMultiplier = getTierDef(businessDef.tier).upgradeCostMultiplier;
+
+  if (upgradeType === "capacity") {
+    const level = businessState.capacityLevel;
+    if (level >= CONFIG.UPGRADES.MAX_CAPACITY_LEVEL) return null;
+    return Math.floor(CONFIG.UPGRADES.CAPACITY_COSTS[level] * tierMultiplier);
+  }
+
+  if (upgradeType === "efficiency") {
+    const level = businessState.efficiencyLevel;
+    if (level >= CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL) return null;
+    return Math.floor(CONFIG.UPGRADES.EFFICIENCY_COSTS[level] * tierMultiplier);
+  }
+
+  return null;
+}
+
+function upgradeBusiness(businessId, upgradeType) {
+  const businessState = getBusinessState(businessId);
+  const businessDef = getBusinessDef(businessId);
+  const cost = getUpgradeCost(businessId, upgradeType);
+
+  if (cost === null) {
+    setHeadline("Upgrade maxed", `${businessDef.name} cannot upgrade ${upgradeType} any further.`);
+    return;
+  }
+
+  if (state.credits < cost) {
+    setHeadline("Not enough credits", `You need ${cost} credits for this upgrade.`);
+    return;
+  }
+
+  state.credits -= cost;
+
+  if (upgradeType === "capacity") {
+    businessState.capacityLevel += 1;
+    normalizeBusinessSlots(businessId);
+  }
+
+  if (upgradeType === "efficiency") {
+    businessState.efficiencyLevel += 1;
+  }
+
+  setHeadline("Business upgraded", `${businessDef.name} received a ${upgradeType} upgrade.`);
+  renderAll();
+  saveGame();
+}
+
+function activateAdCampaign(businessId) {
+  const businessState = getBusinessState(businessId);
+  const businessDef = getBusinessDef(businessId);
+  const now = Date.now();
+
+  if (now < businessState.adCooldownUntil) {
+    setHeadline("Advertising unavailable", `${businessDef.name} is still on cooldown.`);
+    return;
+  }
+
+  businessState.adActiveUntil = now + CONFIG.ADVERTISING.DURATION_MS;
+  businessState.adCooldownUntil = now + CONFIG.ADVERTISING.COOLDOWN_MS;
+
+  setHeadline("Advertising launched", `${businessDef.name} income is temporarily boosted.`);
+  renderAll();
+  saveGame();
+}
+
+function formatCooldown(msRemaining) {
+  const totalSeconds = Math.ceil(msRemaining / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${String(seconds).padStart(2, "0")}`;
 }
 
 function renderBusinesses() {
@@ -386,13 +562,20 @@ function renderBusinesses() {
 
   container.innerHTML = BUSINESSES.map(business => {
     const businessState = getBusinessState(business.id);
+    normalizeBusinessSlots(business.id);
 
     if (!businessState.unlocked) {
       return `
         <div class="business">
-          <h3>${business.name}</h3>
-          <div class="muted">${business.description}</div>
+          <div class="business-header">
+            <div>
+              <h3>${business.name}</h3>
+              <div class="muted">${business.description}</div>
+            </div>
+          </div>
+          <div class="small">Tier: ${business.tier}</div>
           <div class="small">Unlock cost: ${business.unlockCost}</div>
+          <div class="small muted">Tags: ${business.tags.join(", ")}</div>
         </div>
       `;
     }
@@ -400,6 +583,13 @@ function renderBusinesses() {
     const assignedCards = getAssignedCardsForBusiness(business.id);
     const income = calculateBusinessIncome(business.id);
     const prestige = calculateBusinessPrestige(business.id);
+
+    const capacityCost = getUpgradeCost(business.id, "capacity");
+    const efficiencyCost = getUpgradeCost(business.id, "efficiency");
+
+    const now = Date.now();
+    const adActive = now < businessState.adActiveUntil;
+    const adCoolingDown = now < businessState.adCooldownUntil;
 
     const slotsHtml = businessState.assignedCardIds.map((slotId, index) => {
       if (!slotId) {
@@ -424,11 +614,42 @@ function renderBusinesses() {
 
     return `
       <div class="business">
-        <h3>${business.name}</h3>
-        <div class="muted">${business.description}</div>
+        <div class="business-header">
+          <div>
+            <h3>${business.name}</h3>
+            <div class="muted">${business.description}</div>
+          </div>
+          <div>
+            <span class="upgrade-badge">Tier ${business.tier}</span>
+            ${business.tags.map(tag => `<span class="upgrade-badge">${tag}</span>`).join("")}
+          </div>
+        </div>
+
         <div class="small">Income/sec: ${income}</div>
         <div class="small">Prestige: ${prestige}</div>
-        <div class="small">Workers: ${assignedCards.length}/${business.slotCount}</div>
+        <div class="small">Workers: ${assignedCards.length}/${getMaxSlotsForBusiness(business.id)}</div>
+        <div class="small">Capacity Level: ${businessState.capacityLevel}/${CONFIG.UPGRADES.MAX_CAPACITY_LEVEL}</div>
+        <div class="small">Efficiency Level: ${businessState.efficiencyLevel}/${CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL}</div>
+
+        <div class="upgrade-row">
+          <button class="secondary small-button" onclick="upgradeBusiness('${business.id}', 'capacity')" ${capacityCost === null ? "disabled" : ""}>
+            ${capacityCost === null ? "Capacity Maxed" : `Capacity (${capacityCost})`}
+          </button>
+
+          <button class="secondary small-button" onclick="upgradeBusiness('${business.id}', 'efficiency')" ${efficiencyCost === null ? "disabled" : ""}>
+            ${efficiencyCost === null ? "Efficiency Maxed" : `Efficiency (${efficiencyCost})`}
+          </button>
+        </div>
+
+        <div class="business-actions">
+          <button class="secondary small-button" onclick="activateAdCampaign('${business.id}')" ${adCoolingDown ? "disabled" : ""}>
+            ${adActive ? "Ad Active" : "Advertising"}
+          </button>
+        </div>
+
+        ${adActive ? `<div class="cooldown-text">Advertising boost active</div>` : ""}
+        ${(!adActive && adCoolingDown) ? `<div class="cooldown-text">Cooldown: ${formatCooldown(businessState.adCooldownUntil - now)}</div>` : ""}
+
         <div class="business-slots">${slotsHtml}</div>
       </div>
     `;
@@ -437,19 +658,32 @@ function renderBusinesses() {
 
 function renderTopbar() {
   const moneyDisplay = document.getElementById("moneyDisplay");
-  if (moneyDisplay) {
-    moneyDisplay.textContent = `Credits: ${state.credits}`;
-  }
+  if (moneyDisplay) moneyDisplay.textContent = `Credits: ${state.credits}`;
+
+  const tokenDisplay = document.getElementById("tokenDisplay");
+  if (tokenDisplay) tokenDisplay.textContent = `Tokens: ${state.tokens}`;
 
   const freePackBtn = document.getElementById("freePackBtn");
   if (freePackBtn) {
-    freePackBtn.disabled = state.freePackUsed;
+    freePackBtn.disabled = !getDailyPackAvailable();
   }
 
-  const buyPackBtn = document.getElementById("buyPackBtn");
-  if (buyPackBtn) {
-    buyPackBtn.disabled = state.credits < CONFIG.PACKS.STANDARD_PACK_COST;
-    buyPackBtn.textContent = `Buy Pack (${CONFIG.PACKS.STANDARD_PACK_COST})`;
+  const basicPackBtn = document.getElementById("basicPackBtn");
+  if (basicPackBtn) {
+    basicPackBtn.disabled = state.tokens < CONFIG.PACKS.BASIC.tokenCost;
+    basicPackBtn.textContent = `Basic Pack (${CONFIG.PACKS.BASIC.tokenCost} Token)`;
+  }
+
+  const uncommonPackBtn = document.getElementById("uncommonPackBtn");
+  if (uncommonPackBtn) {
+    uncommonPackBtn.disabled = state.tokens < CONFIG.PACKS.UNCOMMON.tokenCost;
+    uncommonPackBtn.textContent = `Uncommon Pack (${CONFIG.PACKS.UNCOMMON.tokenCost} Tokens)`;
+  }
+
+  const rarePackBtn = document.getElementById("rarePackBtn");
+  if (rarePackBtn) {
+    rarePackBtn.disabled = state.tokens < CONFIG.PACKS.RARE.tokenCost;
+    rarePackBtn.textContent = `Rare Pack (${CONFIG.PACKS.RARE.tokenCost} Tokens)`;
   }
 }
 
@@ -483,29 +717,18 @@ function updateMorale() {
         delta += CONFIG.MORALE.WRONG_JOB_DELTA;
       }
 
-      if (card.traits.includes(CONFIG.TRAITS.SUPPORT)) {
-        delta += CONFIG.MORALE.SUPPORT_DELTA;
-      }
+      if (card.traits.includes(CONFIG.TRAITS.SUPPORT)) delta += CONFIG.MORALE.SUPPORT_DELTA;
+      if (card.traits.includes(CONFIG.TRAITS.CANNON_FODDER) && cannonCount >= 2) delta += CONFIG.MORALE.CANNON_GROUP_DELTA;
+      if (card.traits.includes(CONFIG.TRAITS.HERO) && hasRogue) delta += CONFIG.MORALE.HERO_WITH_ROGUE_DELTA;
 
-      if (card.traits.includes(CONFIG.TRAITS.CANNON_FODDER) && cannonCount >= 2) {
-        delta += CONFIG.MORALE.CANNON_GROUP_DELTA;
-      }
+      const tagDefs = getTagDefs(business.tags);
+      tagDefs.forEach(tagDef => {
+        if (card.traits.includes(CONFIG.TRAITS.MORAL_CODE) && tagDef.moraleEffects?.moralCodePenalty) {
+          delta -= tagDef.moraleEffects.moralCodePenalty;
+        }
+      });
 
-      if (card.traits.includes(CONFIG.TRAITS.HERO) && hasRogue) {
-        delta += CONFIG.MORALE.HERO_WITH_ROGUE_DELTA;
-      }
-
-      if (
-        card.traits.includes(CONFIG.TRAITS.MORAL_CODE) &&
-        business.tags.includes("low_status")
-      ) {
-        delta -= 1;
-      }
-
-      card.morale = Math.max(
-        CONFIG.MORALE.MIN,
-        Math.min(CONFIG.MORALE.MAX, card.morale + delta)
-      );
+      card.morale = Math.max(CONFIG.MORALE.MIN, Math.min(CONFIG.MORALE.MAX, card.morale + delta));
     });
   });
 
@@ -514,47 +737,30 @@ function updateMorale() {
     .forEach(card => {
       card.morale = Math.max(CONFIG.MORALE.MIN, card.morale + CONFIG.MORALE.IDLE_DELTA);
 
-      if (
-        card.morale < CONFIG.MORALE.LOW_THRESHOLD &&
-        Math.random() < CONFIG.MORALE.RELEASE_REQUEST_CHANCE
-      ) {
-        setHeadline(
-          "Release requested",
-          `${card.name} is tired of sitting idle and wants a job or a way out.`
-        );
+      if (card.morale < CONFIG.MORALE.LOW_THRESHOLD && Math.random() < CONFIG.MORALE.RELEASE_REQUEST_CHANCE) {
+        setHeadline("Release requested", `${card.name} is tired of sitting idle and wants a job or a way out.`);
       }
     });
 }
 
 function maybeTriggerRandomHeadline() {
   const allAssignedCards = state.businesses.flatMap(business => getAssignedCardsForBusiness(business.id));
-
   const ecstatic = allAssignedCards.filter(card => card.morale >= CONFIG.MORALE.EPIC_THRESHOLD);
   const unhappy = allAssignedCards.filter(card => card.morale < CONFIG.MORALE.LOW_THRESHOLD);
 
   if (ecstatic.length > 0 && Math.random() < CONFIG.HEADLINES.EPIC_HEADLINE_CHANCE) {
     const card = ecstatic[Math.floor(Math.random() * ecstatic.length)];
-    setHeadline(
-      "Epic headline achieved",
-      `${card.name} is thriving. The whole roster feels the energy.`
-    );
+    setHeadline("Epic headline achieved", `${card.name} is thriving. The whole roster feels the energy.`);
 
     state.cards.forEach(rosterCard => {
-      rosterCard.morale = Math.min(
-        CONFIG.MORALE.MAX,
-        rosterCard.morale + CONFIG.MORALE.EPIC_ROSTER_BONUS
-      );
+      rosterCard.morale = Math.min(CONFIG.MORALE.MAX, rosterCard.morale + CONFIG.MORALE.EPIC_ROSTER_BONUS);
     });
-
     return;
   }
 
   if (unhappy.length > 0 && Math.random() < CONFIG.HEADLINES.WARNING_HEADLINE_CHANCE) {
     const card = unhappy[Math.floor(Math.random() * unhappy.length)];
-    setHeadline(
-      "Morale warning",
-      `${card.name} is visibly unhappy with current management decisions.`
-    );
+    setHeadline("Morale warning", `${card.name} is visibly unhappy with current management decisions.`);
   }
 }
 
@@ -571,16 +777,12 @@ function gameTick() {
   state.credits += totalIncome;
 
   const planetExpressState = getBusinessState(CONFIG.BUSINESSES.PLANET_EXPRESS.ID);
-  if (
-    planetExpressState &&
-    !planetExpressState.unlocked &&
-    state.credits >= getBusinessDef(CONFIG.BUSINESSES.PLANET_EXPRESS.ID).unlockCost
-  ) {
+  const planetExpressDef = getBusinessDef(CONFIG.BUSINESSES.PLANET_EXPRESS.ID);
+
+  if (planetExpressState && !planetExpressState.unlocked && state.credits >= planetExpressDef.unlockCost) {
     planetExpressState.unlocked = true;
-    setHeadline(
-      "New business unlocked",
-      `${CONFIG.BUSINESSES.PLANET_EXPRESS.NAME} is now open for business.`
-    );
+    normalizeBusinessSlots(planetExpressDef.id);
+    setHeadline("New business unlocked", `${planetExpressDef.name} is now open for business.`);
   }
 
   maybeTriggerRandomHeadline();
@@ -590,17 +792,16 @@ function gameTick() {
 
 function initializeButtons() {
   const freePackBtn = document.getElementById("freePackBtn");
-  const buyPackBtn = document.getElementById("buyPackBtn");
+  const basicPackBtn = document.getElementById("basicPackBtn");
+  const uncommonPackBtn = document.getElementById("uncommonPackBtn");
+  const rarePackBtn = document.getElementById("rarePackBtn");
   const saveBtn = document.getElementById("saveBtn");
   const resetBtn = document.getElementById("resetBtn");
 
-  if (freePackBtn) {
-    freePackBtn.addEventListener("click", () => openPack(true));
-  }
-
-  if (buyPackBtn) {
-    buyPackBtn.addEventListener("click", () => openPack(false));
-  }
+  if (freePackBtn) freePackBtn.addEventListener("click", () => claimDailyToken());
+  if (basicPackBtn) basicPackBtn.addEventListener("click", () => openPackByType("BASIC"));
+  if (uncommonPackBtn) uncommonPackBtn.addEventListener("click", () => openPackByType("UNCOMMON"));
+  if (rarePackBtn) rarePackBtn.addEventListener("click", () => openPackByType("RARE"));
 
   if (saveBtn) {
     saveBtn.addEventListener("click", () => {
@@ -609,13 +810,16 @@ function initializeButtons() {
     });
   }
 
-  if (resetBtn) {
-    resetBtn.addEventListener("click", resetGame);
-  }
+  if (resetBtn) resetBtn.addEventListener("click", resetGame);
 }
 
 function initializeGame() {
   loadGame();
+
+  state.businesses.forEach(businessState => {
+    normalizeBusinessSlots(businessState.id);
+  });
+
   initializeButtons();
   renderAll();
   setInterval(gameTick, CONFIG.GAME.GAME_TICK_MS);

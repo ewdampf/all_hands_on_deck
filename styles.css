@@ -45,6 +45,28 @@ body {
   font-weight: bold;
   color: var(--accent);
 }
+.resource-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.resource-pill {
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: bold;
+  border: 1px solid var(--border);
+  background: #111827;
+}
+
+.credits-pill {
+  color: var(--accent);
+}
+
+.tokens-pill {
+  color: #93c5fd;
+}
 
 /* ===== Layout ===== */
 .layout {
@@ -209,6 +231,47 @@ button:disabled {
   background: #020617;
 }
 
+.business-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.business-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.upgrade-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.upgrade-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: bold;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(96, 165, 250, 0.15);
+  color: #93c5fd;
+  border: 1px solid rgba(96, 165, 250, 0.35);
+  margin-right: 6px;
+  margin-top: 6px;
+}
+
+.cooldown-text {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 6px;
+}
+
 /* ===== Headlines ===== */
 .headline-box {
   min-height: 70px;
@@ -250,6 +313,12 @@ button:disabled {
 
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
   .layout {
     grid-template-columns: 1fr;
   }

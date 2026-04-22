@@ -2,37 +2,56 @@ const BUSINESSES = [
   {
     id: CONFIG.BUSINESSES.MOISTURE_FARM.ID,
     name: CONFIG.BUSINESSES.MOISTURE_FARM.NAME,
+
+    tier: 1,
     jobType: CONFIG.JOB_TYPES.FARM,
-
-    slotCount: CONFIG.BUSINESSES.MOISTURE_FARM.SLOT_COUNT,
-
-    baseMultiplier: CONFIG.BUSINESSES.MOISTURE_FARM.BASE_MULTIPLIER,
-    prestigeMultiplier: CONFIG.BUSINESSES.MOISTURE_FARM.PRESTIGE_MULTIPLIER,
-
-    tags: ["labor", "harsh", "low_status"],
+    tags: ["dirty", "labor_heavy"],
 
     description: "Hot, dusty, and not exactly prestigious. A perfect place for bulk labor.",
-    
-    // Future hooks
+
     unlockCost: 0,
-    unlockedByDefault: true
+    unlockedByDefault: true,
+
+    upgrades: {
+      capacity: {
+        label: "Capacity Upgrade",
+        maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL
+      },
+      efficiency: {
+        label: "Efficiency Upgrade",
+        maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL
+      },
+      advertising: {
+        label: "Advertising Campaign"
+      }
+    }
   },
 
   {
     id: CONFIG.BUSINESSES.PLANET_EXPRESS.ID,
     name: CONFIG.BUSINESSES.PLANET_EXPRESS.NAME,
+
+    tier: 2,
     jobType: CONFIG.JOB_TYPES.DELIVERY,
-
-    slotCount: CONFIG.BUSINESSES.PLANET_EXPRESS.SLOT_COUNT,
-
-    baseMultiplier: CONFIG.BUSINESSES.PLANET_EXPRESS.BASE_MULTIPLIER,
-    prestigeMultiplier: CONFIG.BUSINESSES.PLANET_EXPRESS.PRESTIGE_MULTIPLIER,
-
-    tags: ["logistics", "risk", "mid_status"],
+    tags: ["risky", "logistics"],
 
     description: "Fast-paced delivery work. Great for the right crew, disastrous for the wrong one.",
-    
+
     unlockCost: 200,
-    unlockedByDefault: false
+    unlockedByDefault: false,
+
+    upgrades: {
+      capacity: {
+        label: "Capacity Upgrade",
+        maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL
+      },
+      efficiency: {
+        label: "Efficiency Upgrade",
+        maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL
+      },
+      advertising: {
+        label: "Advertising Campaign"
+      }
+    }
   }
 ];

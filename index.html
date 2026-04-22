@@ -12,7 +12,11 @@
       <strong>All Hands On Deck</strong><br />
       <span id="tagline" class="muted">Loading highly questionable staffing philosophy...</span>
     </div>
-    <div class="money" id="moneyDisplay">Credits: 0</div>
+
+    <div class="resource-bar">
+      <div class="resource-pill credits-pill" id="moneyDisplay">Credits: 0</div>
+      <div class="resource-pill tokens-pill" id="tokenDisplay">Tokens: 0</div>
+    </div>
   </div>
 
   <div class="layout">
@@ -20,14 +24,18 @@
       <div class="panel">
         <div class="section-title">
           <h2>Packs</h2>
-          <div class="muted">Open 3 random workers</div>
+          <div class="muted">Spend tokens to recruit more questionable employees</div>
         </div>
+
         <div class="buttons">
-          <button id="freePackBtn">Open Free Pack</button>
-          <button id="buyPackBtn" class="secondary">Buy Pack (50)</button>
+          <button id="freePackBtn">Claim Daily Token</button>
+          <button id="basicPackBtn" class="secondary">Basic Pack (1 Token)</button>
+          <button id="uncommonPackBtn" class="secondary">Uncommon Pack (2 Tokens)</button>
+          <button id="rarePackBtn" class="secondary">Rare Pack (5 Tokens)</button>
           <button id="saveBtn" class="secondary">Save</button>
           <button id="resetBtn" class="secondary">Reset</button>
         </div>
+
         <div class="card-grid" id="packResults"></div>
       </div>
 
@@ -59,10 +67,11 @@
       <div class="panel" style="margin-top:16px;">
         <h3>Notes</h3>
         <ul class="small">
+          <li>Credits are for businesses and upgrades.</li>
+          <li>Tokens are for packs.</li>
           <li>Moisture Farm is your bulk labor destination.</li>
-          <li>Planet Express unlocks later and rewards better job fit.</li>
-          <li>High morale boosts output. Low morale hurts it.</li>
-          <li>Idle workers lose morale and may ask for release.</li>
+          <li>Planet Express rewards better job fit.</li>
+          <li>Advertising gives a temporary income boost.</li>
         </ul>
       </div>
     </div>
