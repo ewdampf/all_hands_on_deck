@@ -227,6 +227,18 @@ const CONFIG = {
     COOLDOWN_MS: 5 * 60 * 1000
   },
 
+BUSINESSES: {
+  MOISTURE_FARM: {
+    ID: "moisture_farm",
+    NAME: "Moisture Farm"
+  },
+
+  PLANET_EXPRESS: {
+    ID: "planet_express",
+    NAME: "Planet Express"
+  }
+},
+
   TRAITS: {
     CANNON_FODDER: "cannon_fodder",
     HERO: "hero",
