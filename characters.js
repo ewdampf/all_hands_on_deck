@@ -1,5 +1,5 @@
 const CHARACTERS = [
-  {
+ {
     id: "stormtrooper",
     name: "Stormtrooper",
     franchise: "Star Wars",
@@ -7,7 +7,217 @@ const CHARACTERS = [
     basePower: 5,
     preferredJob: CONFIG.JOB_TYPES.FARM,
     traits: [CONFIG.TRAITS.CANNON_FODDER],
-    flavor: "Works better in formation than alone."
+    tags: [CONFIG.CHARACTER_TAGS.MILITARY],
+    flavor: "Works best in large, identical formations."
+  },
+  {
+    id: "clone_trooper",
+    name: "Clone Trooper",
+    franchise: "Star Wars",
+    rarity: "common",
+    basePower: 5,
+    preferredJob: CONFIG.JOB_TYPES.FARM,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.MILITARY],
+    flavor: "Disciplined and efficient in matching squads."
+  },
+  {
+    id: "scout_trooper",
+    name: "Scout Trooper",
+    franchise: "Star Wars",
+    rarity: "common",
+    basePower: 5,
+    preferredJob: CONFIG.JOB_TYPES.DELIVERY,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.MILITARY],
+    flavor: "Better at mobile work than standing around."
+  },
+  {
+    id: "snowtrooper",
+    name: "Snowtrooper",
+    franchise: "Star Wars",
+    rarity: "common",
+    basePower: 5,
+    preferredJob: CONFIG.JOB_TYPES.FARM,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.MILITARY],
+    flavor: "Overdressed for most jobs, but still follows orders."
+  },
+  {
+    id: "sandtrooper",
+    name: "Sandtrooper",
+    franchise: "Star Wars",
+    rarity: "common",
+    basePower: 6,
+    preferredJob: CONFIG.JOB_TYPES.FARM,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.MILITARY, CONFIG.CHARACTER_TAGS.DESERT],
+    flavor: "Actually comfortable in the kind of place others complain about."
+  },
+  {
+    id: "crimson_guard",
+    name: "Crimson Guard",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    basePower: 7,
+    preferredJob: CONFIG.JOB_TYPES.HEROIC,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.GUARD, CONFIG.CHARACTER_TAGS.MILITARY],
+    flavor: "High-discipline guard work, not ideal for ordinary labor."
+  },
+  {
+    id: "tie_pilot",
+    name: "TIE Pilot",
+    franchise: "Star Wars",
+    rarity: "common",
+    basePower: 5,
+    preferredJob: CONFIG.JOB_TYPES.DELIVERY,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.PILOT, CONFIG.CHARACTER_TAGS.MILITARY],
+    flavor: "More useful when the job involves speed and danger."
+  },
+  {
+    id: "battle_droid",
+    name: "Battle Droid",
+    franchise: "Star Wars",
+    rarity: "common",
+    basePower: 4,
+    preferredJob: CONFIG.JOB_TYPES.FARM,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.ROBOT, CONFIG.CHARACTER_TAGS.MILITARY],
+    flavor: "Not bright, but there are always more of them."
+  },
+  {
+    id: "super_battle_droid",
+    name: "Super Battle Droid",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    basePower: 6,
+    preferredJob: CONFIG.JOB_TYPES.FARM,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.ROBOT, CONFIG.CHARACTER_TAGS.MILITARY],
+    flavor: "Bulkier, tougher, and slightly less embarrassing."
+  },
+  {
+    id: "droideka",
+    name: "Droideka",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    basePower: 7,
+    preferredJob: CONFIG.JOB_TYPES.DELIVERY,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.ROBOT, CONFIG.CHARACTER_TAGS.MILITARY],
+    flavor: "Looks impressive, which counts for something."
+  },
+  {
+    id: "magnaguard",
+    name: "MagnaGuard",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    basePower: 7,
+    preferredJob: CONFIG.JOB_TYPES.HEROIC,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.ROBOT, CONFIG.CHARACTER_TAGS.GUARD],
+    flavor: "Guard duty is more their thing than teamwork."
+  },
+  {
+    id: "rebel_trooper",
+    name: "Rebel Trooper",
+    franchise: "Star Wars",
+    rarity: "common",
+    basePower: 5,
+    preferredJob: CONFIG.JOB_TYPES.FARM,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.REBEL, CONFIG.CHARACTER_TAGS.MILITARY],
+    flavor: "Less polished, still useful in a crowd."
+  },
+  {
+    id: "rebel_pilot",
+    name: "Rebel Pilot",
+    franchise: "Star Wars",
+    rarity: "common",
+    basePower: 5,
+    preferredJob: CONFIG.JOB_TYPES.DELIVERY,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.REBEL, CONFIG.CHARACTER_TAGS.PILOT],
+    flavor: "Wants a job with motion, not one standing in a field."
+  },
+  {
+    id: "gamorrean_guard",
+    name: "Gamorrean Guard",
+    franchise: "Star Wars",
+    rarity: "common",
+    basePower: 6,
+    preferredJob: CONFIG.JOB_TYPES.FARM,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.GUARD],
+    flavor: "Strong, loud, and not overly concerned with refinement."
+  },
+  {
+    id: "jawas",
+    name: "Jawas",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    basePower: 8,
+    preferredJob: CONFIG.JOB_TYPES.FARM,
+    traits: [CONFIG.TRAITS.CANNON_FODDER, CONFIG.TRAITS.SPECIALIST],
+    tags: [CONFIG.CHARACTER_TAGS.SCAVENGER, CONFIG.CHARACTER_TAGS.DESERT],
+    flavor: "Oddly effective in the right kind of dusty chaos."
+  },
+  {
+    id: "ewoks",
+    name: "Ewoks",
+    franchise: "Star Wars",
+    rarity: "common",
+    basePower: 5,
+    preferredJob: CONFIG.JOB_TYPES.FARM,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.TRIBAL],
+    flavor: "Surprisingly dangerous for such an unthreatening workforce."
+  },
+  {
+    id: "tusken_raider",
+    name: "Tusken Raider",
+    franchise: "Star Wars",
+    rarity: "common",
+    basePower: 6,
+    preferredJob: CONFIG.JOB_TYPES.FARM,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.TRIBAL, CONFIG.CHARACTER_TAGS.DESERT],
+    flavor: "Handles harsh environments better than most."
+  },
+  {
+    id: "gungan_warrior",
+    name: "Gungan Warrior",
+    franchise: "Star Wars",
+    rarity: "common",
+    basePower: 5,
+    preferredJob: CONFIG.JOB_TYPES.FARM,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.TRIBAL, CONFIG.CHARACTER_TAGS.MILITARY],
+    flavor: "Strange, energetic, and better in groups."
+  },
+  {
+    id: "wookiee_warrior",
+    name: "Wookiee Warrior",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    basePower: 7,
+    preferredJob: CONFIG.JOB_TYPES.FARM,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.TRIBAL, CONFIG.CHARACTER_TAGS.GUARD],
+    flavor: "Powerful labor, though not especially delicate."
+  },
+  {
+    id: "mandalorian_warrior",
+    name: "Mandalorian Warrior",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    basePower: 7,
+    preferredJob: CONFIG.JOB_TYPES.DELIVERY,
+    traits: [CONFIG.TRAITS.CANNON_FODDER],
+    tags: [CONFIG.CHARACTER_TAGS.MILITARY, CONFIG.CHARACTER_TAGS.GUARD],
+    flavor: "Too competent to waste, yet still great in a matching unit."
   },
   {
     id: "red_shirt",
@@ -30,16 +240,6 @@ const CHARACTERS = [
     flavor: "Reliable muscle for rough environments."
   },
   {
-    id: "battle_droid",
-    name: "Battle Droid",
-    franchise: "Star Wars",
-    rarity: "common",
-    basePower: 4,
-    preferredJob: CONFIG.JOB_TYPES.FARM,
-    traits: [CONFIG.TRAITS.CANNON_FODDER],
-    flavor: "Not bright, but there are always more of them."
-  },
-  {
     id: "ork_grunt",
     name: "Ork Grunt",
     franchise: "Warhammer 40,000",
@@ -48,36 +248,6 @@ const CHARACTERS = [
     preferredJob: CONFIG.JOB_TYPES.FARM,
     traits: [CONFIG.TRAITS.CANNON_FODDER],
     flavor: "Thrives in loud, chaotic group labor."
-  },
-  {
-    id: "moisture_farmer",
-    name: "Moisture Farmer",
-    franchise: "Star Wars",
-    rarity: "common",
-    basePower: 6,
-    preferredJob: CONFIG.JOB_TYPES.FARM,
-    traits: [CONFIG.TRAITS.LABORER],
-    flavor: "Steady, practical, and built for desert work."
-  },
-  {
-    id: "shire_farmer",
-    name: "Shire Farmer",
-    franchise: "The Lord of the Rings",
-    rarity: "common",
-    basePower: 6,
-    preferredJob: CONFIG.JOB_TYPES.FARM,
-    traits: [CONFIG.TRAITS.LABORER],
-    flavor: "Would rather be gardening, but still gets results."
-  },
-  {
-    id: "jawas",
-    name: "Jawas",
-    franchise: "Star Wars",
-    rarity: "uncommon",
-    basePower: 8,
-    preferredJob: CONFIG.JOB_TYPES.FARM,
-    traits: [CONFIG.TRAITS.SPECIALIST],
-    flavor: "Surprisingly efficient in dusty, improvised conditions."
   },
   {
     id: "samwise_gamgee",
