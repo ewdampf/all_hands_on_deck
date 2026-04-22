@@ -215,8 +215,8 @@ const CONFIG = {
     MAX_CAPACITY_LEVEL: 2,
     MAX_EFFICIENCY_LEVEL: 2,
 
-    CAPACITY_COSTS: [500, 1500],
-    EFFICIENCY_COSTS: [800, 2500],
+    CAPACITY_COSTS: [1000, 3000],
+    EFFICIENCY_COSTS: [1500, 4500],
 
     EFFICIENCY_OUTPUT_BONUS_PER_LEVEL: 0.10
   },
@@ -231,6 +231,11 @@ BUSINESSES: {
   MOISTURE_FARM: {
     ID: "moisture_farm",
     NAME: "Moisture Farm"
+  },
+
+  CENTRAL_PERK: {
+    ID: "central_perk",
+    NAME: "Central Perk"
   },
 
   PLANET_EXPRESS: {

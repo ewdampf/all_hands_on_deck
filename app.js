@@ -622,6 +622,11 @@ function renderBusinesses() {
           </div>
           <div class="small">Tier: ${business.tier}</div>
           <div class="small">Unlock cost: ${business.unlockCost}</div>
+             <button class="secondary small-button"
+               onclick="purchaseBusiness('${business.id}')"
+               ${state.credits < business.unlockCost ? "disabled" : ""}>
+               Purchase
+             </button>
           <div class="small muted">Tags: ${business.tags.join(", ")}</div>
         </div>
       `;
@@ -701,6 +706,36 @@ function renderBusinesses() {
       </div>
     `;
   }).join("");
+}
+
+function purchaseBusiness(businessId) {
+  const businessState = getBusinessState(businessId);
+  const businessDef = getBusinessDef(businessId);
+
+  if (businessState.unlocked) return;
+
+  if (state.credits < businessDef.unlockCost) {
+    setHeadline("Not enough credits", "You need more credits to unlock this business.");
+    return;
+  }
+
+  state.credits -= businessDef.unlockCost;
+  businessState.unlocked = true;
+
+  normalizeBusinessSlots(businessId);
+
+  // 🎁 FREE PACK REWARD
+  const rewardPack = generatePack(CONFIG.PACKS.BASIC);
+  state.cards.push(...rewardPack);
+
+  setHeadline(
+    "Business purchased",
+    `${businessDef.name} is now open. You received new recruits: ${rewardPack.map(c => c.name).join(", ")}`
+  );
+
+  renderPackResults(rewardPack);
+  renderAll();
+  saveGame();
 }
 
 function renderTopbar() {
@@ -825,12 +860,6 @@ function gameTick() {
 
   const planetExpressState = getBusinessState(CONFIG.BUSINESSES.PLANET_EXPRESS.ID);
   const planetExpressDef = getBusinessDef(CONFIG.BUSINESSES.PLANET_EXPRESS.ID);
-
-  if (planetExpressState && !planetExpressState.unlocked && state.credits >= planetExpressDef.unlockCost) {
-    planetExpressState.unlocked = true;
-    normalizeBusinessSlots(planetExpressDef.id);
-    setHeadline("New business unlocked", `${planetExpressDef.name} is now open for business.`);
-  }
 
   maybeTriggerRandomHeadline();
   renderAll();
