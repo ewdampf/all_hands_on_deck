@@ -406,3 +406,62 @@ function renderAll() {
   renderBusinesses();
   renderHeadline();
 }
+
+// ==========================================================
+// Lightweight business stat refresh
+// ----------------------------------------------------------
+// Updates dynamic business values without rebuilding the full
+// business card HTML and reloading images every tick.
+// ==========================================================
+
+function renderBusinessStatsOnly() {
+  BUSINESSES.forEach(business => {
+    const businessState = getBusinessState(business.id);
+    if (!businessState || !businessState.unlocked) return;
+
+    const incomeEl = document.getElementById(`business-income-${business.id}`);
+    const prestigeEl = document.getElementById(`business-prestige-${business.id}`);
+    const workersEl = document.getElementById(`business-workers-${business.id}`);
+    const capacityEl = document.getElementById(`business-capacity-${business.id}`);
+    const efficiencyEl = document.getElementById(`business-efficiency-${business.id}`);
+    const cooldownEl = document.getElementById(`business-cooldown-${business.id}`);
+
+    const assignedCards = getAssignedCardsForBusiness(business.id);
+    const income = calculateBusinessIncome(business.id);
+    const prestige = calculateBusinessPrestige(business.id);
+
+    if (incomeEl) {
+      incomeEl.textContent = `Income/sec: ${income}`;
+    }
+
+    if (prestigeEl) {
+      prestigeEl.textContent = `Prestige: ${prestige}`;
+    }
+
+    if (workersEl) {
+      workersEl.textContent = `Workers: ${assignedCards.length}/${getMaxSlotsForBusiness(business.id)}`;
+    }
+
+    if (capacityEl) {
+      capacityEl.textContent = `Capacity Level: ${businessState.capacityLevel}/${CONFIG.UPGRADES.MAX_CAPACITY_LEVEL}`;
+    }
+
+    if (efficiencyEl) {
+      efficiencyEl.textContent = `Efficiency Level: ${businessState.efficiencyLevel}/${CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL}`;
+    }
+
+    if (cooldownEl) {
+      const adActive = isAdActive(business.id);
+      const adCoolingDown = isAdCoolingDown(business.id);
+      const adCooldownRemaining = getAdCooldownRemainingMs(business.id);
+
+      if (adActive) {
+        cooldownEl.textContent = "Advertising boost active";
+      } else if (adCoolingDown) {
+        cooldownEl.textContent = `Cooldown: ${formatCooldown(adCooldownRemaining)}`;
+      } else {
+        cooldownEl.textContent = "";
+      }
+    }
+  });
+}
