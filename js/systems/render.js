@@ -334,11 +334,11 @@ function renderBusinesses() {
           </div>
         </div>
 
-        <div class="small">Income/sec: ${income}</div>
-        <div class="small">Prestige: ${prestige}</div>
-        <div class="small">Workers: ${assignedCards.length}/${getMaxSlotsForBusiness(business.id)}</div>
-        <div class="small">Capacity Level: ${businessState.capacityLevel}/${CONFIG.UPGRADES.MAX_CAPACITY_LEVEL}</div>
-        <div class="small">Efficiency Level: ${businessState.efficiencyLevel}/${CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL}</div>
+        <div class="small" id="business-income-${business.id}">Income/sec: ${income}</div>
+        <div class="small" id="business-prestige-${business.id}">Prestige: ${prestige}</div>
+        <div class="small" id="business-workers-${business.id}">Workers: ${assignedCards.length}/${getMaxSlotsForBusiness(business.id)}</div>
+        <div class="small" id="business-capacity-${business.id}">Capacity Level: ${businessState.capacityLevel}/${CONFIG.UPGRADES.MAX_CAPACITY_LEVEL}</div>
+        <div class="small" id="business-efficiency-${business.id}">Efficiency Level: ${businessState.efficiencyLevel}/${CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL}</div>
 
         <div class="upgrade-row">
           <button
@@ -368,8 +368,10 @@ function renderBusinesses() {
           </button>
         </div>
 
-        ${adActive ? `<div class="cooldown-text">Advertising boost active</div>` : ""}
-        ${(!adActive && adCoolingDown) ? `<div class="cooldown-text">Cooldown: ${formatCooldown(adCooldownRemaining)}</div>` : ""}
+        <div class="cooldown-text" id="business-cooldown-${business.id}">
+          ${adActive ? "Advertising boost active" : ""}
+          ${(!adActive && adCoolingDown) ? `Cooldown: ${formatCooldown(adCooldownRemaining)}` : ""}
+        </div>
 
         <div class="business-slots">${slotsHtml}</div>
       </div>
