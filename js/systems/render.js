@@ -36,8 +36,9 @@ function renderTopbar() {
 
   const freePackBtn = document.getElementById("freePackBtn");
   if (freePackBtn) {
-    freePackBtn.disabled = !getDailyTokenAvailable();
-    freePackBtn.textContent = getDailyTokenAvailable()
+    const dailyAvailable = getDailyTokenAvailable();
+    freePackBtn.disabled = !dailyAvailable;
+    freePackBtn.textContent = dailyAvailable
       ? "Claim Daily Token"
       : "Daily Token Claimed";
   }
@@ -108,11 +109,9 @@ function getSortedRosterCards() {
     const aUnassigned = !a.assignedBusinessId;
     const bUnassigned = !b.assignedBusinessId;
 
-    // Unassigned workers first
     if (aUnassigned && !bUnassigned) return -1;
     if (!aUnassigned && bUnassigned) return 1;
 
-    // Within unassigned, lowest morale first
     if (aUnassigned && bUnassigned) {
       if (a.morale !== b.morale) return a.morale - b.morale;
 
@@ -122,7 +121,6 @@ function getSortedRosterCards() {
       return a.displayName.localeCompare(b.displayName);
     }
 
-    // For assigned workers, group by business name
     if (a.assignedBusinessId !== b.assignedBusinessId) {
       const aBusinessName = getBusinessDef(a.assignedBusinessId)?.name || "";
       const bBusinessName = getBusinessDef(b.assignedBusinessId)?.name || "";
@@ -194,6 +192,42 @@ function renderRoster() {
 
 
 // ==========================================================
+// Business image helpers
+// ==========================================================
+
+function getBusinessImagePath(business) {
+  if (business && typeof business.imagePath === "string" && business.imagePath.trim() !== "") {
+    return business.imagePath;
+  }
+
+  return CONFIG.FALLBACKS.BUSINESS_IMAGE;
+}
+
+function getBusinessImageAlt(business) {
+  if (business && typeof business.imageAlt === "string" && business.imageAlt.trim() !== "") {
+    return business.imageAlt;
+  }
+
+  return business?.name || "Business image";
+}
+
+function getBusinessImageHtml(business) {
+  const src = getBusinessImagePath(business);
+  const alt = getBusinessImageAlt(business);
+  const fallback = CONFIG.FALLBACKS.BUSINESS_IMAGE;
+
+  return `
+    <img
+      src="${src}"
+      alt="${alt}"
+      class="business-image"
+      onerror="this.onerror=null;this.src='${fallback}';"
+    />
+  `;
+}
+
+
+// ==========================================================
 // Business rendering
 // ==========================================================
 
@@ -211,9 +245,14 @@ function renderBusinesses() {
       return `
         <div class="business">
           <div class="business-header">
-            <div>
-              <h3>${business.name}</h3>
-              <div class="muted">${business.description}</div>
+            <div class="business-header-main">
+              ${getBusinessImageHtml(business)}
+
+              <div class="business-header-text">
+                <h3>${business.name}</h3>
+                <div class="small muted">${business.franchise}</div>
+                <div class="muted">${business.description}</div>
+              </div>
             </div>
           </div>
 
@@ -279,9 +318,14 @@ function renderBusinesses() {
     return `
       <div class="business">
         <div class="business-header">
-          <div>
-            <h3>${business.name}</h3>
-            <div class="muted">${business.description}</div>
+          <div class="business-header-main">
+            ${getBusinessImageHtml(business)}
+
+            <div class="business-header-text">
+              <h3>${business.name}</h3>
+              <div class="small muted">${business.franchise}</div>
+              <div class="muted">${business.description}</div>
+            </div>
           </div>
 
           <div>
@@ -354,8 +398,6 @@ function renderHeadline() {
 
 // ==========================================================
 // Full render pass
-// ----------------------------------------------------------
-// Main public render entry point.
 // ==========================================================
 
 function renderAll() {
