@@ -20,7 +20,7 @@
 const FUTURAMA_BUSINESSES = [
 
   // ========================================================
-  // Tier 1 Businesses
+  // Core Business
   // ========================================================
 
   {
@@ -62,7 +62,7 @@ const FUTURAMA_BUSINESSES = [
   // ========================================================
 
   {
-    id: "momcorp",
+    id: CONFIG.BUSINESS_IDS.MOMCORP,
     businessKey: "momcorp",
     variantKey: "default",
     franchise: "Futurama",
@@ -96,7 +96,7 @@ const FUTURAMA_BUSINESSES = [
   },
 
   {
-    id: "robot_arms_apartments",
+    id: CONFIG.BUSINESS_IDS.ROBOT_ARMS_APARTMENTS,
     businessKey: "robot_arms_apartments",
     variantKey: "default",
     franchise: "Futurama",

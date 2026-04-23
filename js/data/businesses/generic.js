@@ -8,7 +8,7 @@
 // - humor-driven entries
 // - future experimental mechanics
 //
-// These are safe, expandable, and not tied to IP.
+// These are safe, expandable, and not tied to a single IP.
 // ==========================================================
 
 const GENERIC_BUSINESSES = [
@@ -18,7 +18,7 @@ const GENERIC_BUSINESSES = [
   // ========================================================
 
   {
-    id: "potato_farm",
+    id: CONFIG.BUSINESS_IDS.POTATO_FARM,
     businessKey: "potato_farm",
     variantKey: "default",
     franchise: "Generic",
@@ -51,13 +51,12 @@ const GENERIC_BUSINESSES = [
     }
   },
 
-
   // ========================================================
   // Tier 2
   // ========================================================
 
   {
-    id: "tech_support_center",
+    id: CONFIG.BUSINESS_IDS.TECH_SUPPORT_CENTER,
     businessKey: "tech_support_center",
     variantKey: "default",
     franchise: "Generic",
@@ -90,13 +89,12 @@ const GENERIC_BUSINESSES = [
     }
   },
 
-
   // ========================================================
   // Tier 3
   // ========================================================
 
   {
-    id: "super_secret_spy_org",
+    id: CONFIG.BUSINESS_IDS.SUPER_SECRET_SPY_ORG,
     businessKey: "super_secret_spy_org",
     variantKey: "default",
     franchise: "Generic",
@@ -128,5 +126,4 @@ const GENERIC_BUSINESSES = [
       }
     }
   }
-
 ];
