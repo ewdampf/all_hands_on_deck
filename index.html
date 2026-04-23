@@ -19,27 +19,25 @@
 
   <!-- ======================================================
        Title / Logo Section
-       Save your uploaded logo into:
-       assets/all-hands-on-deck-logo.png
   ======================================================= -->
-<header class="hero">
-  <img
-    src="assets/all-hands-on-deck-title.png"
-    alt="All Hands On Deck"
-    class="game-logo"
-  />
+  <header class="hero">
+    <img
+      src="assets/all-hands-on-deck-title.png?v=2"
+      alt="All Hands On Deck"
+      class="game-logo"
+    />
 
-  <p id="tagline" class="tagline">
-    Loading highly questionable staffing philosophy...
-  </p>
-</header>
+    <p id="tagline" class="tagline">
+      Loading highly questionable staffing philosophy...
+    </p>
+  </header>
 
   <!-- ======================================================
        Main Layout
   ======================================================= -->
   <main class="layout">
     <!-- ====================================================
-         Left Column
+         Left Column = Actions
     ===================================================== -->
     <section>
       <div class="panel">
@@ -71,15 +69,13 @@
     </section>
 
     <!-- ====================================================
-         Right Column
+         Right Column = Information
     ===================================================== -->
     <section>
-      <div class="panel business-panel">
-        <h2>Businesses</h2>
-        <div id="businessContainer"></div>
-      </div>
-
-      <div class="panel" style="margin-top:16px;">
+      <!-- ==================================================
+           Headline always visible
+      =================================================== -->
+      <div class="panel">
         <h3>Latest Headline</h3>
         <div class="headline-box">
           <div class="headline" id="headlineTitle">Welcome aboard</div>
@@ -89,22 +85,28 @@
         </div>
       </div>
 
+      <!-- ==================================================
+           Info panel with mode buttons
+      =================================================== -->
       <div class="panel" style="margin-top:16px;">
-        <h3>Notes</h3>
-        <ul class="small">
-          <li>Credits are used for businesses and upgrades.</li>
-          <li>Tokens are used for packs.</li>
-          <li>Matching grunt squads work better together.</li>
-          <li>Unassigned workers lose morale over time.</li>
-          <li>Some jobs are more profitable. Some are just better places to work.</li>
-        </ul>
+        <div class="section-title">
+          <h2>Information</h2>
+          <div class="muted">View what matters right now</div>
+        </div>
+
+        <div class="info-mode-tabs">
+          <button id="infoModeOverviewBtn" class="secondary small-button">Overview</button>
+          <button id="infoModeOwnedBtn" class="secondary small-button">Owned Businesses</button>
+          <button id="infoModeBuyBtn" class="secondary small-button">Buy Businesses</button>
+        </div>
+
+        <div id="infoPanelContent"></div>
       </div>
     </section>
   </main>
 
   <!-- ======================================================
        Script Load Order
-       Order matters.
   ======================================================= -->
 
   <!-- Config -->
@@ -121,7 +123,7 @@
   <script src="js/data/characters/generic.js"></script>
   <script src="js/data/characters.js"></script>
 
-<!-- Business Data -->
+  <!-- Business Data -->
   <script src="js/data/businesses/starWars.js"></script>
   <script src="js/data/businesses/futurama.js"></script>
   <script src="js/data/businesses/generic.js"></script>

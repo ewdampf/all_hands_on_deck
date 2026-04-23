@@ -79,11 +79,11 @@ body {
 
 .layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
   gap: 20px;
 
-  width: min(1200px, 100%);
-  margin: 20px auto;
+  width: min(1280px, 100%);
+  margin: 20px auto 28px;
   padding: 0 16px;
 }
 
@@ -93,7 +93,6 @@ body {
   }
 }
 
-
 /* ==========================================================
    Panels
 ========================================================== */
@@ -101,8 +100,9 @@ body {
 .panel {
   background: #121212;
   border: 1px solid #222;
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
 }
 
 .section-title h2 {
@@ -325,14 +325,194 @@ button:disabled {
 ========================================================== */
 
 .headline-box {
-  background: #0f0f0f;
+  background: linear-gradient(180deg, #161616 0%, #0f0f0f 100%);
   border: 1px solid #333;
-  border-radius: 8px;
-  padding: 12px;
+  border-radius: 10px;
+  padding: 14px;
 }
 
 .headline {
-  font-size: 18px;
-  font-weight: bold;
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #f3f3f3;
+}
+
+/* ==========================================================
+   Info Panel Tabs
+========================================================== */
+
+.info-mode-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 14px;
+}
+
+.info-mode-tabs button {
+  min-width: 0;
+}
+
+.info-mode-tabs button.active {
+  background: #ec672c;
+  color: #fff;
+  border: 1px solid #ec672c;
+}
+
+/* ==========================================================
+   Info Panel Content
+========================================================== */
+
+.info-panel-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+@media (max-width: 1100px) {
+  .info-panel-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.info-stat-card {
+  background: #171717;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.info-stat-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8f8f8f;
   margin-bottom: 6px;
+}
+
+.info-stat-value {
+  font-size: 22px;
+  font-weight: 700;
+  color: #f1f1f1;
+}
+
+.info-stat-subtext {
+  margin-top: 6px;
+  font-size: 12px;
+  color: #9a9a9a;
+}
+
+/* ==========================================================
+   Attention Needed
+========================================================== */
+
+.attention-block {
+  margin-top: 14px;
+  background: #171717;
+  border: 1px solid #2f2a22;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.attention-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: #f3d28b;
+}
+
+.attention-list {
+  margin: 0;
+  padding-left: 18px;
+  color: #d0d0d0;
+}
+
+.attention-list li + li {
+  margin-top: 6px;
+}
+
+/* ==========================================================
+   Info Business Cards
+========================================================== */
+
+.info-business-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-business-card {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: #171717;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.info-business-image {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: #101010;
+  flex-shrink: 0;
+}
+
+.info-business-main {
+  min-width: 0;
+  flex: 1;
+}
+
+.info-business-title-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: flex-start;
+  margin-bottom: 4px;
+}
+
+.info-business-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #f1f1f1;
+}
+
+.info-business-meta {
+  font-size: 12px;
+  color: #969696;
+  margin-bottom: 6px;
+}
+
+.info-business-summary {
+  font-size: 13px;
+  color: #cfcfcf;
+  margin-bottom: 8px;
+}
+
+.info-business-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  font-size: 12px;
+  color: #bdbdbd;
+}
+
+.layout > section:last-child .panel {
+  background: #101010;
+}
+
+/* ==========================================================
+   Empty States
+========================================================== */
+
+.empty-state {
+  padding: 16px;
+  border: 1px dashed #333;
+  border-radius: 10px;
+  color: #8e8e8e;
+  text-align: center;
+  background: #141414;
 }
