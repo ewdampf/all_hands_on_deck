@@ -24,9 +24,81 @@ let recentPackResults = [];
 
 
 // ==========================================================
+// Optional startup diagnostics
+// ----------------------------------------------------------
+// Helpful during development to catch missing file loads or
+// bad script order quickly.
+// ==========================================================
+
+function runStartupDiagnostics() {
+  console.log("CONFIG loaded:", typeof CONFIG !== "undefined");
+  console.log("TRAITS loaded:", typeof TRAITS !== "undefined");
+  console.log("CHARACTER_TAGS loaded:", typeof CHARACTER_TAGS !== "undefined");
+  console.log("JOB_TYPES loaded:", typeof JOB_TYPES !== "undefined");
+
+  console.log(
+    "CHARACTERS loaded:",
+    typeof CHARACTERS !== "undefined",
+    Array.isArray(CHARACTERS) ? CHARACTERS.length : "N/A"
+  );
+
+  console.log(
+    "BUSINESSES loaded:",
+    typeof BUSINESSES !== "undefined",
+    Array.isArray(BUSINESSES) ? BUSINESSES.length : "N/A"
+  );
+}
+
+
+// ==========================================================
+// Business runtime normalization
+// ----------------------------------------------------------
+// Ensures all businesses have slot arrays sized correctly
+// after load or reset.
+// ==========================================================
+
+function normalizeAllBusinesses() {
+  BUSINESSES.forEach(business => {
+    normalizeBusinessSlots(business.id);
+  });
+}
+
+
+// ==========================================================
+// Tagline initialization
+// ----------------------------------------------------------
+// Picks one random tagline on startup.
+// ==========================================================
+
+function initializeTagline() {
+  const taglineEl = document.getElementById("tagline");
+  if (!taglineEl) return;
+
+  if (!Array.isArray(TAGLINES) || TAGLINES.length === 0) {
+    taglineEl.textContent = "From every universe... into the wrong jobs.";
+    return;
+  }
+
+  const tagline = TAGLINES[Math.floor(Math.random() * TAGLINES.length)];
+  taglineEl.textContent = tagline;
+}
+
+
+// ==========================================================
+// Pack result display initialization
+// ----------------------------------------------------------
+// Ensures the pack area starts in a valid visual state.
+// ==========================================================
+
+function initializePackResults() {
+  renderPackResults(recentPackResults);
+}
+
+
+// ==========================================================
 // UI button wiring
 // ----------------------------------------------------------
-// Attaches click handlers to the main interactive controls.
+// Attaches click handlers to the main controls.
 // ==========================================================
 
 function initializeButtons() {
@@ -78,7 +150,7 @@ function initializeButtons() {
   }
 
   // --------------------------------------------------------
-  // Save
+  // Manual save
   // --------------------------------------------------------
   if (saveBtn) {
     saveBtn.addEventListener("click", () => {
@@ -93,40 +165,15 @@ function initializeButtons() {
   // --------------------------------------------------------
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
+      const confirmed = window.confirm(
+        "Reset your game? This will clear your local save."
+      );
+
+      if (!confirmed) return;
+
       resetGame();
     });
   }
-}
-
-
-// ==========================================================
-// Business runtime normalization
-// ----------------------------------------------------------
-// Ensures all businesses have slot arrays sized correctly
-// after load or reset.
-// ==========================================================
-
-function normalizeAllBusinesses() {
-  BUSINESSES.forEach(business => {
-    normalizeBusinessSlots(business.id);
-  });
-}
-
-
-// ==========================================================
-// Optional startup diagnostics
-// ----------------------------------------------------------
-// Useful during development to catch missing file loads.
-// Safe to leave in for now.
-// ==========================================================
-
-function runStartupDiagnostics() {
-  console.log("CONFIG loaded:", typeof CONFIG !== "undefined");
-  console.log("TRAITS loaded:", typeof TRAITS !== "undefined");
-  console.log("CHARACTER_TAGS loaded:", typeof CHARACTER_TAGS !== "undefined");
-  console.log("JOB_TYPES loaded:", typeof JOB_TYPES !== "undefined");
-  console.log("CHARACTERS loaded:", typeof CHARACTERS !== "undefined", Array.isArray(CHARACTERS) ? CHARACTERS.length : "N/A");
-  console.log("BUSINESSES loaded:", typeof BUSINESSES !== "undefined", Array.isArray(BUSINESSES) ? BUSINESSES.length : "N/A");
 }
 
 
@@ -137,14 +184,14 @@ function runStartupDiagnostics() {
 // ==========================================================
 
 function gameTick() {
-  // Morale changes first
+  // Morale updates first
   updateMorale();
 
   // Then economy
   const income = calculateTotalIncomePerTick();
   state.credits += income;
 
-  // Future place for timed effects / cooldown expiry hooks
+  // Future timed-effect hooks can go here
 
   renderAll();
   saveGame();
@@ -152,31 +199,9 @@ function gameTick() {
 
 
 // ==========================================================
-// Initial render helpers
-// ==========================================================
-
-function initializeTagline() {
-  const taglineEl = document.getElementById("tagline");
-  if (!taglineEl) return;
-
-  if (!Array.isArray(TAGLINES) || TAGLINES.length === 0) {
-    taglineEl.textContent = "From every universe... into the wrong jobs.";
-    return;
-  }
-
-  const tagline = TAGLINES[Math.floor(Math.random() * TAGLINES.length)];
-  taglineEl.textContent = tagline;
-}
-
-function initializePackResults() {
-  renderPackResults(recentPackResults);
-}
-
-
-// ==========================================================
 // Full game initialization
 // ----------------------------------------------------------
-// Called once after scripts finish loading.
+// Called once after all scripts are loaded.
 // ==========================================================
 
 function initializeGame() {
