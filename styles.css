@@ -250,6 +250,26 @@ button:disabled {
   align-items: center;
 }
 
+.business-header-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.business-header-text {
+  min-width: 0;
+}
+
+.business-image {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #333;
+  background: #111;
+  flex-shrink: 0;
+}
+
 .business-actions {
   margin-top: 10px;
 }
