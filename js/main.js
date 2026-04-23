@@ -184,19 +184,18 @@ function initializeButtons() {
 // ==========================================================
 
 function gameTick() {
-  // Morale updates first
   updateMorale();
 
-  // Then economy
   const income = calculateTotalIncomePerTick();
   state.credits += income;
 
-  // Future timed-effect hooks can go here
+  // Lightweight tick render to avoid rebuilding all business images every second
+  renderTopbar();
+  renderHeadline();
+  renderBusinessStatsOnly();
 
-  renderAll();
   saveGame();
 }
-
 
 // ==========================================================
 // Full game initialization
