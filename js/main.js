@@ -109,6 +109,10 @@ function initializeButtons() {
   const saveBtn = document.getElementById("saveBtn");
   const resetBtn = document.getElementById("resetBtn");
 
+  const infoModeOverviewBtn = document.getElementById("infoModeOverviewBtn");
+  const infoModeOwnedBtn = document.getElementById("infoModeOwnedBtn");
+  const infoModeBuyBtn = document.getElementById("infoModeBuyBtn");
+
   // --------------------------------------------------------
   // Daily token claim
   // --------------------------------------------------------
@@ -121,6 +125,84 @@ function initializeButtons() {
       }
     });
   }
+
+  // --------------------------------------------------------
+  // Paid packs
+  // --------------------------------------------------------
+  if (basicPackBtn) {
+    basicPackBtn.addEventListener("click", () => {
+      recentPackResults = openPackByType("BASIC");
+      renderPackResults(recentPackResults);
+      renderAll();
+    });
+  }
+
+  if (uncommonPackBtn) {
+    uncommonPackBtn.addEventListener("click", () => {
+      recentPackResults = openPackByType("UNCOMMON");
+      renderPackResults(recentPackResults);
+      renderAll();
+    });
+  }
+
+  if (rarePackBtn) {
+    rarePackBtn.addEventListener("click", () => {
+      recentPackResults = openPackByType("RARE");
+      renderPackResults(recentPackResults);
+      renderAll();
+    });
+  }
+
+  // --------------------------------------------------------
+  // Manual save
+  // --------------------------------------------------------
+  if (saveBtn) {
+    saveBtn.addEventListener("click", () => {
+      saveGame();
+      setHeadline("Progress saved", "Your local game has been saved in this browser.");
+      renderAll();
+    });
+  }
+
+  // --------------------------------------------------------
+  // Reset
+  // --------------------------------------------------------
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      const confirmed = window.confirm(
+        "Reset your game? This will clear your local save."
+      );
+
+      if (!confirmed) return;
+
+      resetGame();
+    });
+  }
+
+  // --------------------------------------------------------
+  // Info panel mode buttons
+  // --------------------------------------------------------
+  if (infoModeOverviewBtn) {
+    infoModeOverviewBtn.addEventListener("click", () => {
+      infoPanelMode = "overview";
+      renderAll();
+    });
+  }
+
+  if (infoModeOwnedBtn) {
+    infoModeOwnedBtn.addEventListener("click", () => {
+      infoPanelMode = "owned";
+      renderAll();
+    });
+  }
+
+  if (infoModeBuyBtn) {
+    infoModeBuyBtn.addEventListener("click", () => {
+      infoPanelMode = "buy";
+      renderAll();
+    });
+  }
+}
 
   // --------------------------------------------------------
   // Paid packs
@@ -212,6 +294,8 @@ function initializeGame() {
   initializeButtons();
   initializeTagline();
   initializePackResults();
+
+  infoPanelMode = "overview";
 
   renderAll();
 
