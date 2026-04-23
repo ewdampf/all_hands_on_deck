@@ -8,14 +8,12 @@
 // - business prestige calculation
 // - business income calculation
 //
-// This file should contain the "math layer" of the game.
+// This file contains the "math layer" of the game.
 // ==========================================================
 
 
 // ==========================================================
 // Morale output modifier
-// ----------------------------------------------------------
-// Converts morale into an output multiplier adjustment.
 // ==========================================================
 
 function getMoraleOutputModifier(morale) {
@@ -37,9 +35,6 @@ function getMoraleOutputModifier(morale) {
 
 // ==========================================================
 // Same-type cannon fodder helpers
-// ----------------------------------------------------------
-// Cannon fodder bonuses now depend on matching unit type,
-// not just any grunt being present.
 // ==========================================================
 
 function getMatchingCannonFodderCount(card, businessId) {
@@ -67,8 +62,6 @@ function getSameTypeCannonFodderBonus(card, businessId) {
 
 // ==========================================================
 // Output helper: off-role penalty
-// ----------------------------------------------------------
-// Efficiency upgrades can slightly soften bad-fit penalties.
 // ==========================================================
 
 function getOffRolePenaltyMultiplier(businessId) {
@@ -86,8 +79,6 @@ function getOffRolePenaltyMultiplier(businessId) {
 
 // ==========================================================
 // Output helper: business-level multipliers
-// ----------------------------------------------------------
-// Combines tier, tags, advertising, and upgrades.
 // ==========================================================
 
 function getBusinessTierIncomeMultiplier(businessId) {
@@ -108,9 +99,45 @@ function getBusinessEfficiencyMultiplier(businessId) {
 
 
 // ==========================================================
-// Per-card output calculation
+// Placeholder hook: business-specific output modifiers
 // ----------------------------------------------------------
-// This is the main worker productivity formula.
+// Keep this function even if it returns 1 for now.
+// It gives you a clean place to add special business effects
+// later without rewriting calculateCardOutput().
+// ==========================================================
+
+function getBusinessSpecificCardOutputMultiplier(card, businessId) {
+  const businessDef = getBusinessDef(businessId);
+  if (!businessDef) return 1;
+
+  switch (businessId) {
+    case CONFIG.BUSINESS_IDS.BOUNTY_HUNTERS_GUILD:
+      if (card.traits.includes(TRAITS.ROGUE)) return 1.30;
+      if (card.traits.includes(TRAITS.HERO)) return 0.60;
+      return 1;
+
+    default:
+      return 1;
+  }
+}
+
+
+// ==========================================================
+// Placeholder hook: business-specific income modifiers
+// ----------------------------------------------------------
+// For things like casinos, federation boosts, cloning, etc.
+// ==========================================================
+
+function getBusinessSpecificIncomeMultiplier(businessId) {
+  switch (businessId) {
+    default:
+      return 1;
+  }
+}
+
+
+// ==========================================================
+// Per-card output calculation
 // ==========================================================
 
 function calculateCardOutput(card, businessId) {
@@ -121,14 +148,10 @@ function calculateCardOutput(card, businessId) {
 
   let output = card.basePower;
 
-  // --------------------------------------------------------
   // Morale impact
-  // --------------------------------------------------------
   output *= (1 + getMoraleOutputModifier(card.morale));
 
-  // --------------------------------------------------------
-  // Cannon fodder same-type grouping bonus
-  // --------------------------------------------------------
+  // Same-type cannon fodder grouping
   if (card.traits.includes(TRAITS.CANNON_FODDER)) {
     output *= 1 + getSameTypeCannonFodderBonus(card, businessId);
 
@@ -137,9 +160,7 @@ function calculateCardOutput(card, businessId) {
     }
   }
 
-  // --------------------------------------------------------
   // Hero bonus / low-morale hero penalty
-  // --------------------------------------------------------
   if (card.traits.includes(TRAITS.HERO)) {
     output *= 1 + CONFIG.OUTPUT.HERO_OUTPUT_MODIFIER;
 
@@ -148,16 +169,12 @@ function calculateCardOutput(card, businessId) {
     }
   }
 
-  // --------------------------------------------------------
   // Support bonus
-  // --------------------------------------------------------
   if (card.traits.includes(TRAITS.SUPPORT)) {
     output *= 1 + CONFIG.OUTPUT.SUPPORT_OUTPUT_MODIFIER;
   }
 
-  // --------------------------------------------------------
   // Wrong-job penalty
-  // --------------------------------------------------------
   if (
     card.preferredJob !== businessDef.jobType &&
     card.preferredJob !== JOB_TYPES.HEROIC
@@ -165,13 +182,12 @@ function calculateCardOutput(card, businessId) {
     output *= getOffRolePenaltyMultiplier(businessId);
   }
 
-  // --------------------------------------------------------
   // Business-level multipliers
-  // --------------------------------------------------------
   output *= getBusinessTierIncomeMultiplier(businessId);
   output *= getBusinessRevenueMultiplierFromTags(businessDef);
   output *= getBusinessEfficiencyMultiplier(businessId);
   output *= getAdMultiplier(businessState);
+  output *= getBusinessSpecificCardOutputMultiplier(card, businessId);
 
   return output;
 }
@@ -179,9 +195,6 @@ function calculateCardOutput(card, businessId) {
 
 // ==========================================================
 // Prestige calculation
-// ----------------------------------------------------------
-// Prestige is derived from heroes, ultras, and high morale,
-// then modified by tier + business tags.
 // ==========================================================
 
 function calculateBusinessPrestige(businessId) {
@@ -215,14 +228,14 @@ function calculateBusinessPrestige(businessId) {
 
 // ==========================================================
 // Business income calculation
-// ----------------------------------------------------------
-// Sums all assigned card output, then applies prestige and
-// global economy pacing.
 // ==========================================================
 
 function calculateBusinessIncome(businessId) {
+  const businessDef = getBusinessDef(businessId);
   const cards = getAssignedCardsForBusiness(businessId);
   const prestige = calculateBusinessPrestige(businessId);
+
+  if (!businessDef) return 0;
 
   let total = 0;
 
@@ -231,6 +244,7 @@ function calculateBusinessIncome(businessId) {
   });
 
   total *= (1 + prestige / 100);
+  total *= getBusinessSpecificIncomeMultiplier(businessId);
   total *= CONFIG.ECONOMY.GLOBAL_INCOME_MULTIPLIER;
 
   return Math.floor(total);
@@ -239,8 +253,6 @@ function calculateBusinessIncome(businessId) {
 
 // ==========================================================
 // Total income calculation
-// ----------------------------------------------------------
-// Used by the main game tick.
 // ==========================================================
 
 function calculateTotalIncomePerTick() {

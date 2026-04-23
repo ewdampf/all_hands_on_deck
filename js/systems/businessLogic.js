@@ -16,9 +16,6 @@
 
 // ==========================================================
 // Tier / Tag helpers
-// ----------------------------------------------------------
-// Small helpers that derive business properties from the
-// business definition plus config rules.
 // ==========================================================
 
 function getTierDef(tier) {
@@ -37,25 +34,31 @@ function getBaseBusinessSlots(businessDef) {
 
 function getBusinessSlotMultiplier(businessDef) {
   const tagDefs = getTagDefs(businessDef.tags);
-  return tagDefs.reduce((mult, tagDef) => mult * (tagDef.slotMultiplier ?? 1), 1);
+
+  return tagDefs.reduce((mult, tagDef) => {
+    return mult * (tagDef.slotMultiplier ?? 1);
+  }, 1);
 }
 
 function getBusinessRevenueMultiplierFromTags(businessDef) {
   const tagDefs = getTagDefs(businessDef.tags);
-  return tagDefs.reduce((mult, tagDef) => mult * (tagDef.revenueMultiplier ?? 1), 1);
+
+  return tagDefs.reduce((mult, tagDef) => {
+    return mult * (tagDef.revenueMultiplier ?? 1);
+  }, 1);
 }
 
 function getBusinessPrestigeMultiplierFromTags(businessDef) {
   const tagDefs = getTagDefs(businessDef.tags);
-  return tagDefs.reduce((mult, tagDef) => mult * (tagDef.prestigeMultiplier ?? 1), 1);
+
+  return tagDefs.reduce((mult, tagDef) => {
+    return mult * (tagDef.prestigeMultiplier ?? 1);
+  }, 1);
 }
 
 
 // ==========================================================
 // Slot calculation
-// ----------------------------------------------------------
-// Computes the actual maximum slot count for a business based
-// on tier, tags, and purchased capacity upgrades.
 // ==========================================================
 
 function getMaxSlotsForBusiness(businessId) {
@@ -71,14 +74,6 @@ function getMaxSlotsForBusiness(businessId) {
     businessState.capacityLevel * CONFIG.UPGRADES.CAPACITY_SLOT_BONUS_PER_LEVEL
   );
 }
-
-
-// ==========================================================
-// Slot normalization
-// ----------------------------------------------------------
-// Ensures assignedCardIds always matches the current slot
-// count for the business.
-// ==========================================================
 
 function normalizeBusinessSlots(businessId) {
   const businessState = getBusinessState(businessId);
@@ -98,14 +93,13 @@ function normalizeBusinessSlots(businessId) {
 
 // ==========================================================
 // Assignment helpers
-// ----------------------------------------------------------
-// Move cards in and out of businesses.
 // ==========================================================
 
 function unassignCard(card) {
   if (!card || !card.assignedBusinessId) return;
 
   const businessState = getBusinessState(card.assignedBusinessId);
+
   if (!businessState) {
     card.assignedBusinessId = null;
     return;
@@ -134,7 +128,6 @@ function assignCardToBusiness(cardInstanceId, businessId) {
 
   normalizeBusinessSlots(businessId);
 
-  // Clicking assignment for the business the card is already in = unassign
   if (card.assignedBusinessId === businessId) {
     unassignCard(card);
     setHeadline("Worker unassigned", `${card.displayName} was removed from ${businessDef.name}.`);
@@ -149,7 +142,6 @@ function assignCardToBusiness(cardInstanceId, businessId) {
     return false;
   }
 
-  // If already assigned elsewhere, remove first
   if (card.assignedBusinessId) {
     unassignCard(card);
   }
@@ -157,7 +149,6 @@ function assignCardToBusiness(cardInstanceId, businessId) {
   businessState.assignedCardIds[emptySlotIndex] = card.instanceId;
   card.assignedBusinessId = businessId;
 
-  // Light flavor conflict check
   const assignedCards = getAssignedCardsForBusiness(businessId);
   const hero = assignedCards.find(c => c.traits.includes(TRAITS.HERO));
   const rogue = assignedCards.find(c => c.traits.includes(TRAITS.ROGUE));
@@ -179,7 +170,7 @@ function assignCardToBusiness(cardInstanceId, businessId) {
 // ==========================================================
 // Business purchasing
 // ----------------------------------------------------------
-// Unlocks a business and grants a free pack immediately.
+// Unlocks a business and grants a free basic pack.
 // ==========================================================
 
 function purchaseBusiness(businessId) {
@@ -194,7 +185,10 @@ function purchaseBusiness(businessId) {
   }
 
   if (state.credits < businessDef.unlockCost) {
-    setHeadline("Not enough credits", `You need ${businessDef.unlockCost} credits to unlock ${businessDef.name}.`);
+    setHeadline(
+      "Not enough credits",
+      `You need ${businessDef.unlockCost} credits to unlock ${businessDef.name}.`
+    );
     return false;
   }
 
@@ -221,8 +215,6 @@ function purchaseBusiness(businessId) {
 
 // ==========================================================
 // Upgrade helpers
-// ----------------------------------------------------------
-// Calculates upgrade costs and applies purchased upgrades.
 // ==========================================================
 
 function getUpgradeCost(businessId, upgradeType) {
@@ -235,6 +227,7 @@ function getUpgradeCost(businessId, upgradeType) {
 
   if (upgradeType === "capacity") {
     const level = businessState.capacityLevel;
+
     if (level >= CONFIG.UPGRADES.MAX_CAPACITY_LEVEL) return null;
 
     return Math.floor(CONFIG.UPGRADES.CAPACITY_COSTS[level] * tierMultiplier);
@@ -242,6 +235,7 @@ function getUpgradeCost(businessId, upgradeType) {
 
   if (upgradeType === "efficiency") {
     const level = businessState.efficiencyLevel;
+
     if (level >= CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL) return null;
 
     return Math.floor(CONFIG.UPGRADES.EFFICIENCY_COSTS[level] * tierMultiplier);
@@ -287,8 +281,6 @@ function upgradeBusiness(businessId, upgradeType) {
 
 // ==========================================================
 // Advertising
-// ----------------------------------------------------------
-// Temporarily boosts business output, then goes on cooldown.
 // ==========================================================
 
 function getAdMultiplier(businessState) {
@@ -338,13 +330,6 @@ function getAdCooldownRemainingMs(businessId) {
 
   return Math.max(0, businessState.adCooldownUntil - Date.now());
 }
-
-
-// ==========================================================
-// Formatting helpers
-// ----------------------------------------------------------
-// Small display helpers used by rendering.
-// ==========================================================
 
 function formatCooldown(msRemaining) {
   const totalSeconds = Math.ceil(msRemaining / 1000);
