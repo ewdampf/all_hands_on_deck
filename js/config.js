@@ -2,7 +2,8 @@
 // All Hands On Deck - Global Configuration
 // ----------------------------------------------------------
 // Central place for pacing, economy, morale, packs, upgrades,
-// business tier rules, and business tag rules.
+// business tier rules, business tag rules, fallbacks, and
+// stable IDs used across the project.
 // ==========================================================
 
 const CONFIG = {
@@ -22,8 +23,8 @@ const CONFIG = {
   // ========================================================
   // Global economy pacing
   // --------------------------------------------------------
-  // Use this to slow down or speed up the whole economy
-  // without changing every individual business.
+  // Use this to slow down or speed up the entire economy
+  // without rebalancing every individual business.
   // ========================================================
   ECONOMY: {
     GLOBAL_INCOME_MULTIPLIER: 0.20
@@ -83,11 +84,48 @@ const CONFIG = {
   // Stable business IDs
   // --------------------------------------------------------
   // Use these everywhere instead of hardcoded strings.
+  // Add to this list as new businesses are introduced.
   // ========================================================
   BUSINESS_IDS: {
+    // ------------------------------------------------------
+    // Star Wars
+    // ------------------------------------------------------
     MOISTURE_FARM: "moisture_farm",
-    CENTRAL_PERK: "central_perk",
-    PLANET_EXPRESS: "planet_express"
+    SPICE_MINE: "spice_mine",
+    MOS_EISLEY_CANTINA: "mos_eisley_cantina",
+    CANTO_BIGHT_CASINO: "canto_bight_casino",
+    BOUNTY_HUNTERS_GUILD: "bounty_hunters_guild",
+    TRADE_FEDERATION: "trade_federation",
+    TECHNO_UNION: "techno_union",
+    KAMINOAN_CLONING_FACILITY: "kaminoan_cloning_facility",
+
+    // ------------------------------------------------------
+    // Futurama
+    // ------------------------------------------------------
+    PLANET_EXPRESS: "planet_express",
+    MOMCORP: "momcorp",
+    ROBOT_ARMS_APARTMENTS: "robot_arms_apartments",
+
+    // ------------------------------------------------------
+    // Generic
+    // ------------------------------------------------------
+    POTATO_FARM: "potato_farm",
+    TECH_SUPPORT_CENTER: "tech_support_center",
+    SUPER_SECRET_SPY_ORG: "super_secret_spy_org",
+
+    // ------------------------------------------------------
+    // Legacy / transitional
+    // ------------------------------------------------------
+    CENTRAL_PERK: "central_perk"
+  },
+
+  // ========================================================
+  // Asset fallbacks
+  // --------------------------------------------------------
+  // Used when images are missing or paths are invalid.
+  // ========================================================
+  FALLBACKS: {
+    BUSINESS_IMAGE: "assets/businesses/fallback-business.png"
   },
 
   // ========================================================
