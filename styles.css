@@ -79,7 +79,7 @@ body {
 
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+  grid-template-columns: minmax(300px, 0.8fr) minmax(0, 1.2fr);
   gap: 20px;
 
   width: min(1280px, 100%);
