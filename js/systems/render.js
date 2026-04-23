@@ -7,8 +7,8 @@
 // - top bar resources / pack button states
 // - pack results
 // - roster
-// - businesses
 // - headline panel
+// - right-column information panel
 // - full-screen refresh via renderAll()
 //
 // Non-responsibilities:
@@ -17,6 +17,15 @@
 // - morale calculations
 // - save/load
 // ==========================================================
+
+
+// ==========================================================
+// Info Panel Mode
+// ----------------------------------------------------------
+// Controls what the right-hand information panel displays.
+// ==========================================================
+
+let infoPanelMode = "overview";
 
 
 // ==========================================================
@@ -192,195 +201,6 @@ function renderRoster() {
 
 
 // ==========================================================
-// Business image helpers
-// ==========================================================
-
-function getBusinessImagePath(business) {
-  if (business && typeof business.imagePath === "string" && business.imagePath.trim() !== "") {
-    return business.imagePath;
-  }
-
-  return CONFIG.FALLBACKS.BUSINESS_IMAGE;
-}
-
-function getBusinessImageAlt(business) {
-  if (business && typeof business.imageAlt === "string" && business.imageAlt.trim() !== "") {
-    return business.imageAlt;
-  }
-
-  return business?.name || "Business image";
-}
-
-function getBusinessImageHtml(business) {
-  const src = getBusinessImagePath(business);
-  const alt = getBusinessImageAlt(business);
-  const fallback = CONFIG.FALLBACKS.BUSINESS_IMAGE;
-
-  return `
-    <img
-      src="${src}"
-      alt="${alt}"
-      class="business-image"
-      onerror="this.onerror=null;this.src='${fallback}';"
-    />
-  `;
-}
-
-
-// ==========================================================
-// Business rendering
-// ==========================================================
-
-function renderBusinesses() {
-  const container = document.getElementById("businessContainer");
-  if (!container) return;
-
-  container.innerHTML = BUSINESSES.map(business => {
-    const businessState = getBusinessState(business.id);
-    if (!businessState) return "";
-
-    normalizeBusinessSlots(business.id);
-
-    if (!businessState.unlocked) {
-      return `
-        <div class="business">
-          <div class="business-header">
-            <div class="business-header-main">
-              ${getBusinessImageHtml(business)}
-
-              <div class="business-header-text">
-                <h3>${business.name}</h3>
-                <div class="small muted">${business.franchise}</div>
-                <div class="muted">${business.description}</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="small">Tier: ${business.tier}</div>
-          <div class="small">Unlock cost: ${business.unlockCost}</div>
-          <div class="small muted">Tags: ${business.tags.join(", ")}</div>
-
-          <div class="business-actions">
-            <button
-              class="secondary small-button"
-              onclick="purchaseBusiness('${business.id}')"
-              ${state.credits < business.unlockCost ? "disabled" : ""}
-            >
-              Purchase
-            </button>
-          </div>
-        </div>
-      `;
-    }
-
-    const assignedCards = getAssignedCardsForBusiness(business.id);
-    const income = calculateBusinessIncome(business.id);
-    const prestige = calculateBusinessPrestige(business.id);
-
-    const capacityCost = getUpgradeCost(business.id, "capacity");
-    const efficiencyCost = getUpgradeCost(business.id, "efficiency");
-
-    const adActive = isAdActive(business.id);
-    const adCoolingDown = isAdCoolingDown(business.id);
-    const adCooldownRemaining = getAdCooldownRemainingMs(business.id);
-
-    const slotsHtml = businessState.assignedCardIds.map((slotId, index) => {
-      if (!slotId) {
-        return `
-          <div class="slot">
-            <div class="muted">Slot ${index + 1}</div>
-            <div class="small">Empty</div>
-          </div>
-        `;
-      }
-
-      const card = getCardByInstanceId(slotId);
-      if (!card) {
-        return `
-          <div class="slot">
-            <div class="muted">Slot ${index + 1}</div>
-            <div class="small bad">Missing card</div>
-          </div>
-        `;
-      }
-
-      return `
-        <div class="slot">
-          <div><strong>${card.displayName}</strong></div>
-          ${card.subtitle ? `<div class="small muted">${card.subtitle}</div>` : ""}
-          <div class="small">Power: ${card.basePower}</div>
-          <div class="small ${getMoraleClass(card.morale)}">Morale: ${card.morale}</div>
-          <div class="small muted">${card.franchise}</div>
-        </div>
-      `;
-    }).join("");
-
-    return `
-      <div class="business">
-        <div class="business-header">
-          <div class="business-header-main">
-            ${getBusinessImageHtml(business)}
-
-            <div class="business-header-text">
-              <h3>${business.name}</h3>
-              <div class="small muted">${business.franchise}</div>
-              <div class="muted">${business.description}</div>
-            </div>
-          </div>
-
-          <div>
-            <span class="upgrade-badge">Tier ${business.tier}</span>
-            ${business.tags.map(tag => `<span class="upgrade-badge">${tag}</span>`).join("")}
-          </div>
-        </div>
-
-        <div class="small" id="business-income-${business.id}">Income/sec: ${income}</div>
-        <div class="small" id="business-prestige-${business.id}">Prestige: ${prestige}</div>
-        <div class="small" id="business-workers-${business.id}">Workers: ${assignedCards.length}/${getMaxSlotsForBusiness(business.id)}</div>
-        <div class="small" id="business-capacity-${business.id}">Capacity Level: ${businessState.capacityLevel}/${CONFIG.UPGRADES.MAX_CAPACITY_LEVEL}</div>
-        <div class="small" id="business-efficiency-${business.id}">Efficiency Level: ${businessState.efficiencyLevel}/${CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL}</div>
-
-        <div class="upgrade-row">
-          <button
-            class="secondary small-button"
-            onclick="upgradeBusiness('${business.id}', 'capacity')"
-            ${capacityCost === null ? "disabled" : ""}
-          >
-            ${capacityCost === null ? "Capacity Maxed" : `Capacity (${capacityCost})`}
-          </button>
-
-          <button
-            class="secondary small-button"
-            onclick="upgradeBusiness('${business.id}', 'efficiency')"
-            ${efficiencyCost === null ? "disabled" : ""}
-          >
-            ${efficiencyCost === null ? "Efficiency Maxed" : `Efficiency (${efficiencyCost})`}
-          </button>
-        </div>
-
-        <div class="business-actions">
-          <button
-            class="secondary small-button"
-            onclick="activateAdCampaign('${business.id}')"
-            ${adCoolingDown ? "disabled" : ""}
-          >
-            ${adActive ? "Ad Active" : "Advertising"}
-          </button>
-        </div>
-
-        <div class="cooldown-text" id="business-cooldown-${business.id}">
-          ${adActive ? "Advertising boost active" : ""}
-          ${(!adActive && adCoolingDown) ? `Cooldown: ${formatCooldown(adCooldownRemaining)}` : ""}
-        </div>
-
-        <div class="business-slots">${slotsHtml}</div>
-      </div>
-    `;
-  }).join("");
-}
-
-
-// ==========================================================
 // Headline rendering
 // ==========================================================
 
@@ -399,71 +219,298 @@ function renderHeadline() {
 
 
 // ==========================================================
+// Info panel helpers
+// ==========================================================
+
+function getOwnedBusinesses() {
+  return BUSINESSES.filter(business => getBusinessState(business.id)?.unlocked);
+}
+
+function getLockedBusinesses() {
+  return BUSINESSES.filter(business => !getBusinessState(business.id)?.unlocked);
+}
+
+function getAverageMorale() {
+  if (state.cards.length === 0) return 0;
+
+  const total = state.cards.reduce((sum, card) => sum + card.morale, 0);
+  return Math.round(total / state.cards.length);
+}
+
+function getLowMoraleCards() {
+  return state.cards.filter(card => card.morale < CONFIG.MORALE.LOW_THRESHOLD);
+}
+
+function getAffordableLockedBusinesses() {
+  return getLockedBusinesses().filter(business => state.credits >= business.unlockCost);
+}
+
+function getBusinessImagePath(business) {
+  if (business && typeof business.imagePath === "string" && business.imagePath.trim() !== "") {
+    return business.imagePath;
+  }
+
+  return CONFIG.FALLBACKS.BUSINESS_IMAGE;
+}
+
+function getBusinessImageAlt(business) {
+  if (business && typeof business.imageAlt === "string" && business.imageAlt.trim() !== "") {
+    return business.imageAlt;
+  }
+
+  return business?.name || "Business image";
+}
+
+function getInfoBusinessImageHtml(business) {
+  const src = getBusinessImagePath(business);
+  const alt = getBusinessImageAlt(business);
+  const fallback = CONFIG.FALLBACKS.BUSINESS_IMAGE;
+
+  return `
+    <img
+      src="${src}"
+      alt="${alt}"
+      class="info-business-image"
+      onerror="this.onerror=null;this.src='${fallback}';"
+    />
+  `;
+}
+
+function renderInfoModeTabs() {
+  const overviewBtn = document.getElementById("infoModeOverviewBtn");
+  const ownedBtn = document.getElementById("infoModeOwnedBtn");
+  const buyBtn = document.getElementById("infoModeBuyBtn");
+
+  if (overviewBtn) overviewBtn.classList.toggle("active", infoPanelMode === "overview");
+  if (ownedBtn) ownedBtn.classList.toggle("active", infoPanelMode === "owned");
+  if (buyBtn) buyBtn.classList.toggle("active", infoPanelMode === "buy");
+}
+
+
+// ==========================================================
+// Overview panel
+// ==========================================================
+
+function renderOverviewPanel() {
+  const totalWorkers = state.cards.length;
+  const unassignedWorkers = getUnassignedCards().length;
+  const ownedBusinesses = getOwnedBusinesses().length;
+  const totalIncome = calculateTotalIncomePerTick();
+  const averageMorale = getAverageMorale();
+  const lowMoraleWorkers = getLowMoraleCards().length;
+  const affordableBusinesses = getAffordableLockedBusinesses().length;
+
+  const attentionItems = [];
+
+  if (unassignedWorkers > 0) {
+    attentionItems.push(`${unassignedWorkers} worker${unassignedWorkers === 1 ? "" : "s"} unassigned`);
+  }
+
+  if (lowMoraleWorkers > 0) {
+    attentionItems.push(`${lowMoraleWorkers} worker${lowMoraleWorkers === 1 ? "" : "s"} below ${CONFIG.MORALE.LOW_THRESHOLD} morale`);
+  }
+
+  if (affordableBusinesses > 0) {
+    attentionItems.push(`${affordableBusinesses} business${affordableBusinesses === 1 ? "" : "es"} affordable to purchase`);
+  }
+
+  return `
+    <div class="info-panel-grid">
+      <div class="info-stat-card">
+        <div class="info-stat-label">Total Workers</div>
+        <div class="info-stat-value">${totalWorkers}</div>
+      </div>
+
+      <div class="info-stat-card">
+        <div class="info-stat-label">Unassigned</div>
+        <div class="info-stat-value">${unassignedWorkers}</div>
+      </div>
+
+      <div class="info-stat-card">
+        <div class="info-stat-label">Owned Businesses</div>
+        <div class="info-stat-value">${ownedBusinesses}</div>
+      </div>
+
+      <div class="info-stat-card">
+        <div class="info-stat-label">Income / Sec</div>
+        <div class="info-stat-value">${totalIncome}</div>
+      </div>
+
+      <div class="info-stat-card">
+        <div class="info-stat-label">Average Morale</div>
+        <div class="info-stat-value">${averageMorale}</div>
+        <div class="info-stat-subtext">Across your full roster</div>
+      </div>
+
+      <div class="info-stat-card">
+        <div class="info-stat-label">Low Morale</div>
+        <div class="info-stat-value">${lowMoraleWorkers}</div>
+        <div class="info-stat-subtext">Workers below the danger threshold</div>
+      </div>
+    </div>
+
+    <div class="attention-block">
+      <div class="attention-title">Attention Needed</div>
+      ${
+        attentionItems.length > 0
+          ? `<ul class="attention-list">${attentionItems.map(item => `<li>${item}</li>`).join("")}</ul>`
+          : `<div class="muted">Nothing urgent right now. Management may proceed with confidence.</div>`
+      }
+    </div>
+  `;
+}
+
+
+// ==========================================================
+// Owned businesses panel
+// ==========================================================
+
+function renderOwnedBusinessesPanel() {
+  const ownedBusinesses = getOwnedBusinesses();
+
+  if (ownedBusinesses.length === 0) {
+    return `<div class="empty-state">No businesses owned yet.</div>`;
+  }
+
+  return `
+    <div class="info-business-list">
+      ${ownedBusinesses.map(business => {
+        const businessState = getBusinessState(business.id);
+        const assignedCards = getAssignedCardsForBusiness(business.id);
+        const income = calculateBusinessIncome(business.id);
+        const prestige = calculateBusinessPrestige(business.id);
+
+        return `
+          <div class="info-business-card">
+            ${getInfoBusinessImageHtml(business)}
+
+            <div class="info-business-main">
+              <div class="info-business-title-row">
+                <div>
+                  <div class="info-business-title">${business.name}</div>
+                  <div class="info-business-meta">${business.franchise} • Tier ${business.tier}</div>
+                </div>
+              </div>
+
+              <div class="info-business-summary">${business.description}</div>
+
+              <div class="info-business-stats">
+                <span>Income/sec: ${income}</span>
+                <span>Prestige: ${prestige}</span>
+                <span>Workers: ${assignedCards.length}/${getMaxSlotsForBusiness(business.id)}</span>
+                <span>Capacity: ${businessState.capacityLevel}/${CONFIG.UPGRADES.MAX_CAPACITY_LEVEL}</span>
+                <span>Efficiency: ${businessState.efficiencyLevel}/${CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+
+// ==========================================================
+// Buy businesses panel
+// ==========================================================
+
+function renderBuyBusinessesPanel() {
+  const lockedBusinesses = getLockedBusinesses();
+
+  if (lockedBusinesses.length === 0) {
+    return `<div class="empty-state">You already own every currently available business.</div>`;
+  }
+
+  return `
+    <div class="info-business-list">
+      ${lockedBusinesses.map(business => {
+        const affordable = state.credits >= business.unlockCost;
+
+        return `
+          <div class="info-business-card">
+            ${getInfoBusinessImageHtml(business)}
+
+            <div class="info-business-main">
+              <div class="info-business-title-row">
+                <div>
+                  <div class="info-business-title">${business.name}</div>
+                  <div class="info-business-meta">${business.franchise} • Tier ${business.tier}</div>
+                </div>
+              </div>
+
+              <div class="info-business-summary">${business.description}</div>
+
+              <div class="info-business-stats">
+                <span>Unlock Cost: ${business.unlockCost}</span>
+                <span>Job Type: ${business.jobType}</span>
+              </div>
+
+              <div class="business-actions" style="margin-top:10px;">
+                <button
+                  class="secondary small-button"
+                  onclick="purchaseBusiness('${business.id}'); renderAll();"
+                  ${affordable ? "" : "disabled"}
+                >
+                  ${affordable ? "Purchase" : "Cannot Afford Yet"}
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
+}
+
+
+// ==========================================================
+// Main information panel
+// ==========================================================
+
+function renderInfoPanel() {
+  renderInfoModeTabs();
+
+  const container = document.getElementById("infoPanelContent");
+  if (!container) return;
+
+  switch (infoPanelMode) {
+    case "owned":
+      container.innerHTML = renderOwnedBusinessesPanel();
+      break;
+
+    case "buy":
+      container.innerHTML = renderBuyBusinessesPanel();
+      break;
+
+    case "overview":
+    default:
+      container.innerHTML = renderOverviewPanel();
+      break;
+  }
+}
+
+
+// ==========================================================
+// Lightweight business stat refresh
+// ----------------------------------------------------------
+// Kept for compatibility, but the right column is now mostly
+// rendered through renderInfoPanel().
+// ==========================================================
+
+function renderBusinessStatsOnly() {
+  if (infoPanelMode === "overview" || infoPanelMode === "owned" || infoPanelMode === "buy") {
+    renderInfoPanel();
+  }
+}
+
+
+// ==========================================================
 // Full render pass
 // ==========================================================
 
 function renderAll() {
   renderTopbar();
   renderRoster();
-  renderBusinesses();
   renderHeadline();
-}
-
-// ==========================================================
-// Lightweight business stat refresh
-// ----------------------------------------------------------
-// Updates dynamic business values without rebuilding the full
-// business card HTML and reloading images every tick.
-// ==========================================================
-
-function renderBusinessStatsOnly() {
-  BUSINESSES.forEach(business => {
-    const businessState = getBusinessState(business.id);
-    if (!businessState || !businessState.unlocked) return;
-
-    const incomeEl = document.getElementById(`business-income-${business.id}`);
-    const prestigeEl = document.getElementById(`business-prestige-${business.id}`);
-    const workersEl = document.getElementById(`business-workers-${business.id}`);
-    const capacityEl = document.getElementById(`business-capacity-${business.id}`);
-    const efficiencyEl = document.getElementById(`business-efficiency-${business.id}`);
-    const cooldownEl = document.getElementById(`business-cooldown-${business.id}`);
-
-    const assignedCards = getAssignedCardsForBusiness(business.id);
-    const income = calculateBusinessIncome(business.id);
-    const prestige = calculateBusinessPrestige(business.id);
-
-    if (incomeEl) {
-      incomeEl.textContent = `Income/sec: ${income}`;
-    }
-
-    if (prestigeEl) {
-      prestigeEl.textContent = `Prestige: ${prestige}`;
-    }
-
-    if (workersEl) {
-      workersEl.textContent = `Workers: ${assignedCards.length}/${getMaxSlotsForBusiness(business.id)}`;
-    }
-
-    if (capacityEl) {
-      capacityEl.textContent = `Capacity Level: ${businessState.capacityLevel}/${CONFIG.UPGRADES.MAX_CAPACITY_LEVEL}`;
-    }
-
-    if (efficiencyEl) {
-      efficiencyEl.textContent = `Efficiency Level: ${businessState.efficiencyLevel}/${CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL}`;
-    }
-
-    if (cooldownEl) {
-      const adActive = isAdActive(business.id);
-      const adCoolingDown = isAdCoolingDown(business.id);
-      const adCooldownRemaining = getAdCooldownRemainingMs(business.id);
-
-      if (adActive) {
-        cooldownEl.textContent = "Advertising boost active";
-      } else if (adCoolingDown) {
-        cooldownEl.textContent = `Cooldown: ${formatCooldown(adCooldownRemaining)}`;
-      } else {
-        cooldownEl.textContent = "";
-      }
-    }
-  });
+  renderInfoPanel();
 }
