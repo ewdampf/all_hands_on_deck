@@ -1,110 +1,29 @@
 // ==========================================================
 // Global Business Registry
 // ----------------------------------------------------------
-// Defines all businesses currently available in the game.
+// Combines all franchise / category business files into one
+// master business pool used by the game.
 //
-// Each business should specify:
-// - stable ID
-// - name
-// - tier
-// - primary job type
-// - business tags
-// - unlock behavior
-// - upgrade labels
-//
-// This file also performs validation so bad business data
-// is caught immediately during load.
+// Also performs validation so mistakes are caught early:
+// - duplicate IDs
+// - missing required fields
+// - malformed tags
+// - invalid tiers
+// - invalid upgrade definitions
+// - image field sanity checks
 // ==========================================================
 
 
 // ==========================================================
-// Business definitions
+// Aggregate all business arrays
+// ----------------------------------------------------------
+// Add new business arrays here as you create them.
 // ==========================================================
 
 const BUSINESSES = [
-  {
-    id: CONFIG.BUSINESS_IDS.MOISTURE_FARM,
-    name: "Moisture Farm",
-
-    tier: 1,
-    jobType: JOB_TYPES.FARM,
-    tags: ["dirty", "labor_heavy"],
-
-    description: "Hot, dusty, and not exactly prestigious. A perfect place for bulk labor.",
-
-    unlockCost: 0,
-    unlockedByDefault: true,
-
-    upgrades: {
-      capacity: {
-        label: "Capacity Upgrade",
-        maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL
-      },
-      efficiency: {
-        label: "Efficiency Upgrade",
-        maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL
-      },
-      advertising: {
-        label: "Advertising Campaign"
-      }
-    }
-  },
-
-  {
-    id: CONFIG.BUSINESS_IDS.CENTRAL_PERK,
-    name: "Central Perk",
-
-    tier: 1,
-    jobType: JOB_TYPES.SERVICE,
-    tags: ["social"],
-
-    description: "A cozy coffee shop. Not the most profitable place, but people actually like working here.",
-
-    unlockCost: 450,
-    unlockedByDefault: false,
-
-    upgrades: {
-      capacity: {
-        label: "Capacity Upgrade",
-        maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL
-      },
-      efficiency: {
-        label: "Efficiency Upgrade",
-        maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL
-      },
-      advertising: {
-        label: "Advertising Campaign"
-      }
-    }
-  },
-
-  {
-    id: CONFIG.BUSINESS_IDS.PLANET_EXPRESS,
-    name: "Planet Express",
-
-    tier: 2,
-    jobType: JOB_TYPES.DELIVERY,
-    tags: ["risky", "logistics"],
-
-    description: "Fast-paced delivery work. Great for the right crew, disastrous for the wrong one.",
-
-    unlockCost: 900,
-    unlockedByDefault: false,
-
-    upgrades: {
-      capacity: {
-        label: "Capacity Upgrade",
-        maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL
-      },
-      efficiency: {
-        label: "Efficiency Upgrade",
-        maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL
-      },
-      advertising: {
-        label: "Advertising Campaign"
-      }
-    }
-  }
+  ...STAR_WARS_BUSINESSES,
+  ...FUTURAMA_BUSINESSES,
+  ...GENERIC_BUSINESSES
 ];
 
 
@@ -117,6 +36,7 @@ function validateBusinesses(businessList) {
   const warnings = [];
 
   const seenIds = new Set();
+  const seenBusinessVariantPairs = new Set();
 
   businessList.forEach((business, index) => {
     const label = `${business.name || "Unknown Business"} [index ${index}]`;
@@ -126,6 +46,9 @@ function validateBusinesses(businessList) {
     // ------------------------------------------------------
     const requiredFields = [
       "id",
+      "businessKey",
+      "variantKey",
+      "franchise",
       "name",
       "tier",
       "jobType",
@@ -154,10 +77,37 @@ function validateBusinesses(businessList) {
     }
 
     // ------------------------------------------------------
+    // businessKey + variantKey uniqueness check
+    // ------------------------------------------------------
+    if (business.businessKey && business.variantKey) {
+      const variantSignature = `${business.businessKey}::${business.variantKey}`;
+
+      if (seenBusinessVariantPairs.has(variantSignature)) {
+        errors.push(
+          `${label} duplicates businessKey + variantKey combination: ${variantSignature}`
+        );
+      } else {
+        seenBusinessVariantPairs.add(variantSignature);
+      }
+    }
+
+    // ------------------------------------------------------
     // Basic type checks
     // ------------------------------------------------------
     if ("name" in business && typeof business.name !== "string") {
       errors.push(`${label} has non-string name.`);
+    }
+
+    if ("franchise" in business && typeof business.franchise !== "string") {
+      errors.push(`${label} has non-string franchise.`);
+    }
+
+    if ("businessKey" in business && typeof business.businessKey !== "string") {
+      errors.push(`${label} has non-string businessKey.`);
+    }
+
+    if ("variantKey" in business && typeof business.variantKey !== "string") {
+      errors.push(`${label} has non-string variantKey.`);
     }
 
     if ("tier" in business && typeof business.tier !== "number") {
@@ -192,7 +142,7 @@ function validateBusinesses(businessList) {
     }
 
     // ------------------------------------------------------
-    // Tag validity
+    // Business tag validity
     // ------------------------------------------------------
     if (Array.isArray(business.tags)) {
       business.tags.forEach(tag => {
@@ -203,40 +153,63 @@ function validateBusinesses(businessList) {
     }
 
     // ------------------------------------------------------
+    // Image field checks
+    // ------------------------------------------------------
+    if ("imagePath" in business && typeof business.imagePath !== "string") {
+      errors.push(`${label} has non-string imagePath.`);
+    }
+
+    if ("imageAlt" in business && typeof business.imageAlt !== "string") {
+      errors.push(`${label} has non-string imageAlt.`);
+    }
+
+    if (!("imagePath" in business)) {
+      warnings.push(`${label} has no imagePath. Fallback image will be used.`);
+    }
+
+    if ("imageAlt" in business && !("imagePath" in business)) {
+      warnings.push(`${label} has imageAlt but no imagePath.`);
+    }
+
+    // ------------------------------------------------------
     // Upgrade validation
     // ------------------------------------------------------
     if ("upgrades" in business) {
-      const requiredUpgradeKeys = ["capacity", "efficiency", "advertising"];
+      if (typeof business.upgrades !== "object" || business.upgrades === null) {
+        errors.push(`${label} has invalid upgrades object.`);
+      } else {
+        const requiredUpgradeKeys = ["capacity", "efficiency", "advertising"];
 
-      requiredUpgradeKeys.forEach(upgradeKey => {
-        if (!(upgradeKey in business.upgrades)) {
-          errors.push(`${label} is missing upgrade definition: ${upgradeKey}`);
-        }
-      });
+        requiredUpgradeKeys.forEach(upgradeKey => {
+          if (!(upgradeKey in business.upgrades)) {
+            errors.push(`${label} is missing upgrade definition: ${upgradeKey}`);
+          }
+        });
 
-      if (business.upgrades.capacity) {
-        if (typeof business.upgrades.capacity.label !== "string") {
-          errors.push(`${label} has invalid capacity upgrade label.`);
-        }
+        if (business.upgrades.capacity) {
+          if (typeof business.upgrades.capacity.label !== "string") {
+            errors.push(`${label} has invalid capacity upgrade label.`);
+          }
 
-        if (typeof business.upgrades.capacity.maxLevel !== "number") {
-          errors.push(`${label} has invalid capacity maxLevel.`);
-        }
-      }
-
-      if (business.upgrades.efficiency) {
-        if (typeof business.upgrades.efficiency.label !== "string") {
-          errors.push(`${label} has invalid efficiency upgrade label.`);
+          if (typeof business.upgrades.capacity.maxLevel !== "number") {
+            errors.push(`${label} has invalid capacity maxLevel.`);
+          }
         }
 
-        if (typeof business.upgrades.efficiency.maxLevel !== "number") {
-          errors.push(`${label} has invalid efficiency maxLevel.`);
-        }
-      }
+        if (business.upgrades.efficiency) {
+          if (typeof business.upgrades.efficiency.label !== "string") {
+            errors.push(`${label} has invalid efficiency upgrade label.`);
+          }
 
-      if (business.upgrades.advertising) {
-        if (typeof business.upgrades.advertising.label !== "string") {
-          errors.push(`${label} has invalid advertising upgrade label.`);
+          if (typeof business.upgrades.efficiency.maxLevel !== "number") {
+            errors.push(`${label} has invalid efficiency maxLevel.`);
+          }
+        }
+
+        if (business.upgrades.advertising) {
+          if (typeof business.upgrades.advertising.label !== "string") {
+            errors.push(`${label} has invalid advertising upgrade label.`);
+          }
         }
       }
     }
@@ -258,7 +231,9 @@ function validateBusinesses(businessList) {
 
 
 // ==========================================================
-// Run validation immediately on load
+// Validation execution
+// ----------------------------------------------------------
+// Run immediately when this file loads.
 // ==========================================================
 
 const BUSINESS_VALIDATION = validateBusinesses(BUSINESSES);
