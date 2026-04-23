@@ -204,60 +204,6 @@ function initializeButtons() {
   }
 }
 
-  // --------------------------------------------------------
-  // Paid packs
-  // --------------------------------------------------------
-  if (basicPackBtn) {
-    basicPackBtn.addEventListener("click", () => {
-      recentPackResults = openPackByType("BASIC");
-      renderPackResults(recentPackResults);
-      renderAll();
-    });
-  }
-
-  if (uncommonPackBtn) {
-    uncommonPackBtn.addEventListener("click", () => {
-      recentPackResults = openPackByType("UNCOMMON");
-      renderPackResults(recentPackResults);
-      renderAll();
-    });
-  }
-
-  if (rarePackBtn) {
-    rarePackBtn.addEventListener("click", () => {
-      recentPackResults = openPackByType("RARE");
-      renderPackResults(recentPackResults);
-      renderAll();
-    });
-  }
-
-  // --------------------------------------------------------
-  // Manual save
-  // --------------------------------------------------------
-  if (saveBtn) {
-    saveBtn.addEventListener("click", () => {
-      saveGame();
-      setHeadline("Progress saved", "Your local game has been saved in this browser.");
-      renderAll();
-    });
-  }
-
-  // --------------------------------------------------------
-  // Reset
-  // --------------------------------------------------------
-  if (resetBtn) {
-    resetBtn.addEventListener("click", () => {
-      const confirmed = window.confirm(
-        "Reset your game? This will clear your local save."
-      );
-
-      if (!confirmed) return;
-
-      resetGame();
-    });
-  }
-}
-
 
 // ==========================================================
 // Main game tick
@@ -271,13 +217,13 @@ function gameTick() {
   const income = calculateTotalIncomePerTick();
   state.credits += income;
 
-  // Lightweight tick render to avoid rebuilding all business images every second
   renderTopbar();
   renderHeadline();
-  renderBusinessStatsOnly();
+  renderInfoPanel();
 
   saveGame();
 }
+
 
 // ==========================================================
 // Full game initialization
