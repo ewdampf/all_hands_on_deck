@@ -21,7 +21,7 @@
 // ==========================================================
 
 let recentPackResults = [];
-
+let lastRosterRefreshAt = 0;
 
 // ==========================================================
 // Optional startup diagnostics
@@ -295,13 +295,19 @@ function gameTick() {
 
   renderTopbar();
   renderHeadline();
+
   if (infoPanelMode === "overview") {
     renderInfoPanel();
   }
 
+  const now = Date.now();
+  if (now - lastRosterRefreshAt >= CONFIG.UI.ROSTER_REFRESH_MS) {
+    renderRoster();
+    lastRosterRefreshAt = now;
+  }
+
   saveGame();
 }
-
 
 // ==========================================================
 // Full game initialization
