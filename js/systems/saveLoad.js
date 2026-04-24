@@ -159,6 +159,14 @@ function normalizeCardState(card) {
     normalized.assignedBusinessId = null;
   }
 
+  if (typeof normalized.imagePath !== "string") {
+    normalized.imagePath = "";
+  }
+
+  if (typeof normalized.imageAlt !== "string") {
+    normalized.imageAlt = normalized.displayName || "Character image";
+  }
+
   return normalized;
 }
 

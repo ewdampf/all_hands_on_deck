@@ -34,6 +34,8 @@ function cloneCharacterToCard(template) {
     displayName: template.displayName,
     subtitle: template.subtitle || "",
     franchise: template.franchise,
+    imagePath: template.imagePath || "",
+    imageAlt: template.imageAlt || template.displayName,
 
     // Gameplay info
     rarity: template.rarity,

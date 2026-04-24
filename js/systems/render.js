@@ -2,27 +2,11 @@
 // Render System
 // ----------------------------------------------------------
 // Handles all DOM rendering for the game UI.
-//
-// Responsibilities:
-// - top bar resources / pack button states
-// - pack results
-// - roster
-// - headline panel
-// - right-column information panel
-// - full-screen refresh via renderAll()
-//
-// Non-responsibilities:
-// - game logic
-// - economy calculations
-// - morale calculations
-// - save/load
 // ==========================================================
 
 
 // ==========================================================
 // Info Panel Mode
-// ----------------------------------------------------------
-// Controls what the right-hand information panel displays.
 // ==========================================================
 
 let infoPanelMode = "overview";
@@ -34,22 +18,16 @@ let infoPanelMode = "overview";
 
 function renderTopbar() {
   const moneyDisplay = document.getElementById("moneyDisplay");
-  if (moneyDisplay) {
-    moneyDisplay.textContent = `Credits: ${state.credits}`;
-  }
+  if (moneyDisplay) moneyDisplay.textContent = `Credits: ${state.credits}`;
 
   const tokenDisplay = document.getElementById("tokenDisplay");
-  if (tokenDisplay) {
-    tokenDisplay.textContent = `Tokens: ${state.tokens}`;
-  }
+  if (tokenDisplay) tokenDisplay.textContent = `Tokens: ${state.tokens}`;
 
   const freePackBtn = document.getElementById("freePackBtn");
   if (freePackBtn) {
     const dailyAvailable = getDailyTokenAvailable();
     freePackBtn.disabled = !dailyAvailable;
-    freePackBtn.textContent = dailyAvailable
-      ? "Claim Daily Token"
-      : "Daily Token Claimed";
+    freePackBtn.textContent = dailyAvailable ? "Claim Daily Token" : "Daily Token Claimed";
   }
 
   const basicPackBtn = document.getElementById("basicPackBtn");
@@ -73,7 +51,81 @@ function renderTopbar() {
 
 
 // ==========================================================
+// Character image helpers
+// ==========================================================
+
+function getCharacterImagePath(card) {
+  if (card && typeof card.imagePath === "string" && card.imagePath.trim() !== "") {
+    return card.imagePath;
+  }
+
+  return CONFIG.FALLBACKS.CHARACTER_IMAGE;
+}
+
+function getCharacterImageAlt(card) {
+  if (card && typeof card.imageAlt === "string" && card.imageAlt.trim() !== "") {
+    return card.imageAlt;
+  }
+
+  return card?.displayName || "Character image";
+}
+
+function getCharacterImageHtml(card, className = "character-image") {
+  const src = getCharacterImagePath(card);
+  const alt = getCharacterImageAlt(card);
+  const fallback = CONFIG.FALLBACKS.CHARACTER_IMAGE;
+
+  return `
+    <img
+      src="${src}"
+      alt="${alt}"
+      class="${className}"
+      onerror="this.onerror=null;this.src='${fallback}';"
+    />
+  `;
+}
+
+
+// ==========================================================
+// Business image helpers
+// ==========================================================
+
+function getBusinessImagePath(business) {
+  if (business && typeof business.imagePath === "string" && business.imagePath.trim() !== "") {
+    return business.imagePath;
+  }
+
+  return CONFIG.FALLBACKS.BUSINESS_IMAGE;
+}
+
+function getBusinessImageAlt(business) {
+  if (business && typeof business.imageAlt === "string" && business.imageAlt.trim() !== "") {
+    return business.imageAlt;
+  }
+
+  return business?.name || "Business image";
+}
+
+function getInfoBusinessImageHtml(business) {
+  const src = getBusinessImagePath(business);
+  const alt = getBusinessImageAlt(business);
+  const fallback = CONFIG.FALLBACKS.BUSINESS_IMAGE;
+
+  return `
+    <img
+      src="${src}"
+      alt="${alt}"
+      class="info-business-image"
+      onerror="this.onerror=null;this.src='${fallback}';"
+    />
+  `;
+}
+
+
+// ==========================================================
 // Pack results
+// ----------------------------------------------------------
+// Mostly legacy/debug now. Main pack opening uses modal.
 // ==========================================================
 
 function renderPackResults(cards) {
@@ -81,12 +133,13 @@ function renderPackResults(cards) {
   if (!container) return;
 
   if (!Array.isArray(cards) || cards.length === 0) {
-    container.innerHTML = `<div class="muted">No recent pack results.</div>`;
+    container.innerHTML = "";
     return;
   }
 
   container.innerHTML = cards.map(card => `
     <div class="card ${card.rarity}">
+      ${getCharacterImageHtml(card)}
       <div class="name">${card.displayName}</div>
       ${card.subtitle ? `<div class="small muted">${card.subtitle}</div>` : ""}
       <div class="muted">${card.franchise}</div>
@@ -96,6 +149,7 @@ function renderPackResults(cards) {
     </div>
   `).join("");
 }
+
 
 // ==========================================================
 // Pack Modal Rendering
@@ -136,6 +190,8 @@ function renderPackModalCards(cards) {
 
     return `
       <div class="card ${card.rarity}">
+        ${getCharacterImageHtml(card, "modal-character-image")}
+
         <div class="name">${card.displayName}</div>
         ${card.subtitle ? `<div class="small muted">${card.subtitle}</div>` : ""}
         <div class="muted">${card.franchise}</div>
@@ -146,7 +202,9 @@ function renderPackModalCards(cards) {
 
         ${
           isAssigned
-            ? `<div class="small good" style="margin-top:10px;">Assigned to ${getBusinessDef(card.assignedBusinessId)?.name || "Unknown"}</div>`
+            ? `<div class="small good" style="margin-top:10px;">
+                Assigned to ${getBusinessDef(card.assignedBusinessId)?.name || "Unknown"}
+              </div>`
             : `
               <div class="modal-card-actions">
                 <select id="assign-select-${card.instanceId}" class="assignment-select">
@@ -177,6 +235,22 @@ function assignCardFromModal(cardInstanceId) {
     renderPackModalCards(recentPackResults);
   }
 }
+
+
+// ==========================================================
+// Assignment dropdown helper
+// ==========================================================
+
+function getBusinessAssignmentOptionsHtml(selectedBusinessId = "") {
+  return getUnlockedBusinesses()
+    .map(business => `
+      <option value="${business.id}" ${business.id === selectedBusinessId ? "selected" : ""}>
+        ${business.name}
+      </option>
+    `)
+    .join("");
+}
+
 
 // ==========================================================
 // Roster sorting helpers
@@ -246,17 +320,10 @@ function renderRoster() {
       ? "Unassigned"
       : `Assigned: ${getBusinessDef(card.assignedBusinessId)?.name || "Unknown"}`;
 
-    const assignmentButtons = BUSINESSES
-      .filter(business => getBusinessState(business.id)?.unlocked)
-      .map(business => `
-        <button class="secondary small-button" onclick="assignCardToBusiness(${card.instanceId}, '${business.id}')">
-          ${card.assignedBusinessId === business.id ? "Unassign" : business.name}
-        </button>
-      `)
-      .join("");
-
     return `
       <div class="card ${card.rarity} ${isUnassigned ? "unassigned-card" : ""}">
+        ${getCharacterImageHtml(card)}
+
         <div class="status-row">
           ${isUnassigned ? `<div class="status-badge unassigned">UNASSIGNED</div>` : `<div></div>`}
           <div class="small ${getMoraleClass(card.morale)}">Morale: ${card.morale}</div>
@@ -271,12 +338,52 @@ function renderRoster() {
         <div class="small muted">${assignedText}</div>
         <div class="small muted">${card.flavor}</div>
 
-        <div class="buttons" style="margin-top:10px;">
-          ${assignmentButtons}
+        <div class="modal-card-actions">
+          <select id="assign-select-roster-${card.instanceId}" class="assignment-select">
+            <option value="">Choose assignment...</option>
+            ${getBusinessAssignmentOptionsHtml(card.assignedBusinessId || "")}
+          </select>
+
+          <button class="secondary small-button" onclick="assignCardFromRoster(${card.instanceId})">
+            Assign
+          </button>
         </div>
+
+        ${
+          card.assignedBusinessId
+            ? `
+              <div class="modal-card-actions">
+                <button class="secondary small-button" onclick="unassignCardFromRoster(${card.instanceId})">
+                  Unassign
+                </button>
+              </div>
+            `
+            : ""
+        }
       </div>
     `;
   }).join("");
+}
+
+function assignCardFromRoster(cardInstanceId) {
+  const select = document.getElementById(`assign-select-roster-${cardInstanceId}`);
+  if (!select || !select.value) return;
+
+  const assigned = assignCardToBusiness(cardInstanceId, select.value);
+
+  if (assigned) {
+    renderAll();
+  }
+}
+
+function unassignCardFromRoster(cardInstanceId) {
+  const card = getCardByInstanceId(cardInstanceId);
+  if (!card) return;
+
+  unassignCard(card);
+  setHeadline("Worker unassigned", `${card.displayName} is now unassigned.`);
+  saveGame();
+  renderAll();
 }
 
 
@@ -288,13 +395,8 @@ function renderHeadline() {
   const titleEl = document.getElementById("headlineTitle");
   const bodyEl = document.getElementById("headlineBody");
 
-  if (titleEl) {
-    titleEl.textContent = state.headline?.title || "";
-  }
-
-  if (bodyEl) {
-    bodyEl.textContent = state.headline?.body || "";
-  }
+  if (titleEl) titleEl.textContent = state.headline?.title || "";
+  if (bodyEl) bodyEl.textContent = state.headline?.body || "";
 }
 
 
@@ -323,37 +425,6 @@ function getLowMoraleCards() {
 
 function getAffordableLockedBusinesses() {
   return getLockedBusinesses().filter(business => state.credits >= business.unlockCost);
-}
-
-function getBusinessImagePath(business) {
-  if (business && typeof business.imagePath === "string" && business.imagePath.trim() !== "") {
-    return business.imagePath;
-  }
-
-  return CONFIG.FALLBACKS.BUSINESS_IMAGE;
-}
-
-function getBusinessImageAlt(business) {
-  if (business && typeof business.imageAlt === "string" && business.imageAlt.trim() !== "") {
-    return business.imageAlt;
-  }
-
-  return business?.name || "Business image";
-}
-
-function getInfoBusinessImageHtml(business) {
-  const src = getBusinessImagePath(business);
-  const alt = getBusinessImageAlt(business);
-  const fallback = CONFIG.FALLBACKS.BUSINESS_IMAGE;
-
-  return `
-    <img
-      src="${src}"
-      alt="${alt}"
-      class="info-business-image"
-      onerror="this.onerror=null;this.src='${fallback}';"
-    />
-  `;
 }
 
 function renderInfoModeTabs() {
@@ -419,13 +490,11 @@ function renderOverviewPanel() {
       <div class="info-stat-card">
         <div class="info-stat-label">Average Morale</div>
         <div class="info-stat-value">${averageMorale}</div>
-        <div class="info-stat-subtext">Across your full roster</div>
       </div>
 
       <div class="info-stat-card">
         <div class="info-stat-label">Low Morale</div>
         <div class="info-stat-value">${lowMoraleWorkers}</div>
-        <div class="info-stat-subtext">Workers below the danger threshold</div>
       </div>
     </div>
 
@@ -465,13 +534,8 @@ function renderOwnedBusinessesPanel() {
             ${getInfoBusinessImageHtml(business)}
 
             <div class="info-business-main">
-              <div class="info-business-title-row">
-                <div>
-                  <div class="info-business-title">${business.name}</div>
-                  <div class="info-business-meta">${business.franchise} • Tier ${business.tier}</div>
-                </div>
-              </div>
-
+              <div class="info-business-title">${business.name}</div>
+              <div class="info-business-meta">${business.franchise} • Tier ${business.tier}</div>
               <div class="info-business-summary">${business.description}</div>
 
               <div class="info-business-stats">
@@ -511,13 +575,8 @@ function renderBuyBusinessesPanel() {
             ${getInfoBusinessImageHtml(business)}
 
             <div class="info-business-main">
-              <div class="info-business-title-row">
-                <div>
-                  <div class="info-business-title">${business.name}</div>
-                  <div class="info-business-meta">${business.franchise} • Tier ${business.tier}</div>
-                </div>
-              </div>
-
+              <div class="info-business-title">${business.name}</div>
+              <div class="info-business-meta">${business.franchise} • Tier ${business.tier}</div>
               <div class="info-business-summary">${business.description}</div>
 
               <div class="info-business-stats">
@@ -571,32 +630,13 @@ function renderInfoPanel() {
 
 
 // ==========================================================
-// Lightweight business stat refresh
-// ----------------------------------------------------------
-// Kept for compatibility, but the right column is now mostly
-// rendered through renderInfoPanel().
+// Lightweight refresh
 // ==========================================================
 
 function renderBusinessStatsOnly() {
-  if (infoPanelMode === "overview" || infoPanelMode === "owned" || infoPanelMode === "buy") {
+  if (infoPanelMode === "overview") {
     renderInfoPanel();
   }
-}
-
-// ==========================================================
-// Get Business Listing
-// ----------------------------------------------------------
-// Returns a list of all of the owned businesses
-// for dropdown lists
-// ==========================================================
-function getBusinessAssignmentOptionsHtml(selectedBusinessId = "") {
-  return getUnlockedBusinesses()
-    .map(business => `
-      <option value="${business.id}" ${business.id === selectedBusinessId ? "selected" : ""}>
-        ${business.name}
-      </option>
-    `)
-    .join("");
 }
 
 
@@ -610,4 +650,3 @@ function renderAll() {
   renderHeadline();
   renderInfoPanel();
 }
-
