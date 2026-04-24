@@ -442,3 +442,16 @@ const STAR_WARS_CHARACTERS = [
     flavor: "Prestige, talent, and a strong sense that some jobs are beneath him."
   }
 ];
+
+const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
+  {
+    id: "stormtrooper",
+    displayName: "Stormtrooper",
+    ...
+  },
+  {
+    id: "clone_trooper",
+    displayName: "Clone Trooper",
+    ...
+  }
+], "assets/characters/starwars");
