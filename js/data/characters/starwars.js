@@ -441,5 +441,5 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     tags: [CHARACTER_TAGS.REBEL],
     flavor: "Prestige, talent, and a strong sense that some jobs are beneath him."
   }
-];
+]);
 
