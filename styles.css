@@ -663,7 +663,7 @@ button:disabled {
 
 .worker-row {
   display: grid;
-  grid-template-columns: minmax(180px, 1.5fr) minmax(120px, 1fr) 70px 80px minmax(180px, 1.2fr);
+  grid-template-columns: minmax(180px, 1.5fr) minmax(120px, 1fr) 70px 80px;
   gap: 10px;
   align-items: center;
 
@@ -672,6 +672,8 @@ button:disabled {
   border-left: 4px solid #555;
   border-radius: 10px;
   padding: 10px;
+
+  cursor: pointer;
 }
 
 .worker-row.common {
@@ -760,6 +762,11 @@ button:disabled {
   display: flex;
   gap: 6px;
   align-items: center;
+}
+
+.worker-row:hover {
+  background: #202020;
+  border-color: #3a3a3a;
 }
 
 .compact-select {
