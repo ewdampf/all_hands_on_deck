@@ -125,7 +125,7 @@ const CONFIG = {
   // Used when images are missing or paths are invalid.
   // ========================================================
   FALLBACKS: {
-    BUSINESS_IMAGE: "assets/businesses/fallback-business.png"
+    BUSINESS_IMAGE: "assets/businesses/fallback-business.png",
     CHARACTER_IMAGE: "assets/characters/fallback-character.png"
   },
 
