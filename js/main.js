@@ -156,6 +156,12 @@ if (rarePackBtn) {
   });
 }
 
+if (closePackModalBtn) {
+  closePackModalBtn.addEventListener("click", () => {
+    closePackModal();
+  });
+}
+
 if (packModal) {
   packModal.addEventListener("click", event => {
     if (event.target === packModal) {
