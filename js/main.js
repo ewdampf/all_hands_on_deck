@@ -110,6 +110,12 @@ function initializeButtons() {
   const resetBtn = document.getElementById("resetBtn");
   const closePackModalBtn = document.getElementById("closePackModalBtn");
 
+  const rosterModeLatestBtn = document.getElementById("rosterModeLatestBtn");
+  const rosterModeUnassignedBtn = document.getElementById("rosterModeUnassignedBtn");
+  const rosterModeFilteredBtn = document.getElementById("rosterModeFilteredBtn");
+  const rosterSortSelect = document.getElementById("rosterSortSelect");
+  const rosterSortDirectionBtn = document.getElementById("rosterSortDirectionBtn");
+
   const infoModeOverviewBtn = document.getElementById("infoModeOverviewBtn");
   const infoModeOwnedBtn = document.getElementById("infoModeOwnedBtn");
   const infoModeBuyBtn = document.getElementById("infoModeBuyBtn");
@@ -167,6 +173,41 @@ if (packModal) {
     if (event.target === packModal) {
       closePackModal();
     }
+  });
+}
+
+if (rosterModeLatestBtn) {
+  rosterModeLatestBtn.addEventListener("click", () => {
+    rosterMode = "latest";
+    renderAll();
+  });
+}
+
+if (rosterModeUnassignedBtn) {
+  rosterModeUnassignedBtn.addEventListener("click", () => {
+    rosterMode = "unassigned";
+    renderAll();
+  });
+}
+
+if (rosterModeFilteredBtn) {
+  rosterModeFilteredBtn.addEventListener("click", () => {
+    rosterMode = "filtered";
+    renderAll();
+  });
+}
+
+if (rosterSortSelect) {
+  rosterSortSelect.addEventListener("change", () => {
+    rosterSortMode = rosterSortSelect.value;
+    renderRoster();
+  });
+}
+
+if (rosterSortDirectionBtn) {
+  rosterSortDirectionBtn.addEventListener("click", () => {
+    rosterSortDirection = rosterSortDirection === "asc" ? "desc" : "asc";
+    renderRoster();
   });
 }
 
