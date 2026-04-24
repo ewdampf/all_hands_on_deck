@@ -10,7 +10,9 @@
 // ==========================================================
 
 let infoPanelMode = "overview";
-
+let rosterMode = "latest";
+let rosterSortMode = "newest";
+let rosterSortDirection = "desc"; // desc = high→low or newest first
 
 // ==========================================================
 // Top bar / resource display
@@ -297,10 +299,93 @@ function getSortedRosterCards() {
   });
 }
 
+function getCardCurrentIncome(card) {
+  if (!card.assignedBusinessId) return 0;
+  return Math.floor(calculateCardOutput(card, card.assignedBusinessId));
+}
+
+function applySortDirection(value) {
+  return rosterSortDirection === "asc" ? value : -value;
+}
+
+function sortRosterCards(cards) {
+  return [...cards].sort((a, b) => {
+    switch (rosterSortMode) {
+      case "name":
+        return rosterSortDirection === "asc"
+          ? a.displayName.localeCompare(b.displayName)
+          : b.displayName.localeCompare(a.displayName);
+
+      case "assignment": {
+        const aAssignment = a.assignedBusinessId ? getBusinessDef(a.assignedBusinessId)?.name || "" : "Unassigned";
+        const bAssignment = b.assignedBusinessId ? getBusinessDef(b.assignedBusinessId)?.name || "" : "Unassigned";
+
+        return rosterSortDirection === "asc"
+          ? aAssignment.localeCompare(bAssignment)
+          : bAssignment.localeCompare(aAssignment);
+      }
+
+      case "morale":
+        return applySortDirection(a.morale - b.morale);
+
+      case "income":
+        return applySortDirection(getCardCurrentIncome(a) - getCardCurrentIncome(b));
+
+      case "rarity": {
+        const diff = getRaritySortOrder(a.rarity) - getRaritySortOrder(b.rarity);
+        return applySortDirection(diff);
+      }
+
+      case "franchise": {
+        const diff = a.franchise.localeCompare(b.franchise);
+        return rosterSortDirection === "asc" ? diff : -diff;
+      }
+
+      case "newest":
+      default:
+        return applySortDirection((a.acquiredAt || 0) - (b.acquiredAt || 0));
+    }
+  });
+}
 
 // ==========================================================
 // Roster rendering
 // ==========================================================
+
+function renderRosterModeTabs() {
+  const latestBtn = document.getElementById("rosterModeLatestBtn");
+  const unassignedBtn = document.getElementById("rosterModeUnassignedBtn");
+  const filteredBtn = document.getElementById("rosterModeFilteredBtn");
+
+  if (latestBtn) latestBtn.classList.toggle("active", rosterMode === "latest");
+  if (unassignedBtn) unassignedBtn.classList.toggle("active", rosterMode === "unassigned");
+  if (filteredBtn) filteredBtn.classList.toggle("active", rosterMode === "filtered");
+
+  const sortSelect = document.getElementById("rosterSortSelect");
+  if (sortSelect) {
+    sortSelect.value = rosterSortMode;
+  }
+
+  const dirBtn = document.getElementById("rosterSortDirectionBtn");
+  if (dirBtn) {
+    dirBtn.textContent = rosterSortDirection === "asc" ? "↑" : "↓";
+  }
+
+}
+
+function getRosterCardsForCurrentMode() {
+  if (rosterMode === "latest") {
+    return [...state.cards]
+      .sort((a, b) => (b.acquiredAt || 0) - (a.acquiredAt || 0))
+      .slice(0, 20);
+  }
+
+  if (rosterMode === "unassigned") {
+    return state.cards.filter(card => !card.assignedBusinessId);
+  }
+
+  return [...state.cards];
+}
 
 function renderRoster() {
   const roster = document.getElementById("roster");
@@ -311,58 +396,74 @@ function renderRoster() {
     return;
   }
 
-  const sortedCards = getSortedRosterCards();
+  renderRosterModeTabs();
 
-  roster.innerHTML = sortedCards.map(card => {
-    const isUnassigned = !card.assignedBusinessId;
+  const sortedCards = sortRosterCards(getRosterCardsForCurrentMode());
 
-    const assignedText = isUnassigned
-      ? "Unassigned"
-      : `Assigned: ${getBusinessDef(card.assignedBusinessId)?.name || "Unknown"}`;
+  roster.innerHTML = `
+    <div class="worker-list">
+      ${sortedCards.map(card => {
+        const isUnassigned = !card.assignedBusinessId;
+        const assignmentName = isUnassigned
+          ? "Unassigned"
+          : getBusinessDef(card.assignedBusinessId)?.name || "Unknown";
 
-    return `
-      <div class="card ${card.rarity} ${isUnassigned ? "unassigned-card" : ""}">
-        ${getCharacterImageHtml(card)}
+        const income = card.assignedBusinessId
+          ? Math.floor(calculateCardOutput(card, card.assignedBusinessId))
+          : 0;
 
-        <div class="status-row">
-          ${isUnassigned ? `<div class="status-badge unassigned">UNASSIGNED</div>` : `<div></div>`}
-          <div class="small ${getMoraleClass(card.morale)}">Morale: ${card.morale}</div>
-        </div>
+        return `
+          <div class="worker-row ${card.rarity} ${isUnassigned ? "worker-unassigned" : ""}">
+            <div class="worker-row-main">
+              ${getCharacterImageHtml(card, "worker-thumb")}
 
-        <div class="name">${card.displayName}</div>
-        ${card.subtitle ? `<div class="small muted">${card.subtitle}</div>` : ""}
-        <div class="muted">${card.franchise}</div>
-        <div class="small">${card.rarity.toUpperCase()}</div>
-        <div class="small">Power: ${card.basePower}</div>
-        <div class="small">Traits: ${card.traits.join(", ")}</div>
-        <div class="small muted">${assignedText}</div>
-        <div class="small muted">${card.flavor}</div>
-
-        <div class="modal-card-actions">
-          <select id="assign-select-roster-${card.instanceId}" class="assignment-select">
-            <option value="">Choose assignment...</option>
-            ${getBusinessAssignmentOptionsHtml(card.assignedBusinessId || "")}
-          </select>
-
-          <button class="secondary small-button" onclick="assignCardFromRoster(${card.instanceId})">
-            Assign
-          </button>
-        </div>
-
-        ${
-          card.assignedBusinessId
-            ? `
-              <div class="modal-card-actions">
-                <button class="secondary small-button" onclick="unassignCardFromRoster(${card.instanceId})">
-                  Unassign
-                </button>
+              <div class="worker-row-text">
+                <div class="worker-name">${card.displayName}</div>
+                ${card.subtitle ? `<div class="worker-subtitle">${card.subtitle}</div>` : ""}
+                <div class="worker-meta">${card.franchise} • ${card.rarity.toUpperCase()}</div>
               </div>
-            `
-            : ""
-        }
-      </div>
-    `;
-  }).join("");
+            </div>
+
+            <div class="worker-row-stat">
+              <div class="worker-stat-label">Assignment</div>
+              <div class="worker-stat-value">${assignmentName}</div>
+            </div>
+
+            <div class="worker-row-stat">
+              <div class="worker-stat-label">Morale</div>
+              <div class="worker-stat-value ${getMoraleClass(card.morale)}">${card.morale}</div>
+            </div>
+
+            <div class="worker-row-stat">
+              <div class="worker-stat-label">Income</div>
+              <div class="worker-stat-value">${income}/sec</div>
+            </div>
+
+            <div class="worker-row-actions">
+              <select id="assign-select-roster-${card.instanceId}" class="assignment-select compact-select">
+                <option value="">Assign...</option>
+                ${getBusinessAssignmentOptionsHtml(card.assignedBusinessId || "")}
+              </select>
+
+              <button class="secondary small-button" onclick="assignCardFromRoster(${card.instanceId})">
+                Go
+              </button>
+
+              ${
+                card.assignedBusinessId
+                  ? `
+                    <button class="secondary small-button" onclick="unassignCardFromRoster(${card.instanceId})">
+                      Unassign
+                    </button>
+                  `
+                  : ""
+              }
+            </div>
+          </div>
+        `;
+      }).join("")}
+    </div>
+  `;
 }
 
 function assignCardFromRoster(cardInstanceId) {

@@ -44,6 +44,7 @@ function cloneCharacterToCard(template) {
     traits: [...template.traits],
     tags: [...template.tags],
     flavor: template.flavor,
+    acquiredAt: Date.now(),
 
     // Runtime card state
     morale: CONFIG.MORALE.STARTING,
