@@ -338,3 +338,23 @@ function formatCooldown(msRemaining) {
 
   return `${minutes}:${String(seconds).padStart(2, "0")}`;
 }
+
+// ==========================================================
+// Business list helpers
+// ----------------------------------------------------------
+// Centralized helpers for dropdowns and business filtering.
+// ==========================================================
+
+function getUnlockedBusinesses() {
+  return BUSINESSES.filter(business => getBusinessState(business.id)?.unlocked);
+}
+
+function getLockedBusinessesForPurchase() {
+  return BUSINESSES.filter(business => !getBusinessState(business.id)?.unlocked);
+}
+
+function getAffordableLockedBusinessesForPurchase() {
+  return getLockedBusinessesForPurchase().filter(
+    business => state.credits >= business.unlockCost
+  );
+}

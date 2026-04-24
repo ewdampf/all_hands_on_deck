@@ -97,6 +97,86 @@ function renderPackResults(cards) {
   `).join("");
 }
 
+// ==========================================================
+// Pack Modal Rendering
+// ==========================================================
+
+function openPackModal(cards) {
+  const modal = document.getElementById("packModal");
+  const container = document.getElementById("packModalCards");
+
+  if (!modal || !container) return;
+
+  renderPackModalCards(cards);
+
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function closePackModal() {
+  const modal = document.getElementById("packModal");
+
+  if (!modal) return;
+
+  modal.classList.add("hidden");
+  modal.setAttribute("aria-hidden", "true");
+}
+
+function renderPackModalCards(cards) {
+  const container = document.getElementById("packModalCards");
+  if (!container) return;
+
+  if (!Array.isArray(cards) || cards.length === 0) {
+    container.innerHTML = `<div class="empty-state">No new cards to show.</div>`;
+    return;
+  }
+
+  container.innerHTML = cards.map(card => {
+    const isAssigned = !!card.assignedBusinessId;
+
+    return `
+      <div class="card ${card.rarity}">
+        <div class="name">${card.displayName}</div>
+        ${card.subtitle ? `<div class="small muted">${card.subtitle}</div>` : ""}
+        <div class="muted">${card.franchise}</div>
+        <div class="small">${card.rarity.toUpperCase()}</div>
+        <div class="small">Power: ${card.basePower}</div>
+        <div class="small">Traits: ${card.traits.join(", ")}</div>
+        <div class="small muted">${card.flavor}</div>
+
+        ${
+          isAssigned
+            ? `<div class="small good" style="margin-top:10px;">Assigned to ${getBusinessDef(card.assignedBusinessId)?.name || "Unknown"}</div>`
+            : `
+              <div class="modal-card-actions">
+                <select id="assign-select-${card.instanceId}" class="assignment-select">
+                  <option value="">Choose assignment...</option>
+                  ${getBusinessAssignmentOptionsHtml(card.assignedBusinessId || "")}
+                </select>
+
+                <button class="secondary small-button" onclick="assignCardFromModal(${card.instanceId})">
+                  Assign
+                </button>
+              </div>
+            `
+        }
+      </div>
+    `;
+  }).join("");
+}
+
+function assignCardFromModal(cardInstanceId) {
+  const select = document.getElementById(`assign-select-${cardInstanceId}`);
+  if (!select || !select.value) return;
+
+  const assigned = assignCardToBusiness(cardInstanceId, select.value);
+
+  if (assigned) {
+    renderRoster();
+    renderInfoPanel();
+    renderPackModalCards(recentPackResults);
+  }
+}
 
 // ==========================================================
 // Roster sorting helpers
@@ -503,6 +583,22 @@ function renderBusinessStatsOnly() {
   }
 }
 
+// ==========================================================
+// Get Business Listing
+// ----------------------------------------------------------
+// Returns a list of all of the owned businesses
+// for dropdown lists
+// ==========================================================
+function getBusinessAssignmentOptionsHtml(selectedBusinessId = "") {
+  return getUnlockedBusinesses()
+    .map(business => `
+      <option value="${business.id}" ${business.id === selectedBusinessId ? "selected" : ""}>
+        ${business.name}
+      </option>
+    `)
+    .join("");
+}
+
 
 // ==========================================================
 // Full render pass
@@ -514,3 +610,4 @@ function renderAll() {
   renderHeadline();
   renderInfoPanel();
 }
+
