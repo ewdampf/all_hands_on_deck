@@ -201,6 +201,30 @@ button:disabled {
   font-size: 12px;
 }
 
+/* ==========================================================
+   Card Image
+========================================================== */
+
+.character-image {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: #101010;
+  flex-shrink: 0;
+  margin-bottom: 8px;
+}
+
+.modal-character-image {
+  width: 96px;
+  height: 96px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid #333;
+  background: #101010;
+  margin-bottom: 10px;
+}
 
 /* ==========================================================
    Status / Morale
@@ -595,3 +619,4 @@ button:disabled {
     max-height: 92vh;
   }
 }
+
