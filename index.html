@@ -82,7 +82,31 @@
           <div class="muted">Assign workers to the least appropriate jobs possible</div>
         </div>
 
-        <div class="card-grid" id="roster"></div>
+ <div class="roster-controls">
+  <div class="info-mode-tabs">
+    <button id="rosterModeLatestBtn" class="secondary small-button">Latest</button>
+    <button id="rosterModeUnassignedBtn" class="secondary small-button">Unassigned</button>
+    <button id="rosterModeFilteredBtn" class="secondary small-button">Filtered</button>
+  </div>
+<div class="roster-sort-row">
+  <label class="small muted">Sort</label>
+
+  <select id="rosterSortSelect" class="assignment-select compact-select">
+    <option value="newest">Newest</option>
+    <option value="name">Name</option>
+    <option value="assignment">Assignment</option>
+    <option value="morale">Morale</option>
+    <option value="income">Income</option>
+    <option value="rarity">Rarity</option>
+    <option value="franchise">Franchise</option>
+  </select>
+
+  <button id="rosterSortDirectionBtn" class="secondary small-button">
+    ↓
+  </button>
+</div>
+</div>
+       <div id="roster"></div>
       </div>
     </section>
 
