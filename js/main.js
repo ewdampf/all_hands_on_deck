@@ -122,6 +122,24 @@ function initializeButtons() {
 
   const packModal = document.getElementById("packModal");
 
+// worker modal buttons
+const closeWorkerModalBtn = document.getElementById("closeWorkerModalBtn");
+const workerModal = document.getElementById("workerModal");
+
+if (closeWorkerModalBtn) {
+  closeWorkerModalBtn.addEventListener("click", closeWorkerModal);
+}
+
+if (workerModal) {
+  workerModal.addEventListener("click", e => {
+    if (e.target === workerModal) {
+      closeWorkerModal();
+    }
+  });
+}
+
+
+
   // --------------------------------------------------------
   // Daily token claim
   // --------------------------------------------------------
