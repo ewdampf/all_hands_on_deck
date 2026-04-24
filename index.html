@@ -40,23 +40,41 @@
          Left Column = Actions
     ===================================================== -->
     <section>
-      <div class="panel">
-        <div class="section-title">
-          <h2>Packs</h2>
-          <div class="muted">Spend tokens to recruit more questionable employees</div>
-        </div>
+<div class="panel">
+  <div class="section-title">
+    <h2>Actions</h2>
+    <div class="muted">Recruit, save, and manage your questionable empire</div>
+  </div>
 
-        <div class="buttons">
-          <button id="freePackBtn">Claim Daily Token</button>
-          <button id="basicPackBtn" class="secondary">Basic Pack (1 Token)</button>
-          <button id="uncommonPackBtn" class="secondary">Uncommon Pack (2 Tokens)</button>
-          <button id="rarePackBtn" class="secondary">Rare Pack (5 Tokens)</button>
-          <button id="saveBtn" class="secondary">Save</button>
-          <button id="resetBtn" class="secondary">Reset</button>
-        </div>
+  <div class="action-section">
+    <div class="action-section-title">Daily</div>
+    <button id="freePackBtn">Claim Daily Token</button>
+  </div>
 
-        <div id="packResults" style="display:none;"></div>
-      </div>
+  <div class="action-section">
+    <div class="action-section-title">Standard Packs</div>
+    <div class="button-stack">
+      <button id="basicPackBtn" class="secondary">Basic Pack (1 Token)</button>
+      <button id="uncommonPackBtn" class="secondary">Uncommon Pack (2 Tokens)</button>
+      <button id="rarePackBtn" class="secondary">Rare Pack (5 Tokens)</button>
+    </div>
+  </div>
+
+  <div class="action-section" id="specialPacksSection" style="display:none;">
+    <div class="action-section-title">Special Packs</div>
+    <div class="button-stack" id="specialPacksContainer"></div>
+  </div>
+
+  <div class="action-section">
+    <div class="action-section-title">Game</div>
+    <div class="button-stack">
+      <button id="saveBtn" class="secondary">Save</button>
+      <button id="resetBtn" class="secondary">Reset</button>
+    </div>
+  </div>
+
+  <div id="packResults" style="display:none;"></div>
+</div>
 
       <div class="panel" style="margin-top:16px;">
         <div class="section-title">

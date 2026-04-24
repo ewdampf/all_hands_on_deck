@@ -620,3 +620,33 @@ button:disabled {
   }
 }
 
+/* ==========================================================
+   Action Panel
+========================================================== */
+
+.action-section {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #262626;
+}
+
+.action-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.button-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.button-stack button,
+.action-section > button {
+  width: 100%;
+  text-align: center;
+}
