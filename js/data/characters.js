@@ -126,6 +126,14 @@ function validateCharacters(characterList) {
     if (character.tags && character.tags.length === 0) {
       warnings.push(`${label} has no tags.`);
     }
+
+    if ("imagePath" in character && typeof character.imagePath !== "string") {
+      errors.push(`${label} has non-string imagePath.`);
+    }
+
+    if ("imageAlt" in character && typeof character.imageAlt !== "string") {
+      errors.push(`${label} has non-string imageAlt.`);
+    }
   });
 
   return { errors, warnings };
