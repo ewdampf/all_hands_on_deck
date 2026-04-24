@@ -108,10 +108,13 @@ function initializeButtons() {
   const rarePackBtn = document.getElementById("rarePackBtn");
   const saveBtn = document.getElementById("saveBtn");
   const resetBtn = document.getElementById("resetBtn");
+  const closePackModalBtn = document.getElementById("closePackModalBtn");
 
   const infoModeOverviewBtn = document.getElementById("infoModeOverviewBtn");
   const infoModeOwnedBtn = document.getElementById("infoModeOwnedBtn");
   const infoModeBuyBtn = document.getElementById("infoModeBuyBtn");
+
+  const packModal = document.getElementById("packModal");
 
   // --------------------------------------------------------
   // Daily token claim
@@ -129,29 +132,37 @@ function initializeButtons() {
   // --------------------------------------------------------
   // Paid packs
   // --------------------------------------------------------
-  if (basicPackBtn) {
-    basicPackBtn.addEventListener("click", () => {
-      recentPackResults = openPackByType("BASIC");
-      renderPackResults(recentPackResults);
-      renderAll();
-    });
-  }
+if (basicPackBtn) {
+  basicPackBtn.addEventListener("click", () => {
+    recentPackResults = openPackByType("BASIC");
+    openPackModal(recentPackResults);
+    renderAll();
+  });
+}
 
-  if (uncommonPackBtn) {
-    uncommonPackBtn.addEventListener("click", () => {
-      recentPackResults = openPackByType("UNCOMMON");
-      renderPackResults(recentPackResults);
-      renderAll();
-    });
-  }
+if (uncommonPackBtn) {
+  uncommonPackBtn.addEventListener("click", () => {
+    recentPackResults = openPackByType("UNCOMMON");
+    openPackModal(recentPackResults);
+    renderAll();
+  });
+}
 
-  if (rarePackBtn) {
-    rarePackBtn.addEventListener("click", () => {
-      recentPackResults = openPackByType("RARE");
-      renderPackResults(recentPackResults);
-      renderAll();
-    });
-  }
+if (rarePackBtn) {
+  rarePackBtn.addEventListener("click", () => {
+    recentPackResults = openPackByType("RARE");
+    openPackModal(recentPackResults);
+    renderAll();
+  });
+}
+
+if (packModal) {
+  packModal.addEventListener("click", event => {
+    if (event.target === packModal) {
+      closePackModal();
+    }
+  });
+}
 
   // --------------------------------------------------------
   // Manual save
@@ -219,7 +230,9 @@ function gameTick() {
 
   renderTopbar();
   renderHeadline();
-  renderInfoPanel();
+  if (infoPanelMode === "overview") {
+    renderInfoPanel();
+  }
 
   saveGame();
 }
