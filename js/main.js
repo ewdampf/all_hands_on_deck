@@ -122,6 +122,8 @@ function initializeButtons() {
 
   const packModal = document.getElementById("packModal");
 
+  const devAddTokenBtn = document.getElementById("devAddTokenBtn");
+
 // worker modal buttons
 const closeWorkerModalBtn = document.getElementById("closeWorkerModalBtn");
 const workerModal = document.getElementById("workerModal");
@@ -152,6 +154,15 @@ if (workerModal) {
       }
     });
   }
+
+if (devAddTokenBtn) {
+  devAddTokenBtn.addEventListener("click", () => {
+    state.tokens += 1;
+    setHeadline("Test token added", "One test token was added for development.");
+    saveGame();
+    renderAll();
+  });
+}
 
   // --------------------------------------------------------
   // Paid packs
