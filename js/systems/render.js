@@ -438,27 +438,6 @@ function renderRoster() {
               <div class="worker-stat-label">Income</div>
               <div class="worker-stat-value">${income}/sec</div>
             </div>
-
-            <div class="worker-row-actions">
-              <select id="assign-select-roster-${card.instanceId}" class="assignment-select compact-select">
-                <option value="">Assign...</option>
-                ${getBusinessAssignmentOptionsHtml(card.assignedBusinessId || "")}
-              </select>
-
-              <button class="secondary small-button" onclick="assignCardFromRoster(${card.instanceId})">
-                Go
-              </button>
-
-              ${
-                card.assignedBusinessId
-                  ? `
-                    <button class="secondary small-button" onclick="unassignCardFromRoster(${card.instanceId})">
-                      Unassign
-                    </button>
-                  `
-                  : ""
-              }
-            </div>
           </div>
         `;
       }).join("")}
