@@ -15,7 +15,7 @@
 // - Distinct variants can share characterKey
 // ==========================================================
 
-const STAR_WARS_CHARACTERS = [
+const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
 
   // ========================================================
   // Cannon Fodder / Grunt Units
@@ -443,15 +443,3 @@ const STAR_WARS_CHARACTERS = [
   }
 ];
 
-const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
-  {
-    id: "stormtrooper",
-    displayName: "Stormtrooper",
-    ...
-  },
-  {
-    id: "clone_trooper",
-    displayName: "Clone Trooper",
-    ...
-  }
-], "assets/characters/starwars");
