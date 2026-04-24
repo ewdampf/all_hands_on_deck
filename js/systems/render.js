@@ -413,7 +413,8 @@ function renderRoster() {
           : 0;
 
         return `
-          <div class="worker-row ${card.rarity} ${isUnassigned ? "worker-unassigned" : ""}">
+          <div class="worker-row ${card.rarity} ${isUnassigned ? "worker-unassigned" : ""}"
+     onclick="openWorkerModal(${card.instanceId})">
             <div class="worker-row-main">
               ${getCharacterImageHtml(card, "worker-thumb")}
 
@@ -465,6 +466,102 @@ function unassignCardFromRoster(cardInstanceId) {
   saveGame();
   renderAll();
 }
+
+// ==========================================================
+// Worker Modals
+// ==========================================================
+function openWorkerModal(cardInstanceId) {
+  const card = getCardByInstanceId(cardInstanceId);
+  if (!card) return;
+
+  const modal = document.getElementById("workerModal");
+  const title = document.getElementById("workerModalTitle");
+  const subtitle = document.getElementById("workerModalSubtitle");
+  const content = document.getElementById("workerModalContent");
+
+  title.textContent = card.displayName;
+  subtitle.textContent = card.subtitle || card.franchise;
+
+  const assignmentName = card.assignedBusinessId
+    ? getBusinessDef(card.assignedBusinessId)?.name || "Unknown"
+    : "Unassigned";
+
+  const income = card.assignedBusinessId
+    ? Math.floor(calculateCardOutput(card, card.assignedBusinessId))
+    : 0;
+
+  content.innerHTML = `
+    <div class="worker-modal-grid">
+      ${getCharacterImageHtml(card, "worker-modal-image")}
+
+      <div>
+        <div><strong>Franchise:</strong> ${card.franchise}</div>
+        <div><strong>Rarity:</strong> ${card.rarity.toUpperCase()}</div>
+        <div><strong>Power:</strong> ${card.basePower}</div>
+        <div><strong>Morale:</strong> ${card.morale}</div>
+        <div><strong>Assignment:</strong> ${assignmentName}</div>
+        <div><strong>Income:</strong> ${income}/sec</div>
+        <div class="muted" style="margin-top:8px;">${card.flavor}</div>
+      </div>
+    </div>
+
+    <div class="worker-modal-section">
+      <label class="small muted">Assign to business</label>
+
+      <div class="worker-modal-actions">
+        <select id="worker-modal-assign-select" class="assignment-select">
+          <option value="">Choose assignment...</option>
+          ${getBusinessAssignmentOptionsHtml(card.assignedBusinessId || "")}
+        </select>
+
+        <button class="secondary small-button" onclick="assignCardFromWorkerModal(${card.instanceId})">
+          Assign
+        </button>
+
+        ${
+          card.assignedBusinessId
+            ? `<button class="secondary small-button" onclick="unassignCardFromWorkerModal(${card.instanceId})">
+                Unassign
+               </button>`
+            : ""
+        }
+      </div>
+    </div>
+  `;
+
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function closeWorkerModal() {
+  const modal = document.getElementById("workerModal");
+  if (!modal) return;
+
+  modal.classList.add("hidden");
+  modal.setAttribute("aria-hidden", "true");
+}
+
+function assignCardFromWorkerModal(cardInstanceId) {
+  const select = document.getElementById("worker-modal-assign-select");
+  if (!select || !select.value) return;
+
+  const assigned = assignCardToBusiness(cardInstanceId, select.value);
+
+  if (assigned) {
+    renderAll();
+    openWorkerModal(cardInstanceId);
+  }
+}
+
+function unassignCardFromWorkerModal(cardInstanceId) {
+  const card = getCardByInstanceId(cardInstanceId);
+  if (!card) return;
+
+  unassignCard(card);
+  renderAll();
+  openWorkerModal(cardInstanceId);
+}
+
 
 
 // ==========================================================
