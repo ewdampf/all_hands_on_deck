@@ -139,6 +139,25 @@ function validateCharacters(characterList) {
   return { errors, warnings };
 }
 
+// ==========================================================
+// Add image date to character
+// ----------------------------------------------------------
+// Applies the character image
+// based on character id
+// ==========================================================
+function applyCharacterImageDefaults(characters, basePath) {
+  return characters.map(char => {
+    if (!char.imagePath) {
+      return {
+        ...char,
+        imagePath: `${basePath}/${char.id}.png`,
+        imageAlt: char.displayName
+      };
+    }
+
+    return char;
+  });
+}
 
 // ==========================================================
 // Run validation immediately on load
@@ -161,22 +180,3 @@ if (CHARACTER_VALIDATION.warnings.length > 0) {
   CHARACTER_VALIDATION.warnings.forEach(warning => console.warn(" - " + warning));
 }
 
-// ==========================================================
-// Add image date to character
-// ----------------------------------------------------------
-// Applies the character image
-// based on character id
-// ==========================================================
-function applyCharacterImageDefaults(characters, basePath) {
-  return characters.map(char => {
-    if (!char.imagePath) {
-      return {
-        ...char,
-        imagePath: `${basePath}/${char.id}.png`,
-        imageAlt: char.displayName
-      };
-    }
-
-    return char;
-  });
-}
