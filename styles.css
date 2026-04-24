@@ -516,3 +516,82 @@ button:disabled {
   text-align: center;
   background: #141414;
 }
+
+/* ==========================================================
+   Pack Opening Modal
+========================================================== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 24px;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(4px);
+}
+
+.modal-overlay.hidden {
+  display: none;
+}
+
+.modal-window {
+  width: min(900px, 100%);
+  max-height: 88vh;
+  overflow-y: auto;
+
+  background: #121212;
+  border: 1px solid #333;
+  border-radius: 16px;
+  padding: 18px;
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  margin-bottom: 16px;
+}
+
+.modal-header h2 {
+  margin: 0 0 4px;
+}
+
+.modal-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.modal-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.assignment-select {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #333;
+  background: #0f0f0f;
+  color: #e5e5e5;
+}
+
+@media (max-width: 600px) {
+  .modal-header {
+    flex-direction: column;
+  }
+
+  .modal-window {
+    max-height: 92vh;
+  }
+}

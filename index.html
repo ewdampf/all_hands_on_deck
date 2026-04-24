@@ -55,7 +55,7 @@
           <button id="resetBtn" class="secondary">Reset</button>
         </div>
 
-        <div class="card-grid" id="packResults"></div>
+        <div id="packResults" style="display:none;"></div>
       </div>
 
       <div class="panel" style="margin-top:16px;">
@@ -104,6 +104,25 @@
       </div>
     </section>
   </main>
+
+<!-- ======================================================
+     Pack Opening Modal
+======================================================= -->
+<div id="packModal" class="modal-overlay hidden" aria-hidden="true">
+  <div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="packModalTitle">
+    <div class="modal-header">
+      <div>
+        <h2 id="packModalTitle">Pack Opened</h2>
+        <div class="muted">Assign your new recruits now or close this window and deal with them later.</div>
+      </div>
+
+      <button id="closePackModalBtn" class="secondary small-button">Close</button>
+    </div>
+
+    <div id="packModalCards" class="modal-card-grid"></div>
+  </div>
+</div>
+
 
   <!-- ======================================================
        Script Load Order
