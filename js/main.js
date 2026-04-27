@@ -115,6 +115,8 @@ function initializeButtons() {
   const rosterModeFilteredBtn = document.getElementById("rosterModeFilteredBtn");
   const rosterSortSelect = document.getElementById("rosterSortSelect");
   const rosterSortDirectionBtn = document.getElementById("rosterSortDirectionBtn");
+  const rosterFranchiseFilterSelect = document.getElementById("rosterFranchiseFilter");
+  const rosterRarityFilterSelect = document.getElementById("rosterRarityFilter");
 
   const infoModeOverviewBtn = document.getElementById("infoModeOverviewBtn");
   const infoModeOwnedBtn = document.getElementById("infoModeOwnedBtn");
@@ -236,6 +238,20 @@ if (rosterSortSelect) {
 if (rosterSortDirectionBtn) {
   rosterSortDirectionBtn.addEventListener("click", () => {
     rosterSortDirection = rosterSortDirection === "asc" ? "desc" : "asc";
+    renderRoster();
+  });
+}
+
+if (rosterFranchiseFilterSelect) {
+  rosterFranchiseFilterSelect.addEventListener("change", () => {
+    rosterFranchiseFilter = rosterFranchiseFilterSelect.value;
+    renderRoster();
+  });
+}
+
+if (rosterRarityFilterSelect) {
+  rosterRarityFilterSelect.addEventListener("change", () => {
+    rosterRarityFilter = rosterRarityFilterSelect.value;
     renderRoster();
   });
 }
