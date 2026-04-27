@@ -835,3 +835,10 @@ button:disabled {
   flex-wrap: wrap;
   margin-top: 12px;
 }
+
+.roster-filter-controls {
+  display: none;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}

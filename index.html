@@ -93,23 +93,37 @@
     <button id="rosterModeUnassignedBtn" class="secondary small-button">Unassigned</button>
     <button id="rosterModeFilteredBtn" class="secondary small-button">Filtered</button>
   </div>
-<div class="roster-sort-row">
-  <label class="small muted">Sort</label>
+  <div class="roster-sort-row">
+    <label class="small muted">Sort</label>
 
-  <select id="rosterSortSelect" class="assignment-select compact-select">
-    <option value="newest">Newest</option>
-    <option value="name">Name</option>
-    <option value="assignment">Assignment</option>
-    <option value="morale">Morale</option>
-    <option value="income">Income</option>
-    <option value="rarity">Rarity</option>
-    <option value="franchise">Franchise</option>
+    <select id="rosterSortSelect" class="assignment-select compact-select">
+      <option value="newest">Newest</option>
+      <option value="name">Name</option>
+      <option value="assignment">Assignment</option>
+      <option value="morale">Morale</option>
+      <option value="income">Income</option>
+      <option value="rarity">Rarity</option>
+      <option value="franchise">Franchise</option>
+    </select>
+
+    <button id="rosterSortDirectionBtn" class="secondary small-button">
+      ↓
+    </button>
+  </div>
+<div id="rosterFilterControls" class="roster-filter-controls">
+  <select id="rosterFranchiseFilter" class="assignment-select compact-select">
+    <option value="all">All Franchises</option>
   </select>
 
-  <button id="rosterSortDirectionBtn" class="secondary small-button">
-    ↓
-  </button>
+  <select id="rosterRarityFilter" class="assignment-select compact-select">
+    <option value="all">All Rarities</option>
+    <option value="common">Common</option>
+    <option value="uncommon">Uncommon</option>
+    <option value="rare">Rare</option>
+    <option value="ultra">Ultra</option>
+  </select>
 </div>
+
 </div>
        <div id="roster"></div>
       </div>
