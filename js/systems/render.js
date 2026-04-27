@@ -13,6 +13,8 @@ let infoPanelMode = "overview";
 let rosterMode = "latest";
 let rosterSortMode = "newest";
 let rosterSortDirection = "desc"; // desc = high→low or newest first
+let rosterFranchiseFilter = "all";
+let rosterRarityFilter = "all";
 
 // ==========================================================
 // Top bar / resource display
@@ -349,6 +351,57 @@ function sortRosterCards(cards) {
 }
 
 // ==========================================================
+// Roster filtering helpers
+// ==========================================================
+function getUniqueFranchises() {
+  return [...new Set(state.cards.map(card => card.franchise))]
+    .filter(Boolean)
+    .sort();
+}
+
+function renderRosterFilterControls() {
+  const filterControls = document.getElementById("rosterFilterControls");
+  const franchiseSelect = document.getElementById("rosterFranchiseFilter");
+  const raritySelect = document.getElementById("rosterRarityFilter");
+
+  if (filterControls) {
+    filterControls.style.display = rosterMode === "filtered" ? "flex" : "none";
+  }
+
+  if (franchiseSelect) {
+    const franchises = getUniqueFranchises();
+
+    franchiseSelect.innerHTML = `
+      <option value="all">All Franchises</option>
+      ${franchises.map(franchise => `
+        <option value="${franchise}" ${franchise === rosterFranchiseFilter ? "selected" : ""}>
+          ${franchise}
+        </option>
+      `).join("")}
+    `;
+  }
+
+  if (raritySelect) {
+    raritySelect.value = rosterRarityFilter;
+  }
+}
+
+function applyRosterFilters(cards) {
+  if (rosterMode !== "filtered") return cards;
+
+  return cards.filter(card => {
+    const franchiseMatches =
+      rosterFranchiseFilter === "all" || card.franchise === rosterFranchiseFilter;
+
+    const rarityMatches =
+      rosterRarityFilter === "all" || card.rarity === rosterRarityFilter;
+
+    return franchiseMatches && rarityMatches;
+  });
+}
+
+
+// ==========================================================
 // Roster rendering
 // ==========================================================
 
@@ -397,8 +450,10 @@ function renderRoster() {
   }
 
   renderRosterModeTabs();
+  renderRosterFilterControls();
 
-  const sortedCards = sortRosterCards(getRosterCardsForCurrentMode());
+  const filteredCards = applyRosterFilters(getRosterCardsForCurrentMode());
+  const sortedCards = sortRosterCards(filteredCards);
 
   roster.innerHTML = `
     <div class="worker-list">
