@@ -1,33 +1,13 @@
 // ==========================================================
 // Main Bootstrap
-// ----------------------------------------------------------
-// Wires the full game together.
-//
-// Responsibilities:
-// - initialize game state from save
-// - normalize business runtime state
-// - wire UI button handlers
-// - run the game tick loop
-// - kick off the first render
-//
-// Keep this file thin. Gameplay logic belongs elsewhere.
-// ==========================================================
-
-
-// ==========================================================
-// Recent pack results cache
-// ----------------------------------------------------------
-// Keeps the last opened pack visible in the UI.
 // ==========================================================
 
 let recentPackResults = [];
 let lastRosterRefreshAt = 0;
 
+
 // ==========================================================
-// Optional startup diagnostics
-// ----------------------------------------------------------
-// Helpful during development to catch missing file loads or
-// bad script order quickly.
+// Startup diagnostics
 // ==========================================================
 
 function runStartupDiagnostics() {
@@ -51,10 +31,7 @@ function runStartupDiagnostics() {
 
 
 // ==========================================================
-// Business runtime normalization
-// ----------------------------------------------------------
-// Ensures all businesses have slot arrays sized correctly
-// after load or reset.
+// Initialization helpers
 // ==========================================================
 
 function normalizeAllBusinesses() {
@@ -62,13 +39,6 @@ function normalizeAllBusinesses() {
     normalizeBusinessSlots(business.id);
   });
 }
-
-
-// ==========================================================
-// Tagline initialization
-// ----------------------------------------------------------
-// Picks one random tagline on startup.
-// ==========================================================
 
 function initializeTagline() {
   const taglineEl = document.getElementById("tagline");
@@ -79,16 +49,8 @@ function initializeTagline() {
     return;
   }
 
-  const tagline = TAGLINES[Math.floor(Math.random() * TAGLINES.length)];
-  taglineEl.textContent = tagline;
+  taglineEl.textContent = TAGLINES[Math.floor(Math.random() * TAGLINES.length)];
 }
-
-
-// ==========================================================
-// Pack result display initialization
-// ----------------------------------------------------------
-// Ensures the pack area starts in a valid visual state.
-// ==========================================================
 
 function initializePackResults() {
   renderPackResults(recentPackResults);
@@ -96,9 +58,7 @@ function initializePackResults() {
 
 
 // ==========================================================
-// UI button wiring
-// ----------------------------------------------------------
-// Attaches click handlers to the main controls.
+// Button wiring
 // ==========================================================
 
 function initializeButtons() {
@@ -108,157 +68,88 @@ function initializeButtons() {
   const rarePackBtn = document.getElementById("rarePackBtn");
   const saveBtn = document.getElementById("saveBtn");
   const resetBtn = document.getElementById("resetBtn");
-  const closePackModalBtn = document.getElementById("closePackModalBtn");
+  const devAddTokenBtn = document.getElementById("devAddTokenBtn");
 
-  const rosterModeLatestBtn = document.getElementById("rosterModeLatestBtn");
-  const rosterModeUnassignedBtn = document.getElementById("rosterModeUnassignedBtn");
-  const rosterModeFilteredBtn = document.getElementById("rosterModeFilteredBtn");
-  const rosterSortSelect = document.getElementById("rosterSortSelect");
-  const rosterSortDirectionBtn = document.getElementById("rosterSortDirectionBtn");
-  const rosterFranchiseFilterSelect = document.getElementById("rosterFranchiseFilter");
-  const rosterRarityFilterSelect = document.getElementById("rosterRarityFilter");
+  const closePackModalBtn = document.getElementById("closePackModalBtn");
+  const packModal = document.getElementById("packModal");
+
+  const closeWorkerModalBtn = document.getElementById("closeWorkerModalBtn");
+  const workerModal = document.getElementById("workerModal");
 
   const infoModeOverviewBtn = document.getElementById("infoModeOverviewBtn");
   const infoModeOwnedBtn = document.getElementById("infoModeOwnedBtn");
   const infoModeBuyBtn = document.getElementById("infoModeBuyBtn");
 
-  const packModal = document.getElementById("packModal");
+  const rosterModeLatestBtn = document.getElementById("rosterModeLatestBtn");
+  const rosterModeUnassignedBtn = document.getElementById("rosterModeUnassignedBtn");
+  const rosterModeFilteredBtn = document.getElementById("rosterModeFilteredBtn");
 
-  const devAddTokenBtn = document.getElementById("devAddTokenBtn");
+  const rosterSortSelect = document.getElementById("rosterSortSelect");
+  const rosterSortDirectionBtn = document.getElementById("rosterSortDirectionBtn");
 
-// worker modal buttons
-const closeWorkerModalBtn = document.getElementById("closeWorkerModalBtn");
-const workerModal = document.getElementById("workerModal");
+  const rosterFranchiseFilterSelect = document.getElementById("rosterFranchiseFilter");
+  const rosterRarityFilterSelect = document.getElementById("rosterRarityFilter");
 
-if (closeWorkerModalBtn) {
-  closeWorkerModalBtn.addEventListener("click", closeWorkerModal);
-}
-
-if (workerModal) {
-  workerModal.addEventListener("click", e => {
-    if (e.target === workerModal) {
-      closeWorkerModal();
-    }
-  });
-}
-
-
+  const headlineBox = document.querySelector(".headline-box");
+  const closeHeadlineModalBtn = document.getElementById("closeHeadlineModalBtn");
+  const headlineModal = document.getElementById("headlineModal");
 
   // --------------------------------------------------------
   // Daily token claim
   // --------------------------------------------------------
+
   if (freePackBtn) {
     freePackBtn.addEventListener("click", () => {
       const claimed = claimDailyToken();
-
-      if (claimed) {
-        renderAll();
-      }
+      if (claimed) renderAll();
     });
   }
 
-if (devAddTokenBtn) {
-  devAddTokenBtn.addEventListener("click", () => {
-    state.tokens += 1;
-    setHeadline("Test token added", "One test token was added for development.");
-    saveGame();
-    renderAll();
-  });
-}
+  // --------------------------------------------------------
+  // Pack buttons
+  // --------------------------------------------------------
+
+  if (basicPackBtn) {
+    basicPackBtn.addEventListener("click", () => {
+      recentPackResults = openPackByType("BASIC");
+      openPackModal(recentPackResults);
+      renderAll();
+    });
+  }
+
+  if (uncommonPackBtn) {
+    uncommonPackBtn.addEventListener("click", () => {
+      recentPackResults = openPackByType("UNCOMMON");
+      openPackModal(recentPackResults);
+      renderAll();
+    });
+  }
+
+  if (rarePackBtn) {
+    rarePackBtn.addEventListener("click", () => {
+      recentPackResults = openPackByType("RARE");
+      openPackModal(recentPackResults);
+      renderAll();
+    });
+  }
 
   // --------------------------------------------------------
-  // Paid packs
+  // Dev tools
   // --------------------------------------------------------
-if (basicPackBtn) {
-  basicPackBtn.addEventListener("click", () => {
-    recentPackResults = openPackByType("BASIC");
-    openPackModal(recentPackResults);
-    renderAll();
-  });
-}
 
-if (uncommonPackBtn) {
-  uncommonPackBtn.addEventListener("click", () => {
-    recentPackResults = openPackByType("UNCOMMON");
-    openPackModal(recentPackResults);
-    renderAll();
-  });
-}
-
-if (rarePackBtn) {
-  rarePackBtn.addEventListener("click", () => {
-    recentPackResults = openPackByType("RARE");
-    openPackModal(recentPackResults);
-    renderAll();
-  });
-}
-
-if (closePackModalBtn) {
-  closePackModalBtn.addEventListener("click", () => {
-    closePackModal();
-  });
-}
-
-if (packModal) {
-  packModal.addEventListener("click", event => {
-    if (event.target === packModal) {
-      closePackModal();
-    }
-  });
-}
-
-if (rosterModeLatestBtn) {
-  rosterModeLatestBtn.addEventListener("click", () => {
-    rosterMode = "latest";
-    renderAll();
-  });
-}
-
-if (rosterModeUnassignedBtn) {
-  rosterModeUnassignedBtn.addEventListener("click", () => {
-    rosterMode = "unassigned";
-    renderAll();
-  });
-}
-
-if (rosterModeFilteredBtn) {
-  rosterModeFilteredBtn.addEventListener("click", () => {
-    rosterMode = "filtered";
-    renderAll();
-  });
-}
-
-if (rosterSortSelect) {
-  rosterSortSelect.addEventListener("change", () => {
-    rosterSortMode = rosterSortSelect.value;
-    renderRoster();
-  });
-}
-
-if (rosterSortDirectionBtn) {
-  rosterSortDirectionBtn.addEventListener("click", () => {
-    rosterSortDirection = rosterSortDirection === "asc" ? "desc" : "asc";
-    renderRoster();
-  });
-}
-
-if (rosterFranchiseFilterSelect) {
-  rosterFranchiseFilterSelect.addEventListener("change", () => {
-    rosterFranchiseFilter = rosterFranchiseFilterSelect.value;
-    renderRoster();
-  });
-}
-
-if (rosterRarityFilterSelect) {
-  rosterRarityFilterSelect.addEventListener("change", () => {
-    rosterRarityFilter = rosterRarityFilterSelect.value;
-    renderRoster();
-  });
-}
+  if (devAddTokenBtn) {
+    devAddTokenBtn.addEventListener("click", () => {
+      state.tokens += 1;
+      setHeadline("Test token added", "One test token was added for development.");
+      saveGame();
+      renderAll();
+    });
+  }
 
   // --------------------------------------------------------
-  // Manual save
+  // Save / reset
   // --------------------------------------------------------
+
   if (saveBtn) {
     saveBtn.addEventListener("click", () => {
       saveGame();
@@ -267,9 +158,6 @@ if (rosterRarityFilterSelect) {
     });
   }
 
-  // --------------------------------------------------------
-  // Reset
-  // --------------------------------------------------------
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
       const confirmed = window.confirm(
@@ -277,14 +165,42 @@ if (rosterRarityFilterSelect) {
       );
 
       if (!confirmed) return;
-
       resetGame();
     });
   }
 
   // --------------------------------------------------------
-  // Info panel mode buttons
+  // Pack modal
   // --------------------------------------------------------
+
+  if (closePackModalBtn) {
+    closePackModalBtn.addEventListener("click", closePackModal);
+  }
+
+  if (packModal) {
+    packModal.addEventListener("click", event => {
+      if (event.target === packModal) closePackModal();
+    });
+  }
+
+  // --------------------------------------------------------
+  // Worker modal
+  // --------------------------------------------------------
+
+  if (closeWorkerModalBtn) {
+    closeWorkerModalBtn.addEventListener("click", closeWorkerModal);
+  }
+
+  if (workerModal) {
+    workerModal.addEventListener("click", event => {
+      if (event.target === workerModal) closeWorkerModal();
+    });
+  }
+
+  // --------------------------------------------------------
+  // Info panel modes
+  // --------------------------------------------------------
+
   if (infoModeOverviewBtn) {
     infoModeOverviewBtn.addEventListener("click", () => {
       infoPanelMode = "overview";
@@ -305,20 +221,97 @@ if (rosterRarityFilterSelect) {
       renderAll();
     });
   }
+
+  // --------------------------------------------------------
+  // Headline modes
+  // --------------------------------------------------------
+  if (headlineBox) {
+    headlineBox.addEventListener("click", openHeadlineModal);
+  }
+
+  if (closeHeadlineModalBtn) {
+    closeHeadlineModalBtn.addEventListener("click", closeHeadlineModal);
+  }
+
+  if (headlineModal) {
+    headlineModal.addEventListener("click", event => {
+      if (event.target === headlineModal) closeHeadlineModal();
+    });
+  }
+
+
+  // --------------------------------------------------------
+  // Roster modes
+  // --------------------------------------------------------
+
+  if (rosterModeLatestBtn) {
+    rosterModeLatestBtn.addEventListener("click", () => {
+      rosterMode = "latest";
+      renderAll();
+    });
+  }
+
+  if (rosterModeUnassignedBtn) {
+    rosterModeUnassignedBtn.addEventListener("click", () => {
+      rosterMode = "unassigned";
+      renderAll();
+    });
+  }
+
+  if (rosterModeFilteredBtn) {
+    rosterModeFilteredBtn.addEventListener("click", () => {
+      rosterMode = "filtered";
+      renderAll();
+    });
+  }
+
+  // --------------------------------------------------------
+  // Roster sorting
+  // --------------------------------------------------------
+
+  if (rosterSortSelect) {
+    rosterSortSelect.addEventListener("change", () => {
+      rosterSortMode = rosterSortSelect.value;
+      renderRoster();
+    });
+  }
+
+  if (rosterSortDirectionBtn) {
+    rosterSortDirectionBtn.addEventListener("click", () => {
+      rosterSortDirection = rosterSortDirection === "asc" ? "desc" : "asc";
+      renderRoster();
+    });
+  }
+
+  // --------------------------------------------------------
+  // Roster filters
+  // --------------------------------------------------------
+
+  if (rosterFranchiseFilterSelect) {
+    rosterFranchiseFilterSelect.addEventListener("change", () => {
+      rosterFranchiseFilter = rosterFranchiseFilterSelect.value;
+      renderRoster();
+    });
+  }
+
+  if (rosterRarityFilterSelect) {
+    rosterRarityFilterSelect.addEventListener("change", () => {
+      rosterRarityFilter = rosterRarityFilterSelect.value;
+      renderRoster();
+    });
+  }
 }
 
 
 // ==========================================================
-// Main game tick
-// ----------------------------------------------------------
-// Runs once per configured tick interval.
+// Game tick
 // ==========================================================
 
 function gameTick() {
   updateMorale();
 
-  const income = calculateTotalIncomePerTick();
-  state.credits += income;
+  const netIncome = calculateNetIncomePerTick();
+  state.credits += netIncome;
 
   renderTopbar();
   renderHeadline();
@@ -336,10 +329,9 @@ function gameTick() {
   saveGame();
 }
 
+
 // ==========================================================
-// Full game initialization
-// ----------------------------------------------------------
-// Called once after all scripts are loaded.
+// Full initialization
 // ==========================================================
 
 function initializeGame() {
@@ -353,6 +345,9 @@ function initializeGame() {
   initializePackResults();
 
   infoPanelMode = "overview";
+  rosterMode = "latest";
+  rosterSortMode = "newest";
+  rosterSortDirection = "desc";
 
   renderAll();
 
@@ -361,7 +356,7 @@ function initializeGame() {
 
 
 // ==========================================================
-// Start the game
+// Start
 // ==========================================================
 
 initializeGame();
