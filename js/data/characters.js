@@ -48,6 +48,7 @@ function validateCharacters(characterList) {
       "displayName",
       "franchise",
       "rarity",
+      "prestige",
       "basePower",
       "preferredJob",
       "traits",
@@ -103,11 +104,15 @@ function validateCharacters(characterList) {
     if ("basePower" in character && typeof character.basePower !== "number") {
       errors.push(`${label} has non-numeric basePower.`);
     }
-
+    if ("prestige" in character && typeof character.prestige !== "number") {
+      errors.push(`${label} has non-numeric prestige.`);
+    }
     if ("displayName" in character && typeof character.displayName !== "string") {
       errors.push(`${label} has non-string displayName.`);
     }
-
+    if ("rarity" in character && !CONFIG.RARITIES[character.rarity]) {
+      errors.push(`${label} has invalid rarity: ${character.rarity}`);
+    }
     if ("subtitle" in character && typeof character.subtitle !== "string") {
       warnings.push(`${label} has a subtitle field that is not a string.`);
     }
