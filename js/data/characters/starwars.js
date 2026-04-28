@@ -3,25 +3,21 @@
 // ----------------------------------------------------------
 // Franchise character file for All Hands On Deck.
 //
-// Schema notes:
-// - id: globally unique identifier
-// - characterKey: shared identity across variants
-// - variantKey: specific version of that character
-// - displayName: card title shown in UI
-// - subtitle: optional version label for variants
+// Rarity guide:
+// common     = 1 star
+// uncommon   = 2 stars
+// rare       = 3 stars
+// ultra      = 4 stars
+// legendary  = 5 stars
+// mythic     = 6 stars
 //
-// Important:
-// - Do not duplicate IDs across franchise files
-// - Distinct variants can share characterKey
+// Prestige is 1-3 within that rarity.
 // ==========================================================
 
 const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
 
   // ========================================================
-  // Cannon Fodder / Grunt Units
-  // --------------------------------------------------------
-  // Designed to be modest individually, but rewarding in
-  // matching groups of the same type.
+  // Common / Cannon Fodder
   // ========================================================
 
   {
@@ -32,6 +28,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "",
     franchise: "Star Wars",
     rarity: "common",
+    prestige: 1,
     basePower: 5,
     preferredJob: JOB_TYPES.FARM,
     traits: [TRAITS.CANNON_FODDER],
@@ -47,6 +44,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "",
     franchise: "Star Wars",
     rarity: "common",
+    prestige: 2,
     basePower: 5,
     preferredJob: JOB_TYPES.FARM,
     traits: [TRAITS.CANNON_FODDER],
@@ -62,6 +60,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "",
     franchise: "Star Wars",
     rarity: "common",
+    prestige: 1,
     basePower: 5,
     preferredJob: JOB_TYPES.DELIVERY,
     traits: [TRAITS.CANNON_FODDER],
@@ -77,6 +76,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "",
     franchise: "Star Wars",
     rarity: "common",
+    prestige: 1,
     basePower: 5,
     preferredJob: JOB_TYPES.FARM,
     traits: [TRAITS.CANNON_FODDER],
@@ -92,26 +92,12 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "",
     franchise: "Star Wars",
     rarity: "common",
+    prestige: 1,
     basePower: 6,
     preferredJob: JOB_TYPES.FARM,
     traits: [TRAITS.CANNON_FODDER],
     tags: [CHARACTER_TAGS.MILITARY, CHARACTER_TAGS.DESERT],
     flavor: "Actually comfortable in miserable working conditions."
-  },
-
-  {
-    id: "crimson_guard",
-    characterKey: "crimson_guard",
-    variantKey: "default",
-    displayName: "Crimson Guard",
-    subtitle: "",
-    franchise: "Star Wars",
-    rarity: "uncommon",
-    basePower: 7,
-    preferredJob: JOB_TYPES.HEROIC,
-    traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.GUARD, CHARACTER_TAGS.MILITARY],
-    flavor: "More suited to elite guard work than ordinary labor."
   },
 
   {
@@ -122,6 +108,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "",
     franchise: "Star Wars",
     rarity: "common",
+    prestige: 1,
     basePower: 5,
     preferredJob: JOB_TYPES.DELIVERY,
     traits: [TRAITS.CANNON_FODDER],
@@ -137,56 +124,12 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "",
     franchise: "Star Wars",
     rarity: "common",
+    prestige: 1,
     basePower: 4,
     preferredJob: JOB_TYPES.FARM,
     traits: [TRAITS.CANNON_FODDER],
     tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.MILITARY],
     flavor: "Not bright, but there are always more of them."
-  },
-
-  {
-    id: "super_battle_droid",
-    characterKey: "super_battle_droid",
-    variantKey: "default",
-    displayName: "Super Battle Droid",
-    subtitle: "",
-    franchise: "Star Wars",
-    rarity: "uncommon",
-    basePower: 6,
-    preferredJob: JOB_TYPES.FARM,
-    traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.MILITARY],
-    flavor: "Bulkier, tougher, and slightly less embarrassing."
-  },
-
-  {
-    id: "droideka",
-    characterKey: "droideka",
-    variantKey: "default",
-    displayName: "Droideka",
-    subtitle: "",
-    franchise: "Star Wars",
-    rarity: "uncommon",
-    basePower: 7,
-    preferredJob: JOB_TYPES.DELIVERY,
-    traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.MILITARY],
-    flavor: "Looks extremely qualified, which helps morale in some circles."
-  },
-
-  {
-    id: "magnaguard",
-    characterKey: "magnaguard",
-    variantKey: "default",
-    displayName: "MagnaGuard",
-    subtitle: "",
-    franchise: "Star Wars",
-    rarity: "uncommon",
-    basePower: 7,
-    preferredJob: JOB_TYPES.HEROIC,
-    traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.GUARD],
-    flavor: "Excellent bodyguard material, not famous for charm."
   },
 
   {
@@ -197,6 +140,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "",
     franchise: "Star Wars",
     rarity: "common",
+    prestige: 1,
     basePower: 5,
     preferredJob: JOB_TYPES.FARM,
     traits: [TRAITS.CANNON_FODDER],
@@ -212,6 +156,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "",
     franchise: "Star Wars",
     rarity: "common",
+    prestige: 1,
     basePower: 5,
     preferredJob: JOB_TYPES.DELIVERY,
     traits: [TRAITS.CANNON_FODDER],
@@ -227,26 +172,12 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "",
     franchise: "Star Wars",
     rarity: "common",
+    prestige: 1,
     basePower: 6,
     preferredJob: JOB_TYPES.FARM,
     traits: [TRAITS.CANNON_FODDER],
     tags: [CHARACTER_TAGS.GUARD],
     flavor: "Strong, loud, and not overly concerned with refinement."
-  },
-
-  {
-    id: "jawas",
-    characterKey: "jawas",
-    variantKey: "default",
-    displayName: "Jawas",
-    subtitle: "",
-    franchise: "Star Wars",
-    rarity: "uncommon",
-    basePower: 8,
-    preferredJob: JOB_TYPES.FARM,
-    traits: [TRAITS.CANNON_FODDER, TRAITS.SPECIALIST],
-    tags: [CHARACTER_TAGS.SCAVENGER, CHARACTER_TAGS.DESERT],
-    flavor: "Oddly effective in the right kind of dusty chaos."
   },
 
   {
@@ -257,6 +188,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "",
     franchise: "Star Wars",
     rarity: "common",
+    prestige: 2,
     basePower: 5,
     preferredJob: JOB_TYPES.FARM,
     traits: [TRAITS.CANNON_FODDER],
@@ -272,6 +204,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "",
     franchise: "Star Wars",
     rarity: "common",
+    prestige: 1,
     basePower: 6,
     preferredJob: JOB_TYPES.FARM,
     traits: [TRAITS.CANNON_FODDER],
@@ -287,6 +220,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "",
     franchise: "Star Wars",
     rarity: "common",
+    prestige: 1,
     basePower: 5,
     preferredJob: JOB_TYPES.FARM,
     traits: [TRAITS.CANNON_FODDER],
@@ -301,7 +235,8 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     displayName: "Wookiee Warrior",
     subtitle: "",
     franchise: "Star Wars",
-    rarity: "uncommon",
+    rarity: "common",
+    prestige: 2,
     basePower: 7,
     preferredJob: JOB_TYPES.FARM,
     traits: [TRAITS.CANNON_FODDER],
@@ -316,18 +251,101 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     displayName: "Mandalorian Warrior",
     subtitle: "",
     franchise: "Star Wars",
-    rarity: "uncommon",
+    rarity: "common",
+    prestige: 3,
     basePower: 7,
     preferredJob: JOB_TYPES.DELIVERY,
     traits: [TRAITS.CANNON_FODDER],
     tags: [CHARACTER_TAGS.MILITARY, CHARACTER_TAGS.GUARD],
-    flavor: "Too competent to waste, but still excellent in a matching unit."
+    flavor: "Nameless, but still carries more prestige than most grunts."
   },
 
   // ========================================================
-  // Named / Higher-Impact Characters
-  // --------------------------------------------------------
-  // Includes proof-of-concept variant handling.
+  // Uncommon / Notable Units
+  // ========================================================
+
+  {
+    id: "crimson_guard",
+    characterKey: "crimson_guard",
+    variantKey: "default",
+    displayName: "Crimson Guard",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 3,
+    basePower: 7,
+    preferredJob: JOB_TYPES.HEROIC,
+    traits: [TRAITS.CANNON_FODDER],
+    tags: [CHARACTER_TAGS.GUARD, CHARACTER_TAGS.MILITARY],
+    flavor: "More suited to elite guard work than ordinary labor."
+  },
+
+  {
+    id: "super_battle_droid",
+    characterKey: "super_battle_droid",
+    variantKey: "default",
+    displayName: "Super Battle Droid",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 6,
+    preferredJob: JOB_TYPES.FARM,
+    traits: [TRAITS.CANNON_FODDER],
+    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.MILITARY],
+    flavor: "Bulkier, tougher, and slightly less embarrassing."
+  },
+
+  {
+    id: "droideka",
+    characterKey: "droideka",
+    variantKey: "default",
+    displayName: "Droideka",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 7,
+    preferredJob: JOB_TYPES.DELIVERY,
+    traits: [TRAITS.CANNON_FODDER],
+    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.MILITARY],
+    flavor: "Looks extremely qualified, which helps morale in some circles."
+  },
+
+  {
+    id: "magnaguard",
+    characterKey: "magnaguard",
+    variantKey: "default",
+    displayName: "MagnaGuard",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 3,
+    basePower: 7,
+    preferredJob: JOB_TYPES.HEROIC,
+    traits: [TRAITS.CANNON_FODDER],
+    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.GUARD],
+    flavor: "Excellent bodyguard material, not famous for charm."
+  },
+
+  {
+    id: "jawas",
+    characterKey: "jawas",
+    variantKey: "default",
+    displayName: "Jawas",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 8,
+    preferredJob: JOB_TYPES.FARM,
+    traits: [TRAITS.CANNON_FODDER, TRAITS.SPECIALIST],
+    tags: [CHARACTER_TAGS.SCAVENGER, CHARACTER_TAGS.DESERT],
+    flavor: "Oddly effective in the right kind of dusty chaos."
+  },
+
+  // ========================================================
+  // Rare / Supporting Characters
   // ========================================================
 
   {
@@ -337,12 +355,13 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     displayName: "C-3PO",
     subtitle: "",
     franchise: "Star Wars",
-    rarity: "uncommon",
+    rarity: "rare",
+    prestige: 3,
     basePower: 7,
     preferredJob: JOB_TYPES.SERVICE,
     traits: [TRAITS.SUPPORT],
     tags: [CHARACTER_TAGS.ROBOT],
-    flavor: "Polite, anxious, and organized under pressure."
+    flavor: "Polite, anxious, and far more important than his job title suggests."
   },
 
   {
@@ -353,26 +372,12 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "",
     franchise: "Star Wars",
     rarity: "rare",
+    prestige: 3,
     basePower: 11,
     preferredJob: JOB_TYPES.DELIVERY,
     traits: [TRAITS.SUPPORT],
     tags: [CHARACTER_TAGS.GUARD],
     flavor: "Strong, loyal, and much better than this job deserves."
-  },
-
-  {
-    id: "han_solo",
-    characterKey: "han_solo",
-    variantKey: "prime",
-    displayName: "Han Solo",
-    subtitle: "Prime",
-    franchise: "Star Wars",
-    rarity: "rare",
-    basePower: 11,
-    preferredJob: JOB_TYPES.DELIVERY,
-    traits: [TRAITS.ROGUE],
-    tags: [CHARACTER_TAGS.PILOT],
-    flavor: "Thrives in fast-moving, lightly supervised work."
   },
 
   {
@@ -383,6 +388,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "",
     franchise: "Star Wars",
     rarity: "rare",
+    prestige: 3,
     basePower: 12,
     preferredJob: JOB_TYPES.DELIVERY,
     traits: [TRAITS.ROGUE],
@@ -391,11 +397,60 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
   },
 
   // ========================================================
-  // Variant Example: Obi-Wan Kenobi
-  // --------------------------------------------------------
-  // Proof of concept for multi-performer character versions.
-  // Same characterKey, different variantKey and ID.
+  // Ultra-Rare / Stars
   // ========================================================
+
+  {
+    id: "han_solo",
+    characterKey: "han_solo",
+    variantKey: "prime",
+    displayName: "Han Solo",
+    subtitle: "Prime",
+    franchise: "Star Wars",
+    rarity: "ultra",
+    prestige: 3,
+    mythicVariantId: "han_solo_carbonite",
+    alternateOutfits: [
+      {
+        id: "han_solo_stormtrooper_disguise",
+        label: "Stormtrooper Disguise",
+        imagePath: "assets/characters/starwars/han_solo_stormtrooper_disguise.png"
+      }
+    ],
+    basePower: 12,
+    preferredJob: JOB_TYPES.DELIVERY,
+    traits: [TRAITS.ROGUE],
+    tags: [CHARACTER_TAGS.PILOT],
+    flavor: "Thrives in fast-moving, lightly supervised work."
+  },
+
+  {
+    id: "luke_skywalker",
+    characterKey: "luke_skywalker",
+    variantKey: "prime",
+    displayName: "Luke Skywalker",
+    subtitle: "Prime",
+    franchise: "Star Wars",
+    rarity: "ultra",
+    prestige: 3,
+    alternateOutfits: [
+      {
+        id: "luke_skywalker_xwing_pilot",
+        label: "X-Wing Pilot Gear",
+        imagePath: "assets/characters/starwars/luke_skywalker_xwing_pilot.png"
+      },
+      {
+        id: "luke_skywalker_stormtrooper_disguise",
+        label: "Stormtrooper Disguise",
+        imagePath: "assets/characters/starwars/luke_skywalker_stormtrooper_disguise.png"
+      }
+    ],
+    basePower: 14,
+    preferredJob: JOB_TYPES.HEROIC,
+    traits: [TRAITS.HERO, TRAITS.MORAL_CODE],
+    tags: [CHARACTER_TAGS.REBEL],
+    flavor: "Prestige, talent, and a strong sense that some jobs are beneath him."
+  },
 
   {
     id: "obi_wan_kenobi_alec_guinness",
@@ -405,6 +460,8 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "Alec Guinness",
     franchise: "Star Wars",
     rarity: "ultra",
+    prestige: 3,
+    mythicVariantId: "obi_wan_kenobi_force_ghost",
     basePower: 13,
     preferredJob: JOB_TYPES.HEROIC,
     traits: [TRAITS.HERO, TRAITS.MORAL_CODE, TRAITS.SUPPORT],
@@ -420,6 +477,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     subtitle: "Ewan McGregor",
     franchise: "Star Wars",
     rarity: "ultra",
+    prestige: 3,
     basePower: 13,
     preferredJob: JOB_TYPES.HEROIC,
     traits: [TRAITS.HERO, TRAITS.MORAL_CODE, TRAITS.SUPPORT],
@@ -427,19 +485,44 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     flavor: "More active, more adaptable, and still above this nonsense."
   },
 
-  {
-    id: "luke_skywalker",
-    characterKey: "luke_skywalker",
-    variantKey: "prime",
-    displayName: "Luke Skywalker",
-    subtitle: "Prime",
-    franchise: "Star Wars",
-    rarity: "ultra",
-    basePower: 14,
-    preferredJob: JOB_TYPES.HEROIC,
-    traits: [TRAITS.HERO, TRAITS.MORAL_CODE],
-    tags: [CHARACTER_TAGS.REBEL],
-    flavor: "Prestige, talent, and a strong sense that some jobs are beneath him."
-  }
-], "assets/characters/starwars");
+  // ========================================================
+  // Mythic / Shiny Alternate Versions
+  // --------------------------------------------------------
+  // These should generally not appear in regular rarity odds.
+  // They are intended to appear through mythic rolls, events,
+  // or special reward mechanics.
+  // ========================================================
 
+  {
+    id: "han_solo_carbonite",
+    characterKey: "han_solo",
+    variantKey: "carbonite",
+    displayName: "Han Solo",
+    subtitle: "Frozen in Carbonite",
+    franchise: "Star Wars",
+    rarity: "mythic",
+    prestige: 3,
+    basePower: 1,
+    preferredJob: JOB_TYPES.HEROIC,
+    traits: [TRAITS.ROGUE],
+    tags: [CHARACTER_TAGS.PILOT],
+    flavor: "Extremely prestigious. Extremely immobile. A collector’s nightmare and a manager’s problem."
+  },
+
+  {
+    id: "obi_wan_kenobi_force_ghost",
+    characterKey: "obi_wan_kenobi",
+    variantKey: "force_ghost",
+    displayName: "Obi-Wan Kenobi",
+    subtitle: "Force Ghost",
+    franchise: "Star Wars",
+    rarity: "mythic",
+    prestige: 3,
+    basePower: 4,
+    preferredJob: JOB_TYPES.HEROIC,
+    traits: [TRAITS.HERO, TRAITS.MORAL_CODE, TRAITS.SUPPORT],
+    tags: [],
+    flavor: "Cannot lift boxes. Can absolutely judge everyone lifting boxes."
+  }
+
+], "assets/characters/starwars");
