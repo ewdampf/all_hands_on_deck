@@ -76,6 +76,13 @@ function initializeButtons() {
   const closeWorkerModalBtn = document.getElementById("closeWorkerModalBtn");
   const workerModal = document.getElementById("workerModal");
 
+  const closeBusinessModalBtn = document.getElementById("closeBusinessModalBtn");
+  const businessModal = document.getElementById("businessModal");
+
+  const headlineBox = document.querySelector(".headline-box");
+  const closeHeadlineModalBtn = document.getElementById("closeHeadlineModalBtn");
+  const headlineModal = document.getElementById("headlineModal");
+
   const infoModeOverviewBtn = document.getElementById("infoModeOverviewBtn");
   const infoModeOwnedBtn = document.getElementById("infoModeOwnedBtn");
   const infoModeBuyBtn = document.getElementById("infoModeBuyBtn");
@@ -90,9 +97,12 @@ function initializeButtons() {
   const rosterFranchiseFilterSelect = document.getElementById("rosterFranchiseFilter");
   const rosterRarityFilterSelect = document.getElementById("rosterRarityFilter");
 
-  const headlineBox = document.querySelector(".headline-box");
-  const closeHeadlineModalBtn = document.getElementById("closeHeadlineModalBtn");
-  const headlineModal = document.getElementById("headlineModal");
+  const businessSortSelect = document.getElementById("businessSortSelect");
+  const businessSortDirectionBtn = document.getElementById("businessSortDirectionBtn");
+  const businessTierFilterSelect = document.getElementById("businessTierFilter");
+  const businessFranchiseFilterSelect = document.getElementById("businessFranchiseFilter");
+  const businessTagFilterSelect = document.getElementById("businessTagFilter");
+
 
   // --------------------------------------------------------
   // Daily token claim
@@ -104,6 +114,7 @@ function initializeButtons() {
       if (claimed) renderAll();
     });
   }
+
 
   // --------------------------------------------------------
   // Pack buttons
@@ -133,6 +144,7 @@ function initializeButtons() {
     });
   }
 
+
   // --------------------------------------------------------
   // Dev tools
   // --------------------------------------------------------
@@ -140,11 +152,12 @@ function initializeButtons() {
   if (devAddTokenBtn) {
     devAddTokenBtn.addEventListener("click", () => {
       state.tokens += 1;
-      setHeadline("Test token added", "One test token was added for development.");
+      setHeadline("Test token added", "One test token was added for development.", "system");
       saveGame();
       renderAll();
     });
   }
+
 
   // --------------------------------------------------------
   // Save / reset
@@ -153,7 +166,7 @@ function initializeButtons() {
   if (saveBtn) {
     saveBtn.addEventListener("click", () => {
       saveGame();
-      setHeadline("Progress saved", "Your local game has been saved in this browser.");
+      setHeadline("Progress saved", "Your local game has been saved in this browser.", "system");
       renderAll();
     });
   }
@@ -169,6 +182,7 @@ function initializeButtons() {
     });
   }
 
+
   // --------------------------------------------------------
   // Pack modal
   // --------------------------------------------------------
@@ -183,6 +197,7 @@ function initializeButtons() {
     });
   }
 
+
   // --------------------------------------------------------
   // Worker modal
   // --------------------------------------------------------
@@ -196,6 +211,41 @@ function initializeButtons() {
       if (event.target === workerModal) closeWorkerModal();
     });
   }
+
+
+  // --------------------------------------------------------
+  // Business modal
+  // --------------------------------------------------------
+
+  if (closeBusinessModalBtn) {
+    closeBusinessModalBtn.addEventListener("click", closeBusinessModal);
+  }
+
+  if (businessModal) {
+    businessModal.addEventListener("click", event => {
+      if (event.target === businessModal) closeBusinessModal();
+    });
+  }
+
+
+  // --------------------------------------------------------
+  // Headline modal
+  // --------------------------------------------------------
+
+  if (headlineBox) {
+    headlineBox.addEventListener("click", openHeadlineModal);
+  }
+
+  if (closeHeadlineModalBtn) {
+    closeHeadlineModalBtn.addEventListener("click", closeHeadlineModal);
+  }
+
+  if (headlineModal) {
+    headlineModal.addEventListener("click", event => {
+      if (event.target === headlineModal) closeHeadlineModal();
+    });
+  }
+
 
   // --------------------------------------------------------
   // Info panel modes
@@ -219,23 +269,6 @@ function initializeButtons() {
     infoModeBuyBtn.addEventListener("click", () => {
       infoPanelMode = "buy";
       renderAll();
-    });
-  }
-
-  // --------------------------------------------------------
-  // Headline modes
-  // --------------------------------------------------------
-  if (headlineBox) {
-    headlineBox.addEventListener("click", openHeadlineModal);
-  }
-
-  if (closeHeadlineModalBtn) {
-    closeHeadlineModalBtn.addEventListener("click", closeHeadlineModal);
-  }
-
-  if (headlineModal) {
-    headlineModal.addEventListener("click", event => {
-      if (event.target === headlineModal) closeHeadlineModal();
     });
   }
 
@@ -265,6 +298,7 @@ function initializeButtons() {
     });
   }
 
+
   // --------------------------------------------------------
   // Roster sorting
   // --------------------------------------------------------
@@ -283,6 +317,7 @@ function initializeButtons() {
     });
   }
 
+
   // --------------------------------------------------------
   // Roster filters
   // --------------------------------------------------------
@@ -298,6 +333,51 @@ function initializeButtons() {
     rosterRarityFilterSelect.addEventListener("change", () => {
       rosterRarityFilter = rosterRarityFilterSelect.value;
       renderRoster();
+    });
+  }
+
+
+  // --------------------------------------------------------
+  // Business sorting
+  // --------------------------------------------------------
+
+  if (businessSortSelect) {
+    businessSortSelect.addEventListener("change", () => {
+      businessSortMode = businessSortSelect.value;
+      renderInfoPanel();
+    });
+  }
+
+  if (businessSortDirectionBtn) {
+    businessSortDirectionBtn.addEventListener("click", () => {
+      businessSortDirection = businessSortDirection === "asc" ? "desc" : "asc";
+      renderInfoPanel();
+    });
+  }
+
+
+  // --------------------------------------------------------
+  // Business filters
+  // --------------------------------------------------------
+
+  if (businessTierFilterSelect) {
+    businessTierFilterSelect.addEventListener("change", () => {
+      businessTierFilter = businessTierFilterSelect.value;
+      renderInfoPanel();
+    });
+  }
+
+  if (businessFranchiseFilterSelect) {
+    businessFranchiseFilterSelect.addEventListener("change", () => {
+      businessFranchiseFilter = businessFranchiseFilterSelect.value;
+      renderInfoPanel();
+    });
+  }
+
+  if (businessTagFilterSelect) {
+    businessTagFilterSelect.addEventListener("change", () => {
+      businessTagFilter = businessTagFilterSelect.value;
+      renderInfoPanel();
     });
   }
 }
@@ -345,9 +425,18 @@ function initializeGame() {
   initializePackResults();
 
   infoPanelMode = "overview";
+
   rosterMode = "latest";
   rosterSortMode = "newest";
   rosterSortDirection = "desc";
+  rosterFranchiseFilter = "all";
+  rosterRarityFilter = "all";
+
+  businessSortMode = "tier";
+  businessSortDirection = "asc";
+  businessTierFilter = "all";
+  businessFranchiseFilter = "all";
+  businessTagFilter = "all";
 
   renderAll();
 
