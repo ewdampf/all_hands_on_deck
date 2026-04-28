@@ -227,6 +227,12 @@ function calculateBusinessMaintenance(businessId) {
 
   if (!businessDef || !businessState || !businessState.unlocked) return 0;
 
+  const assignedCards = getAssignedCardsForBusiness(businessId);
+
+  // No upkeep for empty businesses yet.
+  // This prevents early-game punishment for buying ahead.
+  if (assignedCards.length === 0) return 0;
+
   return CONFIG.MAINTENANCE.BUSINESS_BASE_BY_TIER[businessDef.tier] || 0;
 }
 
