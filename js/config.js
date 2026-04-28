@@ -123,6 +123,35 @@ const CONFIG = {
   },
 
   // ========================================================
+  // Business Tiers
+  // ========================================================
+BUSINESS_TIERS: {
+  1: {
+    baseUnlockCost: 0,
+    baseSlots: 6,
+    baseIncomeMultiplier: 1.0,
+    basePrestigeMultiplier: 1.0,
+    upgradeCostMultiplier: 1.0
+  },
+
+  2: {
+    baseUnlockCost: 250,
+    baseSlots: 5,
+    baseIncomeMultiplier: 1.3,
+    basePrestigeMultiplier: 1.15,
+    upgradeCostMultiplier: 1.4
+  },
+
+  3: {
+    baseUnlockCost: 800,
+    baseSlots: 4,
+    baseIncomeMultiplier: 1.7,
+    basePrestigeMultiplier: 1.35,
+    upgradeCostMultiplier: 1.9
+  }
+},
+
+  // ========================================================
   // Maintenance System
   // --------------------------------------------------------
   // Adds cost pressure to:
