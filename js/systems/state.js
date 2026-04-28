@@ -62,7 +62,20 @@ function createInitialState() {
     // ------------------------------------------------------
     // Headline / flavor feed
     // ------------------------------------------------------
-    headline: createDefaultHeadline()
+    headline: {
+      title: "Welcome aboard",
+      body: "Open a pack and start making questionable staffing decisions.",
+      createdAt: Date.now()
+    },
+
+    headlineHistory: [
+      {
+        title: "Welcome aboard",
+        body: "Open a pack and start making questionable staffing decisions.",
+        createdAt: Date.now(),
+        type: "system"
+      }
+    ]
   };
 }
 

@@ -2,13 +2,11 @@
 // Economy System
 // ----------------------------------------------------------
 // Handles:
-// - morale-based output modifiers
-// - per-card output calculation
-// - same-type cannon fodder bonuses
-// - business prestige calculation
-// - business income calculation
-//
-// This file contains the "math layer" of the game.
+// - worker output
+// - business income
+// - prestige
+// - maintenance
+// - gross / net income
 // ==========================================================
 
 
@@ -17,19 +15,19 @@
 // ==========================================================
 
 function getMoraleOutputModifier(morale) {
-  if (morale >= CONFIG.MORALE.HIGH_THRESHOLD) {
-    return CONFIG.MORALE.HIGH_MODIFIER;
-  }
-
-  if (morale >= 50) {
-    return CONFIG.MORALE.MID_MODIFIER;
-  }
-
-  if (morale >= CONFIG.MORALE.LOW_THRESHOLD) {
-    return CONFIG.MORALE.LOW_MODIFIER;
-  }
-
+  if (morale >= CONFIG.MORALE.HIGH_THRESHOLD) return CONFIG.MORALE.HIGH_MODIFIER;
+  if (morale >= 50) return CONFIG.MORALE.MID_MODIFIER;
+  if (morale >= CONFIG.MORALE.LOW_THRESHOLD) return CONFIG.MORALE.LOW_MODIFIER;
   return CONFIG.MORALE.VERY_LOW_MODIFIER;
+}
+
+
+// ==========================================================
+// Rarity helpers
+// ==========================================================
+
+function getCardStars(card) {
+  return card.stars || CONFIG.RARITIES[card.rarity]?.stars || 1;
 }
 
 
@@ -47,9 +45,7 @@ function getMatchingCannonFodderCount(card, businessId) {
 }
 
 function getSameTypeCannonFodderBonus(card, businessId) {
-  if (!card.traits.includes(TRAITS.CANNON_FODDER)) {
-    return 0;
-  }
+  if (!card.traits.includes(TRAITS.CANNON_FODDER)) return 0;
 
   const matchingTypeCount = getMatchingCannonFodderCount(card, businessId);
 
@@ -61,7 +57,7 @@ function getSameTypeCannonFodderBonus(card, businessId) {
 
 
 // ==========================================================
-// Output helper: off-role penalty
+// Output helpers
 // ==========================================================
 
 function getOffRolePenaltyMultiplier(businessId) {
@@ -75,11 +71,6 @@ function getOffRolePenaltyMultiplier(businessId) {
 
   return penalty;
 }
-
-
-// ==========================================================
-// Output helper: business-level multipliers
-// ==========================================================
 
 function getBusinessTierIncomeMultiplier(businessId) {
   const businessDef = getBusinessDef(businessId);
@@ -97,19 +88,7 @@ function getBusinessEfficiencyMultiplier(businessId) {
   );
 }
 
-
-// ==========================================================
-// Placeholder hook: business-specific output modifiers
-// ----------------------------------------------------------
-// Keep this function even if it returns 1 for now.
-// It gives you a clean place to add special business effects
-// later without rewriting calculateCardOutput().
-// ==========================================================
-
 function getBusinessSpecificCardOutputMultiplier(card, businessId) {
-  const businessDef = getBusinessDef(businessId);
-  if (!businessDef) return 1;
-
   switch (businessId) {
     case CONFIG.BUSINESS_IDS.BOUNTY_HUNTERS_GUILD:
       if (card.traits.includes(TRAITS.ROGUE)) return 1.30;
@@ -120,13 +99,6 @@ function getBusinessSpecificCardOutputMultiplier(card, businessId) {
       return 1;
   }
 }
-
-
-// ==========================================================
-// Placeholder hook: business-specific income modifiers
-// ----------------------------------------------------------
-// For things like casinos, federation boosts, cloning, etc.
-// ==========================================================
 
 function getBusinessSpecificIncomeMultiplier(businessId) {
   switch (businessId) {
@@ -148,10 +120,8 @@ function calculateCardOutput(card, businessId) {
 
   let output = card.basePower;
 
-  // Morale impact
   output *= (1 + getMoraleOutputModifier(card.morale));
 
-  // Same-type cannon fodder grouping
   if (card.traits.includes(TRAITS.CANNON_FODDER)) {
     output *= 1 + getSameTypeCannonFodderBonus(card, businessId);
 
@@ -160,7 +130,6 @@ function calculateCardOutput(card, businessId) {
     }
   }
 
-  // Hero bonus / low-morale hero penalty
   if (card.traits.includes(TRAITS.HERO)) {
     output *= 1 + CONFIG.OUTPUT.HERO_OUTPUT_MODIFIER;
 
@@ -169,12 +138,10 @@ function calculateCardOutput(card, businessId) {
     }
   }
 
-  // Support bonus
   if (card.traits.includes(TRAITS.SUPPORT)) {
     output *= 1 + CONFIG.OUTPUT.SUPPORT_OUTPUT_MODIFIER;
   }
 
-  // Wrong-job penalty
   if (
     card.preferredJob !== businessDef.jobType &&
     card.preferredJob !== JOB_TYPES.HEROIC
@@ -182,7 +149,6 @@ function calculateCardOutput(card, businessId) {
     output *= getOffRolePenaltyMultiplier(businessId);
   }
 
-  // Business-level multipliers
   output *= getBusinessTierIncomeMultiplier(businessId);
   output *= getBusinessRevenueMultiplierFromTags(businessDef);
   output *= getBusinessEfficiencyMultiplier(businessId);
@@ -206,13 +172,10 @@ function calculateBusinessPrestige(businessId) {
   let prestige = 0;
 
   cards.forEach(card => {
-    if (card.traits.includes(TRAITS.HERO)) {
-      prestige += CONFIG.PRESTIGE.HERO_BONUS;
-    }
+    const rarityStars = getCardStars(card);
+    const cardPrestige = card.prestige || 1;
 
-    if (card.rarity === "ultra") {
-      prestige += CONFIG.PRESTIGE.ULTRA_BONUS;
-    }
+    prestige += rarityStars * cardPrestige;
 
     if (card.morale >= CONFIG.MORALE.HIGH_THRESHOLD) {
       prestige += CONFIG.PRESTIGE.HIGH_MORALE_BONUS;
@@ -233,7 +196,6 @@ function calculateBusinessPrestige(businessId) {
 function calculateBusinessIncome(businessId) {
   const businessDef = getBusinessDef(businessId);
   const cards = getAssignedCardsForBusiness(businessId);
-  const prestige = calculateBusinessPrestige(businessId);
 
   if (!businessDef) return 0;
 
@@ -242,6 +204,8 @@ function calculateBusinessIncome(businessId) {
   cards.forEach(card => {
     total += calculateCardOutput(card, businessId);
   });
+
+  const prestige = calculateBusinessPrestige(businessId);
 
   total *= (1 + prestige / 100);
   total *= getBusinessSpecificIncomeMultiplier(businessId);
@@ -252,17 +216,81 @@ function calculateBusinessIncome(businessId) {
 
 
 // ==========================================================
-// Total income calculation
+// Maintenance calculations
 // ==========================================================
 
-function calculateTotalIncomePerTick() {
+function calculateBusinessMaintenance(businessId) {
+  if (!CONFIG.MAINTENANCE?.ENABLED) return 0;
+
+  const businessDef = getBusinessDef(businessId);
+  const businessState = getBusinessState(businessId);
+
+  if (!businessDef || !businessState || !businessState.unlocked) return 0;
+
+  return CONFIG.MAINTENANCE.BUSINESS_BASE_BY_TIER[businessDef.tier] || 0;
+}
+
+function calculateWorkerMaintenance(card) {
+  if (!CONFIG.MAINTENANCE?.ENABLED) return 0;
+  if (!card || card.morale > 0) return 0;
+
+  const stars = getCardStars(card);
+  const prestige = card.prestige || 1;
+
+  return Math.floor(
+    CONFIG.MAINTENANCE.ZERO_MORALE_WORKER_BASE +
+    stars * CONFIG.MAINTENANCE.ZERO_MORALE_RARITY_MULTIPLIER +
+    prestige * CONFIG.MAINTENANCE.ZERO_MORALE_PRESTIGE_MULTIPLIER
+  );
+}
+
+function calculateTotalBusinessMaintenancePerTick() {
+  return state.businesses.reduce((total, businessState) => {
+    return total + calculateBusinessMaintenance(businessState.id);
+  }, 0);
+}
+
+function calculateTotalWorkerMaintenancePerTick() {
+  return state.cards.reduce((total, card) => {
+    return total + calculateWorkerMaintenance(card);
+  }, 0);
+}
+
+function calculateTotalMaintenancePerTick() {
+  return (
+    calculateTotalBusinessMaintenancePerTick() +
+    calculateTotalWorkerMaintenancePerTick()
+  );
+}
+
+
+// ==========================================================
+// Gross / Net income
+// ==========================================================
+
+function calculateGrossIncomePerTick() {
   let totalIncome = 0;
 
   state.businesses.forEach(businessState => {
     if (!businessState.unlocked) return;
-
     totalIncome += calculateBusinessIncome(businessState.id);
   });
 
   return totalIncome;
+}
+
+function calculateNetIncomePerTick() {
+  return calculateGrossIncomePerTick() - calculateTotalMaintenancePerTick();
+}
+
+
+// ==========================================================
+// Backward-compatible total income function
+// ----------------------------------------------------------
+// Existing UI can continue calling this.
+// It now returns NET income.
+// ==========================================================
+
+function calculateTotalIncomePerTick() {
+  return calculateNetIncomePerTick();
 }

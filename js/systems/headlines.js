@@ -31,13 +31,28 @@ function createDefaultHeadline() {
 // Main helper used throughout the game.
 // ==========================================================
 
-function setHeadline(title, body) {
-  state.headline = {
+function setHeadline(title, body, type = "general") {
+  const headline = {
     title: typeof title === "string" ? title : "Update",
-    body: typeof body === "string" ? body : ""
+    body: typeof body === "string" ? body : "",
+    createdAt: Date.now(),
+    type
   };
+
+  state.headline = headline;
+
+  if (!Array.isArray(state.headlineHistory)) {
+    state.headlineHistory = [];
+  }
+
+  state.headlineHistory.unshift(headline);
+  state.headlineHistory = state.headlineHistory.slice(0, 10);
 }
 
+function getRecentHeadlines(limit = 3) {
+  if (!Array.isArray(state.headlineHistory)) return [];
+  return state.headlineHistory.slice(0, limit);
+}
 
 // ==========================================================
 // Reset headline

@@ -135,6 +135,14 @@ function normalizeCardState(card) {
     normalized.basePower = 1;
   }
 
+  if (typeof normalized.stars !== "number" || Number.isNaN(normalized.stars)) {
+    normalized.stars = CONFIG.RARITIES[normalized.rarity]?.stars || 1;
+  }
+  
+  if (typeof normalized.prestige !== "number" || Number.isNaN(normalized.prestige)) {
+    normalized.prestige = 1;
+  }
+
   if (typeof normalized.preferredJob !== "string") {
     normalized.preferredJob = JOB_TYPES.FARM;
   }
@@ -245,6 +253,20 @@ function normalizeLoadedState(loadedState) {
   if (typeof normalizedState.headline.body !== "string") {
     normalizedState.headline.body = freshState.headline.body;
   }
+
+  if (!Array.isArray(normalizedState.headlineHistory)) {
+    normalizedState.headlineHistory = [];
+  }
+
+  normalizedState.headlineHistory = normalizedState.headlineHistory
+    .filter(item => item && typeof item.title === "string")
+    .map(item => ({
+      title: item.title,
+      body: typeof item.body === "string" ? item.body : "",
+      createdAt: typeof item.createdAt === "number" ? item.createdAt : Date.now(),
+      type: typeof item.type === "string" ? item.type : "general"
+    }))
+    .slice(0, 10);
 
   // --------------------------------------------------------
   // Business runtime state

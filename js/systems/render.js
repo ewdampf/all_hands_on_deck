@@ -628,9 +628,46 @@ function renderHeadline() {
   const bodyEl = document.getElementById("headlineBody");
 
   if (titleEl) titleEl.textContent = state.headline?.title || "";
-  if (bodyEl) bodyEl.textContent = state.headline?.body || "";
+  if (bodyEl) {
+    const headlines = getRecentHeadlines(3);
+
+    bodyEl.innerHTML = headlines.map((headline, index) => `
+      <div class="headline-history-preview ${index === 0 ? "current" : ""}">
+        <strong>${headline.title}</strong>
+        <div>${headline.body}</div>
+      </div>
+    `).join("");
+  }
 }
 
+function openHeadlineModal() {
+  const modal = document.getElementById("headlineModal");
+  const content = document.getElementById("headlineModalContent");
+
+  if (!modal || !content) return;
+
+  const headlines = getRecentHeadlines(10);
+
+  content.innerHTML = headlines.length
+    ? headlines.map(headline => `
+        <div class="headline-history-item">
+          <div class="headline-history-title">${headline.title}</div>
+          <div class="muted">${headline.body}</div>
+        </div>
+      `).join("")
+    : `<div class="empty-state">No headlines yet.</div>`;
+
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function closeHeadlineModal() {
+  const modal = document.getElementById("headlineModal");
+  if (!modal) return;
+
+  modal.classList.add("hidden");
+  modal.setAttribute("aria-hidden", "true");
+}
 
 // ==========================================================
 // Info panel helpers

@@ -1,68 +1,103 @@
 // ==========================================================
 // Pack System
 // ----------------------------------------------------------
-// Handles:
-// - rarity rolls
-// - guaranteed pack contents
-// - card instance creation
-// - daily token claim
-// - spending tokens to open packs
-//
-// This file does NOT handle rendering or save/load directly,
-// except by calling the shared helpers.
+// Handles rarity rolls, guarantees, mythic checks, card
+// instance creation, daily token claims, and pack opening.
 // ==========================================================
 
 
 // ==========================================================
 // Character instance creation
-// ----------------------------------------------------------
-// Converts a static character template into a runtime card
-// owned by the player.
 // ==========================================================
 
 function cloneCharacterToCard(template) {
   return {
-    // Runtime identity
     instanceId: getNextCardInstanceId(),
 
-    // Static character identity
     id: template.id,
     characterKey: template.characterKey,
     variantKey: template.variantKey,
 
-    // Display info
     displayName: template.displayName,
     subtitle: template.subtitle || "",
     franchise: template.franchise,
     imagePath: template.imagePath || "",
     imageAlt: template.imageAlt || template.displayName,
 
-    // Gameplay info
     rarity: template.rarity,
+    stars: template.stars || CONFIG.RARITIES[template.rarity]?.stars || 1,
+    prestige: template.prestige || 1,
+
     basePower: template.basePower,
     preferredJob: template.preferredJob,
     traits: [...template.traits],
     tags: [...template.tags],
     flavor: template.flavor,
-    acquiredAt: Date.now(),
 
-    // Runtime card state
+    mythicVariantId: template.mythicVariantId || null,
+    alternateOutfits: template.alternateOutfits || [],
+
     morale: CONFIG.MORALE.STARTING,
-    assignedBusinessId: null
+    assignedBusinessId: null,
+    acquiredAt: Date.now()
   };
 }
 
 
 // ==========================================================
-// Character pool filtering
-// ----------------------------------------------------------
-// These helpers retrieve character templates from the global
-// character registry.
+// Rarity helpers
 // ==========================================================
+
+function getRarityIndex(rarity) {
+  return CONFIG.RARITY_ORDER.indexOf(rarity);
+}
+
+function rarityMeetsMinimum(rarity, minimumRarity) {
+  if (!minimumRarity) return true;
+
+  return getRarityIndex(rarity) >= getRarityIndex(minimumRarity);
+}
 
 function getCharactersByRarity(rarity) {
   return CHARACTERS.filter(character => character.rarity === rarity);
 }
+
+function rollRarityFromOdds(odds) {
+  const roll = Math.random();
+  let cumulative = 0;
+
+  for (const rarity of CONFIG.RARITY_ORDER) {
+    const chance = odds[rarity] || 0;
+    cumulative += chance;
+
+    if (roll < cumulative) {
+      return rarity;
+    }
+  }
+
+  return "common";
+}
+
+function rollRarityWithMinimum(odds, minimumRarity) {
+  let rarity = rollRarityFromOdds(odds);
+  let safety = 0;
+
+  while (!rarityMeetsMinimum(rarity, minimumRarity) && safety < 100) {
+    rarity = rollRarityFromOdds(odds);
+    safety += 1;
+  }
+
+  if (!rarityMeetsMinimum(rarity, minimumRarity)) {
+    return minimumRarity;
+  }
+
+  return rarity;
+}
+
+
+// ==========================================================
+// Character rolling
+// ==========================================================
 
 function getRandomCharacterByRarity(rarity) {
   const pool = getCharactersByRarity(rarity);
@@ -78,28 +113,32 @@ function getRandomCharacterByRarity(rarity) {
 
 
 // ==========================================================
-// Rarity rolling
+// Mythic hook
 // ----------------------------------------------------------
-// Used for non-guaranteed cards in a pack.
+// Placeholder. Later this can convert a rolled card into a
+// mythic variant when the base character has mythicVariantId.
 // ==========================================================
 
-function rollRandomRarity() {
-  const roll = Math.random();
-  const odds = CONFIG.PACKS.ODDS;
+function maybeApplyMythicUpgrade(card) {
+  if (!card) return card;
 
-  if (roll < odds.common) return "common";
-  if (roll < odds.common + odds.uncommon) return "uncommon";
-  if (roll < odds.common + odds.uncommon + odds.rare) return "rare";
-  return "ultra";
+  if (!card.mythicVariantId) return card;
+
+  if (Math.random() > CONFIG.MYTHIC.ROLL_CHANCE) return card;
+
+  const mythicTemplate = CHARACTERS.find(character => character.id === card.mythicVariantId);
+
+  if (!mythicTemplate) return card;
+
+  return cloneCharacterToCard(mythicTemplate);
 }
 
 
 // ==========================================================
 // Pack generation
 // ----------------------------------------------------------
-// Builds a pack from a pack definition in CONFIG.PACKS.
-// Guarantees are added first, then the remaining slots are
-// filled with rolled cards.
+// Guarantees are handled by making the final card meet the
+// configured guaranteedMinimum rarity.
 // ==========================================================
 
 function generatePack(packDef) {
@@ -110,30 +149,17 @@ function generatePack(packDef) {
 
   const results = [];
 
-  // --------------------------------------------------------
-  // Add guaranteed cards first
-  // --------------------------------------------------------
-  if (Array.isArray(packDef.guarantees)) {
-    packDef.guarantees.forEach(guaranteedRarity => {
-      const card = getRandomCharacterByRarity(guaranteedRarity);
-      if (card) {
-        results.push(card);
-      }
-    });
-  }
+  for (let i = 0; i < packDef.cardCount; i++) {
+    const isFinalCard = i === packDef.cardCount - 1;
+    const rarity = isFinalCard && packDef.guaranteedMinimum
+      ? rollRarityWithMinimum(packDef.odds, packDef.guaranteedMinimum)
+      : rollRarityFromOdds(packDef.odds);
 
-  // --------------------------------------------------------
-  // Fill remaining slots with rolled rarities
-  // --------------------------------------------------------
-  while (results.length < packDef.cardCount) {
-    const rolledRarity = rollRandomRarity();
-    const card = getRandomCharacterByRarity(rolledRarity);
+    let card = getRandomCharacterByRarity(rarity);
 
     if (card) {
+      card = maybeApplyMythicUpgrade(card);
       results.push(card);
-    } else {
-      console.error(`Failed to generate card for rolled rarity: ${rolledRarity}`);
-      break;
     }
   }
 
@@ -143,8 +169,6 @@ function generatePack(packDef) {
 
 // ==========================================================
 // Daily token availability
-// ----------------------------------------------------------
-// Determines whether the player may claim another daily token.
 // ==========================================================
 
 function getDailyTokenAvailable() {
@@ -159,8 +183,6 @@ function getDailyTokenAvailable() {
 
 // ==========================================================
 // Daily token claim
-// ----------------------------------------------------------
-// Grants the daily token reward if available.
 // ==========================================================
 
 function claimDailyToken() {
@@ -178,18 +200,13 @@ function claimDailyToken() {
 
   setHeadline("Daily token claimed", `You received ${CONFIG.DAILY.FREE_TOKEN_AMOUNT} token.`);
   saveGame();
+
   return true;
 }
 
 
 // ==========================================================
 // Pack opening
-// ----------------------------------------------------------
-// Main public entry point for buying/opening a pack by key.
-// Examples:
-// - openPackByType("BASIC")
-// - openPackByType("UNCOMMON")
-// - openPackByType("RARE")
 // ==========================================================
 
 function openPackByType(packKey) {
@@ -212,25 +229,22 @@ function openPackByType(packKey) {
 
   if (!Array.isArray(newCards) || newCards.length === 0) {
     setHeadline("Pack error", "The pack failed to generate any characters.");
+    saveGame();
     return [];
   }
 
   state.cards.push(...newCards);
 
-  setHeadline(
-    "Fresh recruits arrive",
-    `${newCards.map(card => card.displayName).join(", ")} joined your roster.`
-  );
+  setRecruitmentHeadline(newCards);
 
   saveGame();
+
   return newCards;
 }
 
 
 // ==========================================================
 // Free reward packs
-// ----------------------------------------------------------
-// Used for things like business purchases.
 // ==========================================================
 
 function grantFreePack(packKey = "BASIC") {
@@ -256,10 +270,7 @@ function grantFreePack(packKey = "BASIC") {
 
 
 // ==========================================================
-// Development/debug helper
-// ----------------------------------------------------------
-// Useful to quickly verify that packs are actually producing
-// cards and that the character pool is loaded.
+// Debug helper
 // ==========================================================
 
 function debugGeneratePack(packKey = "BASIC") {
@@ -271,6 +282,5 @@ function debugGeneratePack(packKey = "BASIC") {
   }
 
   const pack = generatePack(packDef);
-
   console.log(`Debug pack generated (${packKey}):`, pack);
 }
