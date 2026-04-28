@@ -164,6 +164,31 @@ const CONFIG = {
   FALLBACKS: {
     BUSINESS_IMAGE: "assets/businesses/fallback-business.png",
     CHARACTER_IMAGE: "assets/characters/fallback-character.png"
-  }
+  },
+
+BUSINESS_IDS: {
+  // Star Wars
+  MOISTURE_FARM: "moisture_farm",
+  SPICE_MINE: "spice_mine",
+  MOS_EISLEY_CANTINA: "mos_eisley_cantina",
+  CANTO_BIGHT_CASINO: "canto_bight_casino",
+  BOUNTY_HUNTERS_GUILD: "bounty_hunters_guild",
+  TRADE_FEDERATION: "trade_federation",
+  TECHNO_UNION: "techno_union",
+  KAMINOAN_CLONING_FACILITY: "kaminoan_cloning_facility",
+
+  // Futurama
+  PLANET_EXPRESS: "planet_express",
+  MOMCORP: "momcorp",
+  ROBOT_ARMS_APARTMENTS: "robot_arms_apartments",
+
+  // Generic
+  POTATO_FARM: "potato_farm",
+  TECH_SUPPORT_CENTER: "tech_support_center",
+  SUPER_SECRET_SPY_ORG: "super_secret_spy_org",
+
+  // Legacy / transitional
+  CENTRAL_PERK: "central_perk"
+}
 
 };
