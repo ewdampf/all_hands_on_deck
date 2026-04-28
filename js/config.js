@@ -14,7 +14,7 @@ const CONFIG = {
   },
 
   ECONOMY: {
-    GLOBAL_INCOME_MULTIPLIER: 0.20
+    GLOBAL_INCOME_MULTIPLIER: 0.50
   },
 
   DAILY: {
