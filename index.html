@@ -6,6 +6,7 @@
   <title>All Hands On Deck</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
   <!-- ======================================================
        Top Bar
@@ -37,95 +38,103 @@
   ======================================================= -->
   <main class="layout">
     <!-- ====================================================
-         Left Column = Actions
+         Left Column = Actions / Roster
     ===================================================== -->
     <section>
-<div class="panel">
-  <div class="section-title">
-    <h2>Actions</h2>
-    <div class="muted">Recruit, save, and manage your questionable empire</div>
-  </div>
+      <!-- ==================================================
+           Actions
+      =================================================== -->
+      <div class="panel">
+        <div class="section-title">
+          <h2>Actions</h2>
+          <div class="muted">Recruit, save, and manage your questionable empire</div>
+        </div>
 
-  <div class="action-section">
-    <div class="action-section-title">Daily</div>
-    <button id="freePackBtn">Claim Daily Token</button>
-  </div>
+        <div class="action-section">
+          <div class="action-section-title">Daily</div>
+          <button id="freePackBtn">Claim Daily Token</button>
+        </div>
 
-<div class="action-section">
-  <div class="action-section-title">Dev Tools</div>
-  <button id="devAddTokenBtn" class="secondary">Add 1 Test Token</button>
-</div>
+        <div class="action-section">
+          <div class="action-section-title">Standard Packs</div>
+          <div class="button-stack">
+            <button id="basicPackBtn" class="secondary">Basic Pack (1 Token)</button>
+            <button id="uncommonPackBtn" class="secondary">Uncommon Pack (2 Tokens)</button>
+            <button id="rarePackBtn" class="secondary">Rare Pack (5 Tokens)</button>
+          </div>
+        </div>
 
-  <div class="action-section">
-    <div class="action-section-title">Standard Packs</div>
-    <div class="button-stack">
-      <button id="basicPackBtn" class="secondary">Basic Pack (1 Token)</button>
-      <button id="uncommonPackBtn" class="secondary">Uncommon Pack (2 Tokens)</button>
-      <button id="rarePackBtn" class="secondary">Rare Pack (5 Tokens)</button>
-    </div>
-  </div>
+        <div class="action-section" id="specialPacksSection" style="display:none;">
+          <div class="action-section-title">Special Packs</div>
+          <div class="button-stack" id="specialPacksContainer"></div>
+        </div>
 
-  <div class="action-section" id="specialPacksSection" style="display:none;">
-    <div class="action-section-title">Special Packs</div>
-    <div class="button-stack" id="specialPacksContainer"></div>
-  </div>
+        <div class="action-section">
+          <div class="action-section-title">Dev Tools</div>
+          <button id="devAddTokenBtn" class="secondary">Add 1 Test Token</button>
+        </div>
 
-  <div class="action-section">
-    <div class="action-section-title">Game</div>
-    <div class="button-stack">
-      <button id="saveBtn" class="secondary">Save</button>
-      <button id="resetBtn" class="secondary">Reset</button>
-    </div>
-  </div>
+        <div class="action-section">
+          <div class="action-section-title">Game</div>
+          <div class="button-stack">
+            <button id="saveBtn" class="secondary">Save</button>
+            <button id="resetBtn" class="secondary">Reset</button>
+          </div>
+        </div>
 
-  <div id="packResults" style="display:none;"></div>
-</div>
+        <div id="packResults" style="display:none;"></div>
+      </div>
 
+      <!-- ==================================================
+           Roster
+      =================================================== -->
       <div class="panel" style="margin-top:16px;">
         <div class="section-title">
           <h2>Roster</h2>
-          <div class="muted">Assign workers to the least appropriate jobs possible</div>
+          <div class="muted">Click a worker to view details or reassign them</div>
         </div>
 
- <div class="roster-controls">
-  <div class="info-mode-tabs">
-    <button id="rosterModeLatestBtn" class="secondary small-button">Latest</button>
-    <button id="rosterModeUnassignedBtn" class="secondary small-button">Unassigned</button>
-    <button id="rosterModeFilteredBtn" class="secondary small-button">Filtered</button>
-  </div>
-  <div class="roster-sort-row">
-    <label class="small muted">Sort</label>
+        <div class="roster-controls">
+          <div class="info-mode-tabs">
+            <button id="rosterModeLatestBtn" class="secondary small-button">Latest</button>
+            <button id="rosterModeUnassignedBtn" class="secondary small-button">Unassigned</button>
+            <button id="rosterModeFilteredBtn" class="secondary small-button">Filtered</button>
+          </div>
 
-    <select id="rosterSortSelect" class="assignment-select compact-select">
-      <option value="newest">Newest</option>
-      <option value="name">Name</option>
-      <option value="assignment">Assignment</option>
-      <option value="morale">Morale</option>
-      <option value="income">Income</option>
-      <option value="rarity">Rarity</option>
-      <option value="franchise">Franchise</option>
-    </select>
+          <div class="roster-sort-row">
+            <label class="small muted">Sort</label>
 
-    <button id="rosterSortDirectionBtn" class="secondary small-button">
-      ↓
-    </button>
-  </div>
-<div id="rosterFilterControls" class="roster-filter-controls">
-  <select id="rosterFranchiseFilter" class="assignment-select compact-select">
-    <option value="all">All Franchises</option>
-  </select>
+            <select id="rosterSortSelect" class="assignment-select compact-select">
+              <option value="newest">Newest</option>
+              <option value="name">Name</option>
+              <option value="assignment">Assignment</option>
+              <option value="morale">Morale</option>
+              <option value="income">Income</option>
+              <option value="rarity">Rarity</option>
+              <option value="franchise">Franchise</option>
+            </select>
 
-  <select id="rosterRarityFilter" class="assignment-select compact-select">
-    <option value="all">All Rarities</option>
-    <option value="common">Common</option>
-    <option value="uncommon">Uncommon</option>
-    <option value="rare">Rare</option>
-    <option value="ultra">Ultra</option>
-  </select>
-</div>
+            <button id="rosterSortDirectionBtn" class="secondary small-button">↓</button>
+          </div>
 
-</div>
-       <div id="roster"></div>
+          <div id="rosterFilterControls" class="roster-filter-controls">
+            <select id="rosterFranchiseFilter" class="assignment-select compact-select">
+              <option value="all">All Franchises</option>
+            </select>
+
+            <select id="rosterRarityFilter" class="assignment-select compact-select">
+              <option value="all">All Rarities</option>
+              <option value="common">Common</option>
+              <option value="uncommon">Uncommon</option>
+              <option value="rare">Rare</option>
+              <option value="ultra">Ultra-Rare</option>
+              <option value="legendary">Legendary</option>
+              <option value="mythic">Mythic</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="roster"></div>
       </div>
     </section>
 
@@ -134,10 +143,11 @@
     ===================================================== -->
     <section>
       <!-- ==================================================
-           Headline always visible
+           Headline
       =================================================== -->
       <div class="panel">
-        <h3>Latest Headline</h3>
+        <h3>Latest Headlines</h3>
+
         <div class="headline-box">
           <div class="headline" id="headlineTitle">Welcome aboard</div>
           <div id="headlineBody" class="muted">
@@ -147,7 +157,7 @@
       </div>
 
       <!-- ==================================================
-           Info panel with mode buttons
+           Info Panel
       =================================================== -->
       <div class="panel" style="margin-top:16px;">
         <div class="section-title">
@@ -161,64 +171,115 @@
           <button id="infoModeBuyBtn" class="secondary small-button">Buy Businesses</button>
         </div>
 
+        <div class="business-controls">
+          <div class="roster-sort-row">
+            <label class="small muted">Sort</label>
+
+            <select id="businessSortSelect" class="assignment-select compact-select">
+              <option value="tier">Tier</option>
+              <option value="name">Name</option>
+              <option value="income">Income</option>
+              <option value="maintenance">Maintenance</option>
+              <option value="net">Net</option>
+            </select>
+
+            <button id="businessSortDirectionBtn" class="secondary small-button">↑</button>
+          </div>
+
+          <div class="roster-filter-controls" style="display:flex;">
+            <select id="businessTierFilter" class="assignment-select compact-select">
+              <option value="all">All Tiers</option>
+              <option value="1">Tier 1</option>
+              <option value="2">Tier 2</option>
+              <option value="3">Tier 3</option>
+            </select>
+
+            <select id="businessFranchiseFilter" class="assignment-select compact-select">
+              <option value="all">All Franchises</option>
+            </select>
+
+            <select id="businessTagFilter" class="assignment-select compact-select">
+              <option value="all">All Tags</option>
+            </select>
+          </div>
+        </div>
+
         <div id="infoPanelContent"></div>
       </div>
     </section>
   </main>
 
-<!-- ======================================================
-     Pack Opening Modal
-======================================================= -->
-<div id="packModal" class="modal-overlay hidden" aria-hidden="true">
-  <div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="packModalTitle">
-    <div class="modal-header">
-      <div>
-        <h2 id="packModalTitle">Pack Opened</h2>
-        <div class="muted">Assign your new recruits now or close this window and deal with them later.</div>
+  <!-- ======================================================
+       Pack Opening Modal
+  ======================================================= -->
+  <div id="packModal" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal-window" role="dialog" aria-modal="true" aria-labelledby="packModalTitle">
+      <div class="modal-header">
+        <div>
+          <h2 id="packModalTitle">Pack Opened</h2>
+          <div class="muted">Assign your new recruits now or close this window and deal with them later.</div>
+        </div>
+
+        <button id="closePackModalBtn" class="secondary small-button">Close</button>
       </div>
 
-      <button id="closePackModalBtn" class="secondary small-button">Close</button>
+      <div id="packModalCards" class="modal-card-grid"></div>
     </div>
-
-    <div id="packModalCards" class="modal-card-grid"></div>
   </div>
-</div>
 
-<!-- ======================================================
-     Headline History Modal
-======================================================= -->
-<div id="headlineModal" class="modal-overlay hidden" aria-hidden="true">
-  <div class="modal-window" role="dialog" aria-modal="true">
-    <div class="modal-header">
-      <div>
-        <h2>Recent Headlines</h2>
-        <div class="muted">Your last 10 updates</div>
+  <!-- ======================================================
+       Worker Detail Modal
+  ======================================================= -->
+  <div id="workerModal" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal-window" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <div>
+          <h2 id="workerModalTitle">Worker</h2>
+          <div id="workerModalSubtitle" class="muted"></div>
+        </div>
+
+        <button id="closeWorkerModalBtn" class="secondary small-button">Close</button>
       </div>
 
-      <button id="closeHeadlineModalBtn" class="secondary small-button">Close</button>
+      <div id="workerModalContent"></div>
     </div>
-
-    <div id="headlineModalContent"></div>
   </div>
-</div>
 
-<!-- ======================================================
-     Worker Detail Modal
-======================================================= -->
-<div id="workerModal" class="modal-overlay hidden" aria-hidden="true">
-  <div class="modal-window" role="dialog" aria-modal="true">
-    <div class="modal-header">
-      <div>
-        <h2 id="workerModalTitle">Worker</h2>
-        <div id="workerModalSubtitle" class="muted"></div>
+  <!-- ======================================================
+       Business Detail Modal
+  ======================================================= -->
+  <div id="businessModal" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal-window" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <div>
+          <h2 id="businessModalTitle">Business</h2>
+          <div id="businessModalSubtitle" class="muted"></div>
+        </div>
+
+        <button id="closeBusinessModalBtn" class="secondary small-button">Close</button>
       </div>
 
-      <button id="closeWorkerModalBtn" class="secondary small-button">Close</button>
+      <div id="businessModalContent"></div>
     </div>
-
-    <div id="workerModalContent"></div>
   </div>
-</div>
+
+  <!-- ======================================================
+       Headline History Modal
+  ======================================================= -->
+  <div id="headlineModal" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal-window" role="dialog" aria-modal="true">
+      <div class="modal-header">
+        <div>
+          <h2>Recent Headlines</h2>
+          <div class="muted">Your last 10 updates</div>
+        </div>
+
+        <button id="closeHeadlineModalBtn" class="secondary small-button">Close</button>
+      </div>
+
+      <div id="headlineModalContent"></div>
+    </div>
+  </div>
 
   <!-- ======================================================
        Script Load Order
