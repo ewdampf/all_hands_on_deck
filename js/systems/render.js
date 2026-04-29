@@ -907,7 +907,7 @@ function openBusinessModal(businessId) {
 
       <div>
         <div><strong>Job Type:</strong> ${business.jobType}</div>
-        <div><strong>Tags:</strong> ${business.tags.join(", ")}</div>
+        <div><strong>Tags:</strong> ${business.tags.map(tag => `#${tag}`).join(" ")}</div>
         <div><strong>Description:</strong> ${business.description}</div>
 
         ${
