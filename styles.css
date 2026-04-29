@@ -895,3 +895,21 @@ button:disabled {
   background: #202020;
   border-color: #3a3a3a;
 }
+
+.tag-badge {
+  display: inline-block;
+  padding: 3px 7px;
+  margin: 2px 3px 2px 0;
+  border-radius: 999px;
+  background: #1f1f1f;
+  border: 1px solid #333;
+  color: #dcdcdc;
+  font-size: 12px;
+  line-height: 1.2;
+  cursor: help;
+}
+
+.job-type-badge {
+  color: #ffffff;
+  border-color: #ec672c;
+}
