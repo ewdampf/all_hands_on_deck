@@ -1,60 +1,65 @@
-// ==========================================================
-// Job Types
-// ----------------------------------------------------------
-// Job types define the CATEGORY of work a business performs.
-//
-// They are used for:
-// - matching character preferred jobs
-// - morale bonuses/penalties
-// - output efficiency calculations
-//
-// Characters typically have ONE preferred job type.
-// Businesses define ONE primary job type.
-//
-// Keep this list small and general.
-// ==========================================================
-
 const JOB_TYPES = {
-
-  // ========================================================
-  // Basic labor categories
-  // --------------------------------------------------------
-  // These represent broad types of work environments.
-  // ========================================================
-
-  // Physical, repetitive, or resource-based work
-  FARM: "farm",
-
-  // Movement-based, logistics, or transport work
-  DELIVERY: "delivery",
-
-  // Customer-facing, social, or service-oriented work
+  PRODUCTION: "production",
+  LOGISTICS: "logistics",
   SERVICE: "service",
+  RETAIL: "retail",
+  CORPORATE: "corporate",
+  RESEARCH: "research",
+  ENFORCEMENT: "enforcement",
+  COVERT: "covert",
+  MEDICAL: "medical",
+  HEROIC: "heroic",
+  MEDIA: "media",
+  ENTERTAINMENT: "entertainment"
+};
 
-
-  // ========================================================
-  // Special / flexible categories
-  // --------------------------------------------------------
-  // These allow exceptions and special handling.
-  // ========================================================
-
-  // High-profile / story-driven roles (heroes, leaders, etc.)
-  // Often treated as "flexible" in assignment logic
-  HEROIC: "heroic"
-
-
-  // ========================================================
-  // Future expansion ideas (commented for now)
-  // --------------------------------------------------------
-  // Add only when needed to avoid unnecessary complexity.
-  // ========================================================
-
-  /*
-  INDUSTRIAL: "industrial",    // factories, mining, heavy labor
-  MEDICAL: "medical",          // hospitals, care facilities
-  MILITARY: "military",        // structured combat/discipline jobs
-  SCIENCE: "science",          // labs, research facilities
-  ENTERTAINMENT: "entertainment", // media, performance
-  GOVERNMENT: "government"     // administrative / political roles
-  */
+const JOB_TYPE_DEFS = {
+  production: {
+    label: "Production",
+    description: "Makes raw output"
+  },
+  logistics: {
+    label: "Logistics",
+    description: "Moves things efficiently"
+  },
+  service: {
+    label: "Service",
+    description: "Customer-facing work"
+  },
+  retail: {
+    label: "Retail",
+    description: "High-volume sales"
+  },
+  corporate: {
+    label: "Corporate",
+    description: "Structured business systems"
+  },
+  research: {
+    label: "Research",
+    description: "Innovation and experiments"
+  },
+  enforcement: {
+    label: "Enforcement",
+    description: "Order and discipline"
+  },
+  covert: {
+    label: "Covert",
+    description: "Secret risky operations"
+  },
+  medical: {
+    label: "Medical",
+    description: "Stability and recovery"
+  },
+  heroic: {
+    label: "Heroic",
+    description: "Elite dramatic work"
+  },
+  media: {
+    label: "Media",
+    description: "Influence and information"
+  },
+  entertainment: {
+    label: "Entertainment",
+    description: "Spectacle and hype"
+  }
 };
