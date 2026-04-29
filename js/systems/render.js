@@ -906,8 +906,8 @@ function openBusinessModal(businessId) {
       ${getBusinessImageHtml(business, "worker-modal-image")}
 
       <div>
-        <div><strong>Job Type:</strong> ${business.jobType}</div>
-        <div><strong>Tags:</strong> ${business.tags.map(tag => `#${tag}`).join(" ")}</div>
+        <div><strong>Job Type:</strong> ${renderJobTypeBadge(business.jobType)}</div>
+        <div><strong>Tags:</strong> ${renderBusinessTagBadges(business.tags)}</div>
         <div><strong>Description:</strong> ${business.description}</div>
 
         ${
@@ -1071,6 +1071,44 @@ function renderInfoPanel() {
       break;
   }
 }
+
+
+// ==========================================================
+// Business type functions
+// ==========================================================
+
+function renderJobTypeBadge(jobType) {
+  const def = JOB_TYPE_DEFS[jobType];
+
+  if (!def) {
+    return `<span class="tag-badge" title="Unknown job type">${jobType}</span>`;
+  }
+
+  return `
+    <span class="tag-badge job-type-badge" title="${def.description}">
+      ${def.label}
+    </span>
+  `;
+}
+
+function renderBusinessTagBadge(tag) {
+  const def = BUSINESS_TAG_DEFS[tag];
+
+  if (!def) {
+    return `<span class="tag-badge" title="Unknown tag">#${tag}</span>`;
+  }
+
+  return `
+    <span class="tag-badge" title="${def.description}">
+      ${def.label}
+    </span>
+  `;
+}
+
+function renderBusinessTagBadges(tags = []) {
+  return tags.map(tag => renderBusinessTagBadge(tag)).join(" ");
+}
+
 
 
 // ==========================================================
