@@ -28,8 +28,8 @@ const GENERIC_BUSINESSES = [
     imageAlt: "Potato Farm",
 
     tier: 1,
-    jobType: JOB_TYPES.FARM,
-    tags: ["dirty", "labor_heavy"],
+jobType: JOB_TYPES.PRODUCTION,
+tags: [BUSINESS_TAGS.DIRTY, BUSINESS_TAGS.VOLUME],
 
     description: "Boil 'em, mash 'em, put 'em in a stew. Reliable, simple labor work with modest returns.",
 
@@ -66,8 +66,8 @@ const GENERIC_BUSINESSES = [
     imageAlt: "Tech Support Center",
 
     tier: 2,
-    jobType: JOB_TYPES.SERVICE,
-    tags: ["social"],
+jobType: JOB_TYPES.SERVICE,
+tags: [BUSINESS_TAGS.SOCIAL, BUSINESS_TAGS.SPECIALIZED],
 
     description: "Have you tried turning it off and on again? A steady service job with strong demand and questionable morale outcomes.",
 
@@ -104,8 +104,8 @@ const GENERIC_BUSINESSES = [
     imageAlt: "Super Secret Spy Organization",
 
     tier: 3,
-    jobType: JOB_TYPES.DELIVERY,
-    tags: ["risky", "shady"],
+obType: JOB_TYPES.COVERT,
+tags: [BUSINESS_TAGS.RISKY, BUSINESS_TAGS.SHADY, BUSINESS_TAGS.SECURE],
 
     description: "Highly classified operations carried out by highly questionable personnel. Outcomes vary wildly.",
 

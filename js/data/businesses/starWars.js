@@ -34,8 +34,8 @@ const STAR_WARS_BUSINESSES = [
     imageAlt: "Moisture Farm",
 
     tier: 1,
-    jobType: JOB_TYPES.FARM,
-    tags: ["dirty", "labor_heavy"],
+jobType: JOB_TYPES.PRODUCTION,
+tags: [BUSINESS_TAGS.DIRTY, BUSINESS_TAGS.VOLUME],
 
     description: "Hot, dusty, and not exactly prestigious. A perfect place for bulk labor.",
 
@@ -68,8 +68,8 @@ const STAR_WARS_BUSINESSES = [
     imageAlt: "Spice Mine",
 
     tier: 1,
-    jobType: JOB_TYPES.FARM,
-    tags: ["dirty", "shady"],
+jobType: JOB_TYPES.PRODUCTION,
+tags: [BUSINESS_TAGS.DIRTY, BUSINESS_TAGS.DANGEROUS, BUSINESS_TAGS.SHADY],
 
     description: "Profitable but rough work. Good for expendable labor, not so good for morale.",
 
@@ -102,8 +102,8 @@ const STAR_WARS_BUSINESSES = [
     imageAlt: "Mos Eisley Cantina",
 
     tier: 1,
-    jobType: JOB_TYPES.SERVICE,
-    tags: ["social", "shady"],
+jobType: JOB_TYPES.SERVICE,
+tags: [BUSINESS_TAGS.SOCIAL, BUSINESS_TAGS.SHADY, BUSINESS_TAGS.NOTORIOUS],
 
     description: "A lively and questionable social hub. Not safe, but people like being here more than a mine.",
 
@@ -140,8 +140,8 @@ const STAR_WARS_BUSINESSES = [
     imageAlt: "Canto Bight Casino",
 
     tier: 2,
-    jobType: JOB_TYPES.SERVICE,
-    tags: ["social"],
+jobType: JOB_TYPES.ENTERTAINMENT,
+tags: [BUSINESS_TAGS.RISKY, BUSINESS_TAGS.PRESTIGE, BUSINESS_TAGS.NOTORIOUS],
 
     description: "Elegant, high-stakes, and occasionally absurdly profitable. A social job with swingy outcomes.",
 
@@ -174,8 +174,8 @@ const STAR_WARS_BUSINESSES = [
     imageAlt: "Bounty Hunters' Guild",
 
     tier: 2,
-    jobType: JOB_TYPES.DELIVERY,
-    tags: ["risky", "shady"],
+jobType: JOB_TYPES.COVERT,
+tags: [BUSINESS_TAGS.RISKY, BUSINESS_TAGS.SHADY, BUSINESS_TAGS.SPECIALIZED],
 
     description: "A dangerous place for dangerous people. Rogues thrive here. Heroes, less so.",
 
@@ -212,8 +212,8 @@ const STAR_WARS_BUSINESSES = [
     imageAlt: "Trade Federation",
 
     tier: 3,
-    jobType: JOB_TYPES.DELIVERY,
-    tags: ["logistics", "military"],
+jobType: JOB_TYPES.LOGISTICS,
+tags: [BUSINESS_TAGS.NETWORKED, BUSINESS_TAGS.HIERARCHICAL, BUSINESS_TAGS.REGULATED],
 
     description: "A top-tier logistics operation. Efficient, scalable, and useful for boosting other delivery businesses later.",
 
@@ -246,8 +246,8 @@ const STAR_WARS_BUSINESSES = [
     imageAlt: "Techno Union",
 
     tier: 3,
-    jobType: JOB_TYPES.SERVICE,
-    tags: ["military"],
+jobType: JOB_TYPES.RESEARCH,
+tags: [BUSINESS_TAGS.EXPERIMENTAL, BUSINESS_TAGS.SPECIALIZED, BUSINESS_TAGS.HIERARCHICAL],
 
     description: "Highly technical and highly structured. Best suited for skilled labor and future robot support systems.",
 
@@ -280,8 +280,8 @@ const STAR_WARS_BUSINESSES = [
     imageAlt: "Kaminoan Cloning Facility",
 
     tier: 3,
-    jobType: JOB_TYPES.SERVICE,
-    tags: ["military"],
+jobType: JOB_TYPES.RESEARCH,
+tags: [BUSINESS_TAGS.EXPERIMENTAL, BUSINESS_TAGS.SECURE, BUSINESS_TAGS.SPECIALIZED],
 
     description: "A high-end facility with unusual workforce expansion potential. Fully staff it to enable future cloning effects.",
 

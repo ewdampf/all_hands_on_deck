@@ -34,8 +34,9 @@ const FUTURAMA_BUSINESSES = [
     imageAlt: "Planet Express",
 
     tier: 2,
-    jobType: JOB_TYPES.DELIVERY,
-    tags: ["risky", "logistics"],
+jobType: JOB_TYPES.LOGISTICS,
+tags: [BUSINESS_TAGS.RISKY, BUSINESS_TAGS.NETWORKED],
+
 
     description: "Fast-paced delivery work. Great for the right crew, disastrous for the wrong one.",
 
@@ -72,8 +73,8 @@ const FUTURAMA_BUSINESSES = [
     imageAlt: "MomCorp",
 
     tier: 3,
-    jobType: JOB_TYPES.SERVICE,
-    tags: ["logistics", "shady"],
+jobType: JOB_TYPES.CORPORATE,
+tags: [BUSINESS_TAGS.HIERARCHICAL, BUSINESS_TAGS.NETWORKED, BUSINESS_TAGS.SHADY],
 
     description: "A massive corporate machine. Efficient, profitable, and not especially wholesome.",
 
@@ -106,8 +107,8 @@ const FUTURAMA_BUSINESSES = [
     imageAlt: "Robot Arms Apartments",
 
     tier: 1,
-    jobType: JOB_TYPES.SERVICE,
-    tags: ["social"],
+jobType: JOB_TYPES.SERVICE,
+tags: [BUSINESS_TAGS.SOCIAL, BUSINESS_TAGS.COMFORT],
 
     description: "A busy social hub with low standards and constant activity. A decent place for service workers and robots alike.",
 
