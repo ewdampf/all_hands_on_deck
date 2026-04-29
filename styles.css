@@ -66,12 +66,21 @@ body {
 /* --- Tagline --- */
 .tagline {
   font-size: 18px;
-  color: #aaa;
-  margin: 0 auto;
-  max-width: 700px;
-  line-height: 1.4;
+  color: #d6d6d6;
+  margin: 4px auto 0;
+  max-width: 760px;
+  line-height: 1.45;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 12px rgba(236, 103, 44, 0.22);
 }
-
+.tagline::before,
+.tagline::after {
+  content: "✦";
+  color: #ec672c;
+  margin: 0 10px;
+  font-style: normal;
+}
 
 /* ==========================================================
    Layout
@@ -875,4 +884,14 @@ button:disabled {
 .headline-history-title {
   font-weight: 700;
   margin-bottom: 4px;
+}
+
+/* Clickable business cards */
+.info-business-card {
+  cursor: pointer;
+}
+
+.info-business-card:hover {
+  background: #202020;
+  border-color: #3a3a3a;
 }
