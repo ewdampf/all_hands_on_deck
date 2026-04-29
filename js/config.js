@@ -134,83 +134,143 @@ const CONFIG = {
     }
   },
 
-  BUSINESS_TAG_RULES: {
-    dirty: {
-      slotMultiplier: 1.15,
-      revenueMultiplier: 1.0,
-      prestigeMultiplier: 0.85,
-      moraleEffects: {
-        moralCodePenalty: 1
-      },
-      globalEffects: {}
-    },
-
-    labor_heavy: {
-      slotMultiplier: 1.25,
-      revenueMultiplier: 1.0,
-      prestigeMultiplier: 1.0,
-      moraleEffects: {},
-      globalEffects: {}
-    },
-
-    risky: {
-      slotMultiplier: 1.0,
-      revenueMultiplier: 1.15,
-      prestigeMultiplier: 1.05,
-      moraleEffects: {
-        moralCodePenalty: 1
-      },
-      globalEffects: {}
-    },
-
-    logistics: {
-      slotMultiplier: 1.0,
-      revenueMultiplier: 1.1,
-      prestigeMultiplier: 1.0,
-      moraleEffects: {},
-      globalEffects: {}
-    },
-
-    social: {
-      slotMultiplier: 0.9,
-      revenueMultiplier: 0.9,
-      prestigeMultiplier: 1.0,
-      moraleEffects: {},
-      globalEffects: {
-        moraleBonusIfWellStaffed: 1
-      }
-    },
-
-    medical: {
-      slotMultiplier: 0.75,
-      revenueMultiplier: 0.85,
-      prestigeMultiplier: 1.1,
-      moraleEffects: {},
-      globalEffects: {
-        moralePenaltyReduction: 0.05
-      }
-    },
-
-    military: {
-      slotMultiplier: 1.4,
-      revenueMultiplier: 1.1,
-      prestigeMultiplier: 1.2,
-      moraleEffects: {
-        lowSkillTolerancePenalty: 1
-      },
-      globalEffects: {}
-    },
-
-    shady: {
-      slotMultiplier: 1.0,
-      revenueMultiplier: 1.2,
-      prestigeMultiplier: 0.95,
-      moraleEffects: {
-        moralCodePenalty: 2
-      },
-      globalEffects: {}
-    }
+BUSINESS_TAG_RULES: {
+  dirty: {
+    slotMultiplier: 1.10,
+    revenueMultiplier: 1.00,
+    prestigeMultiplier: 0.90,
+    moraleEffects: {},
+    globalEffects: {}
   },
+
+  dangerous: {
+    slotMultiplier: 1.00,
+    revenueMultiplier: 1.15,
+    prestigeMultiplier: 1.00,
+    moraleEffects: {},
+    globalEffects: {}
+  },
+
+  risky: {
+    slotMultiplier: 1.00,
+    revenueMultiplier: 1.10,
+    prestigeMultiplier: 1.00,
+    moraleEffects: {},
+    globalEffects: {}
+  },
+
+  shady: {
+    slotMultiplier: 1.00,
+    revenueMultiplier: 1.15,
+    prestigeMultiplier: 0.95,
+    moraleEffects: {},
+    globalEffects: {}
+  },
+
+  secure: {
+    slotMultiplier: 0.95,
+    revenueMultiplier: 0.95,
+    prestigeMultiplier: 1.05,
+    moraleEffects: {},
+    globalEffects: {}
+  },
+
+  social: {
+    slotMultiplier: 1.00,
+    revenueMultiplier: 0.95,
+    prestigeMultiplier: 1.05,
+    moraleEffects: {},
+    globalEffects: {}
+  },
+
+  comfort: {
+    slotMultiplier: 0.95,
+    revenueMultiplier: 0.95,
+    prestigeMultiplier: 1.05,
+    moraleEffects: {},
+    globalEffects: {}
+  },
+
+  institutional: {
+    slotMultiplier: 1.00,
+    revenueMultiplier: 1.00,
+    prestigeMultiplier: 1.05,
+    moraleEffects: {},
+    globalEffects: {}
+  },
+
+  hierarchical: {
+    slotMultiplier: 1.00,
+    revenueMultiplier: 1.05,
+    prestigeMultiplier: 1.00,
+    moraleEffects: {},
+    globalEffects: {}
+  },
+
+  networked: {
+    slotMultiplier: 1.00,
+    revenueMultiplier: 1.05,
+    prestigeMultiplier: 1.00,
+    moraleEffects: {},
+    globalEffects: {}
+  },
+
+  synergistic: {
+    slotMultiplier: 1.00,
+    revenueMultiplier: 1.05,
+    prestigeMultiplier: 1.00,
+    moraleEffects: {},
+    globalEffects: {}
+  },
+
+  prestige: {
+    slotMultiplier: 0.95,
+    revenueMultiplier: 1.00,
+    prestigeMultiplier: 1.15,
+    moraleEffects: {},
+    globalEffects: {}
+  },
+
+  notorious: {
+    slotMultiplier: 1.00,
+    revenueMultiplier: 1.10,
+    prestigeMultiplier: 1.00,
+    moraleEffects: {},
+    globalEffects: {}
+  },
+
+  volume: {
+    slotMultiplier: 1.20,
+    revenueMultiplier: 0.95,
+    prestigeMultiplier: 0.95,
+    moraleEffects: {},
+    globalEffects: {}
+  },
+
+  specialized: {
+    slotMultiplier: 0.90,
+    revenueMultiplier: 1.10,
+    prestigeMultiplier: 1.05,
+    moraleEffects: {},
+    globalEffects: {}
+  },
+
+  experimental: {
+    slotMultiplier: 0.95,
+    revenueMultiplier: 1.10,
+    prestigeMultiplier: 1.00,
+    moraleEffects: {},
+    globalEffects: {}
+  },
+
+  regulated: {
+    slotMultiplier: 0.95,
+    revenueMultiplier: 0.95,
+    prestigeMultiplier: 1.05,
+    moraleEffects: {},
+    globalEffects: {}
+  }
+},
 
   MORALE: {
     STARTING: 70,
