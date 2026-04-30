@@ -162,6 +162,7 @@ function assignCardToBusiness(cardInstanceId, businessId) {
     setHeadline("Worker assigned", `${card.displayName} is now working at ${businessDef.name}.`);
   }
 
+  checkAssignmentMilestones(card, businessId);
   saveGame();
   return true;
 }
@@ -197,16 +198,13 @@ function purchaseBusiness(businessId) {
 
   normalizeBusinessSlots(businessId);
 
-  const rewardCards = grantFreePack("BASIC");
+  setHeadline(
+    "Business purchased",
+    `${businessDef.name} is now open. Expansion reward: +1 token.`
+  );
 
-  if (rewardCards.length > 0) {
-    setHeadline(
-      "Business purchased",
-      `${businessDef.name} is now open. New recruits arrived: ${rewardCards.map(card => card.displayName).join(", ")}`
-    );
-  } else {
-    setHeadline("Business purchased", `${businessDef.name} is now open for business.`);
-  }
+  state.tokens += 1;
+  checkBusinessPurchaseMilestones(businessId);
 
   saveGame();
   return true;
@@ -274,6 +272,7 @@ function upgradeBusiness(businessId, upgradeType) {
   }
 
   setHeadline("Business upgraded", `${businessDef.name} received a ${upgradeType} upgrade.`);
+  checkUpgradeMilestones(businessId, upgradeType);
   saveGame();
   return true;
 }
@@ -306,6 +305,7 @@ function activateAdCampaign(businessId) {
   businessState.adCooldownUntil = now + CONFIG.ADVERTISING.COOLDOWN_MS;
 
   setHeadline("Advertising launched", `${businessDef.name} income is temporarily boosted.`);
+  checkMarketingMilestones(businessId);
   saveGame();
   return true;
 }

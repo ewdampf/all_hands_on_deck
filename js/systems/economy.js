@@ -199,6 +199,12 @@ function calculateBusinessIncome(businessId) {
 
   if (!businessDef) return 0;
 
+  // If a business has only one worker and that worker has 0 morale,
+  // the business produces nothing.
+  if (cards.length === 1 && cards[0].morale <= 0) {
+    return 0;
+  }
+
   let total = 0;
 
   cards.forEach(card => {
@@ -214,7 +220,6 @@ function calculateBusinessIncome(businessId) {
   return Math.floor(total);
 }
 
-
 // ==========================================================
 // Maintenance calculations
 // ==========================================================
@@ -229,25 +234,24 @@ function calculateBusinessMaintenance(businessId) {
 
   const assignedCards = getAssignedCardsForBusiness(businessId);
 
-  // No upkeep for empty businesses yet.
-  // This prevents early-game punishment for buying ahead.
-  if (assignedCards.length === 0) return 0;
+  // Businesses only cost maintenance when unused.
+  if (assignedCards.length > 0) return 0;
 
-  return CONFIG.MAINTENANCE.BUSINESS_BASE_BY_TIER[businessDef.tier] || 0;
+  return businessDef.tier * 10;
 }
 
 function calculateWorkerMaintenance(card) {
   if (!CONFIG.MAINTENANCE?.ENABLED) return 0;
-  if (!card || card.morale > 0) return 0;
+  if (!card) return 0;
+
+  // Assigned workers have no direct maintenance cost.
+  // Their morale already affects production.
+  if (card.assignedBusinessId) return 0;
 
   const stars = getCardStars(card);
-  const prestige = card.prestige || 1;
+  const moraleGap = 100 - Math.max(CONFIG.MORALE.MIN, Math.min(CONFIG.MORALE.MAX, card.morale));
 
-  return Math.floor(
-    CONFIG.MAINTENANCE.ZERO_MORALE_WORKER_BASE +
-    stars * CONFIG.MAINTENANCE.ZERO_MORALE_RARITY_MULTIPLIER +
-    prestige * CONFIG.MAINTENANCE.ZERO_MORALE_PRESTIGE_MULTIPLIER
-  );
+  return Math.floor((moraleGap / 50) * stars);
 }
 
 function calculateTotalBusinessMaintenancePerTick() {

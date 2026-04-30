@@ -234,6 +234,7 @@ function openPackByType(packKey) {
   }
 
   state.cards.push(...newCards);
+  checkPackMilestones(newCards);
 
   setRecruitmentHeadline(newCards);
 
@@ -263,6 +264,7 @@ function grantFreePack(packKey = "BASIC") {
   }
 
   state.cards.push(...newCards);
+  checkPackMilestones(newCards);
   saveGame();
 
   return newCards;

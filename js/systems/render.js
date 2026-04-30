@@ -438,8 +438,18 @@ function openWorkerModal(cardInstanceId) {
         <div><strong>Assignment:</strong> ${assignmentName}</div>
         <div><strong>Income:</strong> ${income}/sec</div>
         <div><strong>Maintenance:</strong> ${maintenance}/sec</div>
-        <div class="muted" style="margin-top:8px;">${card.flavor}</div>
-      </div>
+
+        <div style="margin-top:8px;">
+          <strong>Traits:</strong><br>
+          ${renderTraitBadges(card.traits)}
+        </div>
+
+        <div style="margin-top:8px;">
+          <strong>Tags:</strong><br>
+          ${renderCharacterTagBadges(card.tags)}
+        </div>
+
+        <div class="muted" style="margin-top:8px;">${card.flavor}</div>      </div>
     </div>
 
     <div class="worker-modal-section">
@@ -510,6 +520,7 @@ function releaseCardFromWorkerModal(cardInstanceId) {
   const confirmed = window.confirm(`Release ${card.displayName}? This cannot be undone.`);
   if (!confirmed) return;
 
+  checkReleaseMilestones(card);
   if (card.assignedBusinessId) {
     unassignCard(card);
   }
@@ -957,6 +968,32 @@ function openBusinessModal(businessId) {
 
   modal.classList.remove("hidden");
   modal.setAttribute("aria-hidden", "false");
+}
+
+function renderCharacterTagBadge(tag) {
+  const def = CHARACTER_TAG_DEFS[tag];
+
+  if (!def) {
+    return `<span class="tag-badge" title="Unknown character tag">#${tag}</span>`;
+  }
+
+  return `
+    <span class="tag-badge" title="${def.description}">
+      ${def.label}
+    </span>
+  `;
+}
+
+function renderCharacterTagBadges(tags = []) {
+  return tags.map(tag => renderCharacterTagBadge(tag)).join(" ");
+}
+
+function renderTraitBadge(trait) {
+  return `<span class="tag-badge" title="Character trait">#${trait}</span>`;
+}
+
+function renderTraitBadges(traits = []) {
+  return traits.map(trait => renderTraitBadge(trait)).join(" ");
 }
 
 function renderBusinessModalOwnedActions(businessId) {

@@ -144,7 +144,7 @@ function normalizeCardState(card) {
   }
 
   if (typeof normalized.preferredJob !== "string") {
-    normalized.preferredJob = JOB_TYPES.FARM;
+    normalized.preferredJob = JOB_TYPES.PRODUCTION;
   }
 
   if (!Array.isArray(normalized.traits)) {
@@ -213,6 +213,17 @@ function normalizeLoadedState(loadedState) {
     normalizedState.freePackLastClaimedAt !== null
   ) {
     normalizedState.freePackLastClaimedAt = null;
+  }
+
+  // --------------------------------------------------------
+  // Milestone state
+  // --------------------------------------------------------
+  if (
+    !normalizedState.claimedMilestones ||
+    typeof normalizedState.claimedMilestones !== "object" ||
+    Array.isArray(normalizedState.claimedMilestones)
+  ) {
+    normalizedState.claimedMilestones = {};
   }
 
   // --------------------------------------------------------
