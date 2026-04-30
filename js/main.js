@@ -392,6 +392,7 @@ function gameTick() {
 
   const netIncome = calculateNetIncomePerTick();
   state.credits += netIncome;
+  checkRecurringMilestones();
 
   renderTopbar();
   renderHeadline();
