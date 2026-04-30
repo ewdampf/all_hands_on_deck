@@ -22,7 +22,66 @@ const CHARACTERS = [
   ...FUTURAMA_CHARACTERS,
   ...GENERIC_CHARACTERS
 ];
+// ==========================================================
+// Species validation
+// ----------------------------------------------------------
+// Every character should eventually have one primary species /
+// being-type tag. For now this is a warning, not an error.
+// ==========================================================
 
+const SPECIES_TAGS = [
+  CHARACTER_TAGS.HUMAN,
+  CHARACTER_TAGS.ROBOT,
+  CHARACTER_TAGS.ANDROID,
+  CHARACTER_TAGS.CYBORG,
+  CHARACTER_TAGS.AI,
+  CHARACTER_TAGS.ALIEN_UNKNOWN,
+  CHARACTER_TAGS.ANIMAL,
+
+  CHARACTER_TAGS.WOOKIEE,
+  CHARACTER_TAGS.EWOK,
+  CHARACTER_TAGS.TWILEK,
+  CHARACTER_TAGS.ZABRAK,
+  CHARACTER_TAGS.KAMINOAN,
+
+  CHARACTER_TAGS.KREE,
+  CHARACTER_TAGS.SKRULL,
+  CHARACTER_TAGS.NA_VI,
+
+  CHARACTER_TAGS.KLINGON,
+  CHARACTER_TAGS.ROMULAN,
+  CHARACTER_TAGS.VULCAN,
+  CHARACTER_TAGS.BORG,
+
+  CHARACTER_TAGS.ELF,
+  CHARACTER_TAGS.DWARF,
+  CHARACTER_TAGS.HOBBIT,
+  CHARACTER_TAGS.ORC,
+  CHARACTER_TAGS.GOBLIN,
+  CHARACTER_TAGS.TROLL,
+  CHARACTER_TAGS.ENT,
+  CHARACTER_TAGS.DRAGON,
+
+  CHARACTER_TAGS.VAMPIRE,
+  CHARACTER_TAGS.WEREWOLF,
+  CHARACTER_TAGS.DEMON,
+  CHARACTER_TAGS.ANGEL,
+  CHARACTER_TAGS.GHOST,
+  CHARACTER_TAGS.SPIRIT,
+  CHARACTER_TAGS.ZOMBIE,
+
+  CHARACTER_TAGS.MUTANT,
+  CHARACTER_TAGS.SUPERHUMAN,
+  CHARACTER_TAGS.KRYPTONIAN,
+  CHARACTER_TAGS.INHUMAN,
+  CHARACTER_TAGS.ASGARDIAN
+];
+
+function characterHasSpeciesTag(character) {
+  if (!Array.isArray(character.tags)) return false;
+
+  return character.tags.some(tag => SPECIES_TAGS.includes(tag));
+}
 
 // ==========================================================
 // Validation helpers
@@ -96,6 +155,16 @@ function validateCharacters(characterList) {
 
     if (character.tags && !Array.isArray(character.tags)) {
       errors.push(`${label} has non-array tags field.`);
+    }
+    if (Array.isArray(character.tags)) {
+      character.tags.forEach(tag => {
+        if (!CHARACTER_TAG_DEFS[tag]) {
+          errors.push(`${label} references undefined character tag: ${tag}`);
+        }
+      });
+    }
+    if (Array.isArray(character.tags) && !characterHasSpeciesTag(character)) {
+      warnings.push(`${label} has no species / being-type tag.`);
     }
 
     // ------------------------------------------------------
