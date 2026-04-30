@@ -179,7 +179,8 @@ function updateIdleWorkerMorale() {
     ) {
       setHeadline(
         "Release requested",
-        `${card.displayName} is tired of sitting idle and wants a job or a way out.`
+        `${card.displayName} is tired of sitting idle and wants a job or a way out.`,
+	"warning"
       );
     }
   });
@@ -216,7 +217,8 @@ function maybeTriggerMoraleHeadline() {
 
     setHeadline(
       "Epic headline achieved",
-      `${card.displayName} is thriving. The whole roster feels the energy.`
+      `${card.displayName} is thriving. The whole roster feels the energy.`,
+      "good"
     );
 
     state.cards.forEach(rosterCard => {
@@ -239,7 +241,8 @@ function maybeTriggerMoraleHeadline() {
 
     setHeadline(
       "Morale warning",
-      `${card.displayName} is visibly unhappy with current management decisions.`
+      `${card.displayName} is visibly unhappy with current management decisions.`,
+      "warning"
     );
   }
 }

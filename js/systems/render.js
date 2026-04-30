@@ -549,7 +549,7 @@ function renderHeadline() {
     const headlines = getRecentHeadlines(3);
 
     bodyEl.innerHTML = headlines.map((headline, index) => `
-      <div class="headline-history-preview ${index === 0 ? "current" : ""}">
+      <div class="headline-history-preview headline-${headline.type || "general"} ${index === 0 ? "current" : ""}">
         <strong>${headline.title}</strong>
         <div>${headline.body}</div>
       </div>
@@ -567,7 +567,7 @@ function openHeadlineModal() {
 
   content.innerHTML = headlines.length
     ? headlines.map(headline => `
-        <div class="headline-history-item">
+        <div class="headline-history-item headline-${headline.type || "general"}">
           <div class="headline-history-title">${headline.title}</div>
           <div class="muted">${headline.body}</div>
         </div>
