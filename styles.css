@@ -913,3 +913,23 @@ button:disabled {
   color: #ffffff;
   border-color: #ec672c;
 }
+
+.headline-history-preview.headline-milestone,
+.headline-history-item.headline-milestone {
+  border-left: 4px solid gold;
+}
+
+.headline-history-preview.headline-warning,
+.headline-history-item.headline-warning {
+  border-left: 4px solid #e74c3c;
+}
+
+.headline-history-preview.headline-good,
+.headline-history-item.headline-good {
+  border-left: 4px solid #2ecc71;
+}
+
+.headline-history-preview.headline-system,
+.headline-history-item.headline-system {
+  border-left: 4px solid #3498db;
+}
