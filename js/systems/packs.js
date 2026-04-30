@@ -286,3 +286,134 @@ function debugGeneratePack(packKey = "BASIC") {
   const pack = generatePack(packDef);
   console.log(`Debug pack generated (${packKey}):`, pack);
 }
+
+// special packs
+// ==========================================================
+// Special Franchise Packs
+// ==========================================================
+
+function getAvailableFranchisesForSpecialPacks() {
+  return [...new Set(CHARACTERS.map(character => character.franchise))]
+    .filter(Boolean)
+    .sort();
+}
+
+function needsNewDailySpecialPack() {
+  if (!state.dailySpecialPack?.franchise || !state.dailySpecialPack?.selectedAt) {
+    return true;
+  }
+
+  const elapsedMs = Date.now() - state.dailySpecialPack.selectedAt;
+  const resetMs = 24 * 60 * 60 * 1000;
+
+  return elapsedMs >= resetMs;
+}
+
+function chooseDailySpecialPackFranchise() {
+  const franchises = getAvailableFranchisesForSpecialPacks();
+
+  if (franchises.length === 0) return null;
+
+  const franchise = franchises[Math.floor(Math.random() * franchises.length)];
+
+  state.dailySpecialPack = {
+    franchise,
+    selectedAt: Date.now()
+  };
+
+  saveGame();
+
+  return franchise;
+}
+
+function getDailySpecialPackFranchise() {
+  if (needsNewDailySpecialPack()) {
+    return chooseDailySpecialPackFranchise();
+  }
+
+  return state.dailySpecialPack.franchise;
+}
+
+function getCharactersByFranchiseAndRarity(franchise, rarity) {
+  return CHARACTERS.filter(character =>
+    character.franchise === franchise &&
+    character.rarity === rarity
+  );
+}
+
+function getRandomCharacterByFranchiseAndRarity(franchise, rarity) {
+  const pool = getCharactersByFranchiseAndRarity(franchise, rarity);
+
+  if (pool.length === 0) {
+    console.warn(`No ${rarity} characters found for franchise: ${franchise}`);
+    return getRandomCharacterByRarity(rarity);
+  }
+
+  const template = pool[Math.floor(Math.random() * pool.length)];
+  return cloneCharacterToCard(template);
+}
+
+function rollSpecialFinalRarity() {
+  return rollRarityFromOdds(CONFIG.PACKS.SPECIAL_FRANCHISE.finalCardOdds);
+}
+
+function generateSpecialFranchisePack(franchise) {
+  const packDef = CONFIG.PACKS.SPECIAL_FRANCHISE;
+  const results = [];
+
+  packDef.guaranteedCards.forEach(rarity => {
+    let card = getRandomCharacterByFranchiseAndRarity(franchise, rarity);
+    if (card) {
+      card = maybeApplyMythicUpgrade(card);
+      results.push(card);
+    }
+  });
+
+  const finalRarity = rollSpecialFinalRarity();
+  let finalCard = getRandomCharacterByFranchiseAndRarity(franchise, finalRarity);
+
+  if (finalCard) {
+    finalCard = maybeApplyMythicUpgrade(finalCard);
+    results.push(finalCard);
+  }
+
+  return results;
+}
+
+function openDailySpecialFranchisePack() {
+  const franchise = getDailySpecialPackFranchise();
+  const packDef = CONFIG.PACKS.SPECIAL_FRANCHISE;
+
+  if (!franchise) {
+    setHeadline("Special pack unavailable", "No franchise is available for today’s special pack.", "warning");
+    return [];
+  }
+
+  if (state.tokens < packDef.tokenCost) {
+    setHeadline("Not enough tokens", `You need ${packDef.tokenCost} tokens for today’s ${franchise} pack.`, "warning");
+    return [];
+  }
+
+  state.tokens -= packDef.tokenCost;
+
+  const newCards = generateSpecialFranchisePack(franchise);
+
+  if (!Array.isArray(newCards) || newCards.length === 0) {
+    setHeadline("Special pack error", "The special pack failed to generate cards.", "warning");
+    saveGame();
+    return [];
+  }
+
+  state.cards.push(...newCards);
+
+  setHeadline(
+    `${franchise} Pack Opened`,
+    `You opened today's special ${franchise} pack.`,
+    "good"
+  );
+
+  checkPackMilestones(newCards);
+  saveGame();
+
+  return newCards;
+}

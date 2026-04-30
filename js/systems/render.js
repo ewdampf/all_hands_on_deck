@@ -59,6 +59,45 @@ function renderTopbar() {
   }
 }
 
+function renderSpecialPacks() {
+  const section = document.getElementById("specialPacksSection");
+  const container = document.getElementById("specialPacksContainer");
+
+  if (!section || !container) return;
+
+  const franchise = getDailySpecialPackFranchise();
+
+  if (!franchise) {
+    section.style.display = "none";
+    container.innerHTML = "";
+    return;
+  }
+
+  section.style.display = "block";
+
+  const cost = CONFIG.PACKS.SPECIAL_FRANCHISE.tokenCost;
+
+  container.innerHTML = `
+    <button
+      id="dailySpecialPackBtn"
+      class="secondary"
+      ${state.tokens < cost ? "disabled" : ""}
+    >
+      ${franchise} Pack (${cost} Tokens)
+    </button>
+  `;
+
+  const button = document.getElementById("dailySpecialPackBtn");
+
+  if (button) {
+    button.addEventListener("click", () => {
+      recentPackResults = openDailySpecialFranchisePack();
+      openPackModal(recentPackResults);
+      renderAll();
+    });
+  }
+}
+
 
 // ==========================================================
 // Image helpers
@@ -1165,6 +1204,7 @@ function renderBusinessStatsOnly() {
 
 function renderAll() {
   renderTopbar();
+  renderSpecialPacks();
   renderRoster();
   renderHeadline();
   renderInfoPanel();

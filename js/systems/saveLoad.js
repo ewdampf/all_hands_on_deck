@@ -215,6 +215,28 @@ function normalizeLoadedState(loadedState) {
     normalizedState.freePackLastClaimedAt = null;
   }
 
+if (
+  typeof normalizedState.dailySpecialPack !== "object" ||
+  normalizedState.dailySpecialPack === null
+) {
+  normalizedState.dailySpecialPack = {
+    franchise: null,
+    selectedAt: null
+  };
+}
+
+if (typeof normalizedState.dailySpecialPack.franchise !== "string") {
+  normalizedState.dailySpecialPack.franchise = null;
+}
+
+if (
+  typeof normalizedState.dailySpecialPack.selectedAt !== "number" &&
+  normalizedState.dailySpecialPack.selectedAt !== null
+) {
+  normalizedState.dailySpecialPack.selectedAt = null;
+}
+
+
   // --------------------------------------------------------
   // Milestone state
   // --------------------------------------------------------

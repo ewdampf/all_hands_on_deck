@@ -38,6 +38,10 @@ function createInitialState() {
     freePackLastClaimedAt: null,
     claimedMilestones: {},
 
+dailySpecialPack: {
+  franchise: null,
+  selectedAt: null
+},
     // ------------------------------------------------------
     // Card / roster tracking
     // ------------------------------------------------------
