@@ -30,9 +30,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "common",
     prestige: 1,
     basePower: 5,
-    preferredJob: JOB_TYPES.FARM,
+    preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.MILITARY],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.SOLDIER, CHARACTER_TAGS.MILITARY, CHARACTER_TAGS.DISCIPLINED],
     flavor: "Works best in large, identical formations."
   },
 
@@ -46,9 +46,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "common",
     prestige: 2,
     basePower: 5,
-    preferredJob: JOB_TYPES.FARM,
+    preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.MILITARY],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.SOLDIER, CHARACTER_TAGS.MILITARY, CHARACTER_TAGS.DISCIPLINED],
     flavor: "Disciplined and efficient in matching squads."
   },
 
@@ -62,9 +62,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "common",
     prestige: 1,
     basePower: 5,
-    preferredJob: JOB_TYPES.DELIVERY,
+    preferredJob: JOB_TYPES.LOGISTICS,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.MILITARY, CHARACTER_TAGS.PILOT],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.SOLDIER, CHARACTER_TAGS.MILITARY, CHARACTER_TAGS.PILOT],
     flavor: "Better at mobile work than standing in a field."
   },
 
@@ -78,9 +78,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "common",
     prestige: 1,
     basePower: 5,
-    preferredJob: JOB_TYPES.FARM,
+    preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.MILITARY],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.SOLDIER, CHARACTER_TAGS.MILITARY, CHARACTER_TAGS.COLD],
     flavor: "Prepared for harsh conditions, even when no one asked."
   },
 
@@ -94,9 +94,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "common",
     prestige: 1,
     basePower: 6,
-    preferredJob: JOB_TYPES.FARM,
+    preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.MILITARY, CHARACTER_TAGS.DESERT],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.SOLDIER, CHARACTER_TAGS.MILITARY, CHARACTER_TAGS.DESERT],
     flavor: "Actually comfortable in miserable working conditions."
   },
 
@@ -110,9 +110,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "common",
     prestige: 1,
     basePower: 5,
-    preferredJob: JOB_TYPES.DELIVERY,
+    preferredJob: JOB_TYPES.LOGISTICS,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.PILOT, CHARACTER_TAGS.MILITARY],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.PILOT, CHARACTER_TAGS.MILITARY, CHARACTER_TAGS.SPACE],
     flavor: "Wants speed, danger, and very poor odds."
   },
 
@@ -126,9 +126,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "common",
     prestige: 1,
     basePower: 4,
-    preferredJob: JOB_TYPES.FARM,
+    preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.MILITARY],
+    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.SOLDIER, CHARACTER_TAGS.MILITARY],
     flavor: "Not bright, but there are always more of them."
   },
 
@@ -142,9 +142,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "common",
     prestige: 1,
     basePower: 5,
-    preferredJob: JOB_TYPES.FARM,
+    preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.REBEL, CHARACTER_TAGS.MILITARY],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.REBEL, CHARACTER_TAGS.SOLDIER],
     flavor: "Less polished than the Empire, still useful in numbers."
   },
 
@@ -158,9 +158,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "common",
     prestige: 1,
     basePower: 5,
-    preferredJob: JOB_TYPES.DELIVERY,
+    preferredJob: JOB_TYPES.LOGISTICS,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.REBEL, CHARACTER_TAGS.PILOT],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.REBEL, CHARACTER_TAGS.PILOT, CHARACTER_TAGS.SPACE],
     flavor: "Much happier when the job involves movement and danger."
   },
 
@@ -174,9 +174,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "common",
     prestige: 1,
     basePower: 6,
-    preferredJob: JOB_TYPES.FARM,
+    preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.GUARD],
+    tags: [CHARACTER_TAGS.ALIEN_UNKNOWN, CHARACTER_TAGS.GUARD, CHARACTER_TAGS.WARRIOR],
     flavor: "Strong, loud, and not overly concerned with refinement."
   },
 
@@ -190,9 +190,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "common",
     prestige: 2,
     basePower: 5,
-    preferredJob: JOB_TYPES.FARM,
+    preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.TRIBAL],
+    tags: [CHARACTER_TAGS.EWOK, CHARACTER_TAGS.WARRIOR, CHARACTER_TAGS.RURAL],
     flavor: "Cute enough to underestimate. That is usually a mistake."
   },
 
@@ -206,9 +206,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "common",
     prestige: 1,
     basePower: 6,
-    preferredJob: JOB_TYPES.FARM,
+    preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.TRIBAL, CHARACTER_TAGS.DESERT],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.WARRIOR, CHARACTER_TAGS.DESERT, CHARACTER_TAGS.OUTCAST],
     flavor: "Handles harsh environments better than most."
   },
 
@@ -222,9 +222,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "common",
     prestige: 1,
     basePower: 5,
-    preferredJob: JOB_TYPES.FARM,
+    preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.TRIBAL, CHARACTER_TAGS.MILITARY],
+    tags: [CHARACTER_TAGS.ALIEN_UNKNOWN, CHARACTER_TAGS.WARRIOR, CHARACTER_TAGS.MILITARY],
     flavor: "Strange, energetic, and better in groups than you’d expect."
   },
 
@@ -238,9 +238,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "common",
     prestige: 2,
     basePower: 7,
-    preferredJob: JOB_TYPES.FARM,
+    preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.TRIBAL, CHARACTER_TAGS.GUARD],
+    tags: [CHARACTER_TAGS.WOOKIEE, CHARACTER_TAGS.WARRIOR, CHARACTER_TAGS.LOYAL],
     flavor: "Powerful labor, though not especially delicate."
   },
 
@@ -254,9 +254,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "common",
     prestige: 3,
     basePower: 7,
-    preferredJob: JOB_TYPES.DELIVERY,
+    preferredJob: JOB_TYPES.LOGISTICS,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.MILITARY, CHARACTER_TAGS.GUARD],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.WARRIOR, CHARACTER_TAGS.MILITARY, CHARACTER_TAGS.GUARD],
     flavor: "Nameless, but still carries more prestige than most grunts."
   },
 
@@ -274,9 +274,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "uncommon",
     prestige: 3,
     basePower: 7,
-    preferredJob: JOB_TYPES.HEROIC,
+    preferredJob: JOB_TYPES.ENFORCEMENT,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.GUARD, CHARACTER_TAGS.MILITARY],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.GUARD, CHARACTER_TAGS.MILITARY, CHARACTER_TAGS.DISCIPLINED],
     flavor: "More suited to elite guard work than ordinary labor."
   },
 
@@ -290,9 +290,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "uncommon",
     prestige: 2,
     basePower: 6,
-    preferredJob: JOB_TYPES.FARM,
+    preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.MILITARY],
+    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.SOLDIER, CHARACTER_TAGS.MILITARY],
     flavor: "Bulkier, tougher, and slightly less embarrassing."
   },
 
@@ -306,9 +306,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "uncommon",
     prestige: 2,
     basePower: 7,
-    preferredJob: JOB_TYPES.DELIVERY,
+    preferredJob: JOB_TYPES.ENFORCEMENT,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.MILITARY],
+    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.SOLDIER, CHARACTER_TAGS.MILITARY],
     flavor: "Looks extremely qualified, which helps morale in some circles."
   },
 
@@ -322,9 +322,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "uncommon",
     prestige: 3,
     basePower: 7,
-    preferredJob: JOB_TYPES.HEROIC,
+    preferredJob: JOB_TYPES.ENFORCEMENT,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.GUARD],
+    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.GUARD, CHARACTER_TAGS.WARRIOR],
     flavor: "Excellent bodyguard material, not famous for charm."
   },
 
@@ -338,9 +338,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "uncommon",
     prestige: 2,
     basePower: 8,
-    preferredJob: JOB_TYPES.FARM,
+    preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER, TRAITS.SPECIALIST],
-    tags: [CHARACTER_TAGS.SCAVENGER, CHARACTER_TAGS.DESERT],
+    tags: [CHARACTER_TAGS.ALIEN_UNKNOWN, CHARACTER_TAGS.SCAVENGER, CHARACTER_TAGS.DESERT, CHARACTER_TAGS.MISCHIEVOUS],
     flavor: "Oddly effective in the right kind of dusty chaos."
   },
 
@@ -360,7 +360,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 7,
     preferredJob: JOB_TYPES.SERVICE,
     traits: [TRAITS.SUPPORT],
-    tags: [CHARACTER_TAGS.ROBOT],
+    tags: [CHARACTER_TAGS.ANDROID, CHARACTER_TAGS.ANXIOUS, CHARACTER_TAGS.LAWFUL],
     flavor: "Polite, anxious, and far more important than his job title suggests."
   },
 
@@ -374,9 +374,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "rare",
     prestige: 3,
     basePower: 11,
-    preferredJob: JOB_TYPES.DELIVERY,
+    preferredJob: JOB_TYPES.LOGISTICS,
     traits: [TRAITS.SUPPORT],
-    tags: [CHARACTER_TAGS.GUARD],
+    tags: [CHARACTER_TAGS.WOOKIEE, CHARACTER_TAGS.LOYAL, CHARACTER_TAGS.MECHANIC, CHARACTER_TAGS.WARRIOR],
     flavor: "Strong, loyal, and much better than this job deserves."
   },
 
@@ -390,9 +390,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     rarity: "rare",
     prestige: 3,
     basePower: 12,
-    preferredJob: JOB_TYPES.DELIVERY,
+    preferredJob: JOB_TYPES.COVERT,
     traits: [TRAITS.ROGUE],
-    tags: [CHARACTER_TAGS.GUARD],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.CRIMINAL, CHARACTER_TAGS.GUARD, CHARACTER_TAGS.DISCIPLINED],
     flavor: "Highly effective, not always great for workplace harmony."
   },
 
@@ -418,9 +418,9 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
       }
     ],
     basePower: 12,
-    preferredJob: JOB_TYPES.DELIVERY,
+    preferredJob: JOB_TYPES.LOGISTICS,
     traits: [TRAITS.ROGUE],
-    tags: [CHARACTER_TAGS.PILOT],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.PILOT, CHARACTER_TAGS.CRIMINAL, CHARACTER_TAGS.CHARISMATIC],
     flavor: "Thrives in fast-moving, lightly supervised work."
   },
 
@@ -448,7 +448,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 14,
     preferredJob: JOB_TYPES.HEROIC,
     traits: [TRAITS.HERO, TRAITS.MORAL_CODE],
-    tags: [CHARACTER_TAGS.REBEL],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.REBEL, CHARACTER_TAGS.BRAVE, CHARACTER_TAGS.PILOT],
     flavor: "Prestige, talent, and a strong sense that some jobs are beneath him."
   },
 
@@ -465,7 +465,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 13,
     preferredJob: JOB_TYPES.HEROIC,
     traits: [TRAITS.HERO, TRAITS.MORAL_CODE, TRAITS.SUPPORT],
-    tags: [],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.BRAVE, CHARACTER_TAGS.LAWFUL, CHARACTER_TAGS.DISCIPLINED],
     flavor: "Older, wiser, and quietly judging your staffing decisions."
   },
 
@@ -481,16 +481,12 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 13,
     preferredJob: JOB_TYPES.HEROIC,
     traits: [TRAITS.HERO, TRAITS.MORAL_CODE, TRAITS.SUPPORT],
-    tags: [],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.BRAVE, CHARACTER_TAGS.LAWFUL, CHARACTER_TAGS.DISCIPLINED],
     flavor: "More active, more adaptable, and still above this nonsense."
   },
 
   // ========================================================
   // Mythic / Shiny Alternate Versions
-  // --------------------------------------------------------
-  // These should generally not appear in regular rarity odds.
-  // They are intended to appear through mythic rolls, events,
-  // or special reward mechanics.
   // ========================================================
 
   {
@@ -505,7 +501,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 1,
     preferredJob: JOB_TYPES.HEROIC,
     traits: [TRAITS.ROGUE],
-    tags: [CHARACTER_TAGS.PILOT],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.PILOT, CHARACTER_TAGS.CRIMINAL],
     flavor: "Extremely prestigious. Extremely immobile. A collector’s nightmare and a manager’s problem."
   },
 
@@ -521,7 +517,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 4,
     preferredJob: JOB_TYPES.HEROIC,
     traits: [TRAITS.HERO, TRAITS.MORAL_CODE, TRAITS.SUPPORT],
-    tags: [],
+    tags: [CHARACTER_TAGS.SPIRIT, CHARACTER_TAGS.BRAVE, CHARACTER_TAGS.LAWFUL, CHARACTER_TAGS.DISCIPLINED],
     flavor: "Cannot lift boxes. Can absolutely judge everyone lifting boxes."
   }
 
