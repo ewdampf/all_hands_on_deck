@@ -80,31 +80,31 @@ const CONFIG = {
         mythic: 0
       },
       guaranteedMinimum: "rare"
+    },
+
+    SPECIAL_FRANCHISE: {
+      id: "special_franchise",
+      name: "Franchise Pack",
+      tokenCost: 10,
+      cardCount: 5,
+
+      guaranteedCards: [
+        "uncommon",
+        "uncommon",
+        "rare",
+        "ultra"
+      ],
+
+      finalCardOdds: {
+        common: 0.50,
+        uncommon: 0.30,
+        rare: 0.15,
+        ultra: 0.05,
+        legendary: 0,
+        mythic: 0
+      }
     }
   },
-
-SPECIAL_FRANCHISE: {
-  id: "special_franchise",
-  name: "Franchise Pack",
-  tokenCost: 10,
-  cardCount: 5,
-
-  guaranteedCards: [
-    "uncommon",
-    "uncommon",
-    "rare",
-    "ultra"
-  ],
-
-  finalCardOdds: {
-    common: 0.50,
-    uncommon: 0.30,
-    rare: 0.15,
-    ultra: 0.05,
-    legendary: 0,
-    mythic: 0
-  }
-},
 
   MYTHIC: {
     ROLL_CHANCE: 0.001
