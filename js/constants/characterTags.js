@@ -90,6 +90,9 @@ const CHARACTER_TAGS = {
   MECHANIC: "mechanic",
   SCAVENGER: "scavenger",
   ROYALTY: "royalty",
+  MUSICIAN: "musician",
+  SERVANT: "servant",
+  POLITICIAN: "politician",
 
   // ========================================================
   // Personality / Behavior
@@ -108,6 +111,7 @@ const CHARACTER_TAGS = {
   MISCHIEVOUS: "mischievous",
   HOTHEADED: "hotheaded",
   CHILD: "child",
+  WISE: "wise",
 
   // ========================================================
   // Alignment / Social Role
@@ -208,6 +212,9 @@ const CHARACTER_TAG_DEFS = {
   mechanic: { label: "#mechanic", description: "Repairs machines and vehicles" },
   scavenger: { label: "#scavenger", description: "Finds value in junk" },
   royalty: { label: "#royalty", description: "Born to status" },
+  musician: { label: "#musician", description: "Performs music professionally" },
+  servant: { label: "#servant", description: "Serves powerful people" },
+  politician: { label: "#politician", description: "Navigates political systems" },
 
   // Personality / Behavior
   brave: { label: "#brave", description: "Faces danger willingly" },
@@ -223,6 +230,7 @@ const CHARACTER_TAG_DEFS = {
   mischievous: { label: "#mischievous", description: "Causes playful trouble" },
   hotheaded: { label: "#hotheaded", description: "Acts before thinking" },
   child: { label: "#child", description: "Not fully matured" },
+  wise: { label: "#wise", description: "Has good judgement" },
 
   // Alignment / Social Role
   rebel: { label: "#rebel", description: "Opposes authority" },
