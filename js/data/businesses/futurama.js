@@ -1,26 +1,93 @@
 // ==========================================================
 // Futurama Businesses
-// ----------------------------------------------------------
-// Franchise business file for All Hands On Deck.
-//
-// Schema notes:
-// - id: globally unique identifier
-// - businessKey: shared identity across variants
-// - variantKey: version of the business
-// - franchise: source franchise
-// - imagePath: square image path for card display
-// - imageAlt: fallback alt text
-//
-// Important:
-// - Keep image assets square
-// - Use fallback-business.png if a specific image is missing
-// - Do not duplicate business IDs in other files
 // ==========================================================
 
 const FUTURAMA_BUSINESSES = [
 
   // ========================================================
-  // Core Business
+  // Tier 1 Businesses
+  // ========================================================
+
+  {
+    id: CONFIG.BUSINESS_IDS.PANUCCIS_PIZZA,
+    businessKey: "panuccis_pizza",
+    variantKey: "default",
+    franchise: "Futurama",
+    name: "Panucci’s Pizza",
+
+    imagePath: "assets/businesses/futurama/panuccis-pizza.png",
+    imageAlt: "Panucci’s Pizza",
+
+    tier: 1,
+    jobType: JOB_TYPES.SERVICE,
+    tags: [BUSINESS_TAGS.VOLUME, BUSINESS_TAGS.DIRTY],
+
+    description: "Cheap pizza, long hours, and just enough dignity to keep showing up.",
+
+    unlockCost: 0,
+    unlockedByDefault: true,
+
+    upgrades: {
+      capacity: { label: "Capacity Upgrade", maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL },
+      efficiency: { label: "Efficiency Upgrade", maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL },
+      advertising: { label: "Advertising Campaign" }
+    }
+  },
+
+  {
+    id: CONFIG.BUSINESS_IDS.FISHY_JOES,
+    businessKey: "fishy_joes",
+    variantKey: "default",
+    franchise: "Futurama",
+    name: "Fishy Joe’s",
+
+    imagePath: "assets/businesses/futurama/fishy-joes.png",
+    imageAlt: "Fishy Joe’s",
+
+    tier: 1,
+    jobType: JOB_TYPES.SERVICE,
+    tags: [BUSINESS_TAGS.DIRTY, BUSINESS_TAGS.VOLUME],
+
+    description: "Seafood of questionable origin served with absolute confidence.",
+
+    unlockCost: 400,
+    unlockedByDefault: false,
+
+    upgrades: {
+      capacity: { label: "Capacity Upgrade", maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL },
+      efficiency: { label: "Efficiency Upgrade", maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL },
+      advertising: { label: "Advertising Campaign" }
+    }
+  },
+
+  {
+    id: CONFIG.BUSINESS_IDS.ROBOT_ASYLUM,
+    businessKey: "robot_asylum",
+    variantKey: "default",
+    franchise: "Futurama",
+    name: "Robot Asylum",
+
+    imagePath: "assets/businesses/futurama/robot-asylum.png",
+    imageAlt: "Robot Asylum",
+
+    tier: 1,
+    jobType: JOB_TYPES.SERVICE,
+    tags: [BUSINESS_TAGS.DANGEROUS, BUSINESS_TAGS.RISKY],
+
+    description: "Unstable environment with unpredictable residents and very few rules that actually work.",
+
+    unlockCost: 500,
+    unlockedByDefault: false,
+
+    upgrades: {
+      capacity: { label: "Capacity Upgrade", maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL },
+      efficiency: { label: "Efficiency Upgrade", maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL },
+      advertising: { label: "Advertising Campaign" }
+    }
+  },
+
+  // ========================================================
+  // Tier 2 Businesses
   // ========================================================
 
   {
@@ -34,9 +101,8 @@ const FUTURAMA_BUSINESSES = [
     imageAlt: "Planet Express",
 
     tier: 2,
-jobType: JOB_TYPES.LOGISTICS,
-tags: [BUSINESS_TAGS.RISKY, BUSINESS_TAGS.NETWORKED],
-
+    jobType: JOB_TYPES.LOGISTICS,
+    tags: [BUSINESS_TAGS.RISKY, BUSINESS_TAGS.NETWORKED],
 
     description: "Fast-paced delivery work. Great for the right crew, disastrous for the wrong one.",
 
@@ -44,22 +110,144 @@ tags: [BUSINESS_TAGS.RISKY, BUSINESS_TAGS.NETWORKED],
     unlockedByDefault: false,
 
     upgrades: {
-      capacity: {
-        label: "Capacity Upgrade",
-        maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL
-      },
-      efficiency: {
-        label: "Efficiency Upgrade",
-        maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL
-      },
-      advertising: {
-        label: "Advertising Campaign"
-      }
+      capacity: { label: "Capacity Upgrade", maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL },
+      efficiency: { label: "Efficiency Upgrade", maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL },
+      advertising: { label: "Advertising Campaign" }
+    }
+  },
+
+  {
+    id: CONFIG.BUSINESS_IDS.MARS_UNIVERSITY,
+    businessKey: "mars_university",
+    variantKey: "default",
+    franchise: "Futurama",
+    name: "Mars University",
+
+    imagePath: "assets/businesses/futurama/mars-university.png",
+    imageAlt: "Mars University",
+
+    tier: 2,
+    jobType: JOB_TYPES.RESEARCH,
+    tags: [BUSINESS_TAGS.INSTITUTIONAL, BUSINESS_TAGS.SYNERGISTIC],
+
+    description: "A prestigious institution where learning happens, occasionally on purpose.",
+
+    unlockCost: 1100,
+    unlockedByDefault: false,
+
+    upgrades: {
+      capacity: { label: "Capacity Upgrade", maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL },
+      efficiency: { label: "Efficiency Upgrade", maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL },
+      advertising: { label: "Advertising Campaign" }
+    }
+  },
+
+  {
+    id: CONFIG.BUSINESS_IDS.CRYOGENICS,
+    businessKey: "applied_cryogenics",
+    variantKey: "default",
+    franchise: "Futurama",
+    name: "Applied Cryogenics",
+
+    imagePath: "assets/businesses/futurama/cryogenics.png",
+    imageAlt: "Applied Cryogenics",
+
+    tier: 2,
+    jobType: JOB_TYPES.RESEARCH,
+    tags: [BUSINESS_TAGS.EXPERIMENTAL, BUSINESS_TAGS.SPECIALIZED],
+
+    description: "Freezes problems for later. Results may vary depending on how much later.",
+
+    unlockCost: 1200,
+    unlockedByDefault: false,
+
+    upgrades: {
+      capacity: { label: "Capacity Upgrade", maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL },
+      efficiency: { label: "Efficiency Upgrade", maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL },
+      advertising: { label: "Advertising Campaign" }
+    }
+  },
+
+  {
+    id: CONFIG.BUSINESS_IDS.NNYPD,
+    businessKey: "nnypd",
+    variantKey: "default",
+    franchise: "Futurama",
+    name: "New New York Police Department",
+
+    imagePath: "assets/businesses/futurama/nnypd.png",
+    imageAlt: "NNYPD",
+
+    tier: 2,
+    jobType: JOB_TYPES.ENFORCEMENT,
+    tags: [BUSINESS_TAGS.HIERARCHICAL, BUSINESS_TAGS.REGULATED],
+
+    description: "Maintains order with varying levels of competence and enthusiasm.",
+
+    unlockCost: 1300,
+    unlockedByDefault: false,
+
+    upgrades: {
+      capacity: { label: "Capacity Upgrade", maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL },
+      efficiency: { label: "Efficiency Upgrade", maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL },
+      advertising: { label: "Advertising Campaign" }
+    }
+  },
+
+  {
+    id: CONFIG.BUSINESS_IDS.CHANNEL_6,
+    businessKey: "channel_6_news",
+    variantKey: "default",
+    franchise: "Futurama",
+    name: "Channel 6 News",
+
+    imagePath: "assets/businesses/futurama/channel-6.png",
+    imageAlt: "Channel 6 News",
+
+    tier: 2,
+    jobType: JOB_TYPES.MEDIA,
+    tags: [BUSINESS_TAGS.NETWORKED, BUSINESS_TAGS.NOTORIOUS],
+
+    description: "Delivers information, entertainment, and occasional truth.",
+
+    unlockCost: 1400,
+    unlockedByDefault: false,
+
+    upgrades: {
+      capacity: { label: "Capacity Upgrade", maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL },
+      efficiency: { label: "Efficiency Upgrade", maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL },
+      advertising: { label: "Advertising Campaign" }
+    }
+  },
+
+  {
+    id: CONFIG.BUSINESS_IDS.HEAD_MUSEUM,
+    businessKey: "head_museum",
+    variantKey: "default",
+    franchise: "Futurama",
+    name: "Head Museum",
+
+    imagePath: "assets/businesses/futurama/head-museum.png",
+    imageAlt: "Head Museum",
+
+    tier: 2,
+    jobType: JOB_TYPES.ENTERTAINMENT,
+    tags: [BUSINESS_TAGS.PRESTIGE, BUSINESS_TAGS.SOCIAL],
+
+    description: "A cultural landmark where history literally talks back.",
+
+    unlockCost: 1500,
+    unlockedByDefault: false,
+
+    upgrades: {
+      capacity: { label: "Capacity Upgrade", maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL },
+      efficiency: { label: "Efficiency Upgrade", maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL },
+      advertising: { label: "Advertising Campaign" }
     }
   },
 
   // ========================================================
-  // Future Expansion / Proof-of-Concept Businesses
+  // Tier 3 Businesses
   // ========================================================
 
   {
@@ -67,14 +255,14 @@ tags: [BUSINESS_TAGS.RISKY, BUSINESS_TAGS.NETWORKED],
     businessKey: "momcorp",
     variantKey: "default",
     franchise: "Futurama",
-    name: "MomCorp",
+    name: "Mom’s Friendly Robot Company",
 
     imagePath: "assets/businesses/futurama/momcorp.png",
     imageAlt: "MomCorp",
 
     tier: 3,
-jobType: JOB_TYPES.CORPORATE,
-tags: [BUSINESS_TAGS.HIERARCHICAL, BUSINESS_TAGS.NETWORKED, BUSINESS_TAGS.SHADY],
+    jobType: JOB_TYPES.CORPORATE,
+    tags: [BUSINESS_TAGS.HIERARCHICAL, BUSINESS_TAGS.NETWORKED, BUSINESS_TAGS.SHADY],
 
     description: "A massive corporate machine. Efficient, profitable, and not especially wholesome.",
 
@@ -82,51 +270,62 @@ tags: [BUSINESS_TAGS.HIERARCHICAL, BUSINESS_TAGS.NETWORKED, BUSINESS_TAGS.SHADY]
     unlockedByDefault: false,
 
     upgrades: {
-      capacity: {
-        label: "Capacity Upgrade",
-        maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL
-      },
-      efficiency: {
-        label: "Efficiency Upgrade",
-        maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL
-      },
-      advertising: {
-        label: "Advertising Campaign"
-      }
+      capacity: { label: "Capacity Upgrade", maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL },
+      efficiency: { label: "Efficiency Upgrade", maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL },
+      advertising: { label: "Advertising Campaign" }
     }
   },
 
   {
-    id: CONFIG.BUSINESS_IDS.ROBOT_ARMS_APARTMENTS,
-    businessKey: "robot_arms_apartments",
+    id: CONFIG.BUSINESS_IDS.DOOP,
+    businessKey: "doop",
     variantKey: "default",
     franchise: "Futurama",
-    name: "Robot Arms Apartments",
+    name: "DOOP Army",
 
-    imagePath: "assets/businesses/futurama/robot-arms-apartments.png",
-    imageAlt: "Robot Arms Apartments",
+    imagePath: "assets/businesses/futurama/doop.png",
+    imageAlt: "DOOP",
 
-    tier: 1,
-jobType: JOB_TYPES.SERVICE,
-tags: [BUSINESS_TAGS.SOCIAL, BUSINESS_TAGS.COMFORT],
+    tier: 3,
+    jobType: JOB_TYPES.ENFORCEMENT,
+    tags: [BUSINESS_TAGS.HIERARCHICAL, BUSINESS_TAGS.DANGEROUS],
 
-    description: "A busy social hub with low standards and constant activity. A decent place for service workers and robots alike.",
+    description: "A galaxy-spanning military force with questionable discipline and enormous firepower.",
 
-    unlockCost: 500,
+    unlockCost: 2800,
     unlockedByDefault: false,
 
     upgrades: {
-      capacity: {
-        label: "Capacity Upgrade",
-        maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL
-      },
-      efficiency: {
-        label: "Efficiency Upgrade",
-        maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL
-      },
-      advertising: {
-        label: "Advertising Campaign"
-      }
+      capacity: { label: "Capacity Upgrade", maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL },
+      efficiency: { label: "Efficiency Upgrade", maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL },
+      advertising: { label: "Advertising Campaign" }
+    }
+  },
+
+  {
+    id: CONFIG.BUSINESS_IDS.SLURM_FACTORY,
+    businessKey: "slurm_factory",
+    variantKey: "default",
+    franchise: "Futurama",
+    name: "Slurm Factory",
+
+    imagePath: "assets/businesses/futurama/slurm-factory.png",
+    imageAlt: "Slurm Factory",
+
+    tier: 3,
+    jobType: JOB_TYPES.PRODUCTION,
+    tags: [BUSINESS_TAGS.VOLUME, BUSINESS_TAGS.SHADY],
+
+    description: "Mass production at its finest, powered by secrets nobody wants to think about.",
+
+    unlockCost: 3000,
+    unlockedByDefault: false,
+
+    upgrades: {
+      capacity: { label: "Capacity Upgrade", maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL },
+      efficiency: { label: "Efficiency Upgrade", maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL },
+      advertising: { label: "Advertising Campaign" }
     }
   }
+
 ];
