@@ -140,6 +140,7 @@ function openOptionsModal() {
 
   populateThemeSelect();
   updateThemeDescription(document.body.dataset.theme || CONFIG.THEMES.DEFAULT.id);
+  syncOptionsControls();
 
   optionsModal.classList.remove("hidden");
   optionsModal.setAttribute("aria-hidden", "false");
@@ -171,6 +172,10 @@ function initializeButtons() {
   const closeOptionsModalBtn = document.getElementById("closeOptionsModalBtn");
   const optionsModal = document.getElementById("optionsModal");
   const themeSelect = document.getElementById("themeSelect");
+  const closeTokenRewardModalBtn = document.getElementById("closeTokenRewardModalBtn");
+  const tokenRewardModal = document.getElementById("tokenRewardModal");
+  const suppressTokenPopupsCheckbox = document.getElementById("suppressTokenPopupsCheckbox");
+  const optionsSuppressTokenPopupsCheckbox = document.getElementById("optionsSuppressTokenPopupsCheckbox");
 
   const closePackModalBtn = document.getElementById("closePackModalBtn");
   const packModal = document.getElementById("packModal");
@@ -253,7 +258,12 @@ function initializeButtons() {
 
   if (devAddTokenBtn) {
     devAddTokenBtn.addEventListener("click", () => {
-      state.tokens += 1;
+      addTokens(
+        1,
+        "Test Token Earned",
+        "One test token was added for development.",
+        "dev"
+      );
       setHeadline("Test token added", "One test token was added for development.", "system");
       saveGame();
       renderAll();
@@ -518,6 +528,12 @@ function initializeButtons() {
 // ==========================================================
 
 function gameTick() {
+  if (!state.economyStarted) {
+    renderTopbar();
+    renderHeadline();
+    return;
+  }
+
   updateMorale();
 
   const netIncome = calculateNetIncomePerTick();
