@@ -1189,3 +1189,66 @@ button:disabled {
   color: var(--text-muted);
   line-height: 1.45;
 }
+
+
+/* ==========================================================
+   First Pack Guidance / Token Rewards
+========================================================== */
+
+.first-pack-guidance {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, rgba(53, 214, 255, 0.16), rgba(255, 79, 216, 0.12));
+  border: 1px solid rgba(53, 214, 255, 0.38);
+  border-radius: var(--radius-lg);
+  padding: 14px;
+  color: var(--text-main);
+  box-shadow: var(--glow-cyan);
+}
+
+.first-pack-guidance-title {
+  font-size: 17px;
+  font-weight: 900;
+  margin-bottom: 6px;
+}
+
+.token-reward-window {
+  width: min(560px, 100%);
+}
+
+.token-reward-body {
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  line-height: 1.45;
+}
+
+.token-reward-amount {
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--accent-primary);
+  margin-bottom: 8px;
+  text-shadow: var(--glow-cyan);
+}
+
+.option-check-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  background: var(--bg-card);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-lg);
+  padding: 12px 14px;
+  color: var(--text-main);
+  font-size: 13px;
+}
+
+.option-check-row input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--accent-primary);
+}
+
+.token-reward-checkbox {
+  margin-top: 14px;
+}

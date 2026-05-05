@@ -283,6 +283,30 @@
   </div>
 
 
+
+  <!-- ======================================================
+       Token Reward Modal
+  ======================================================= -->
+  <div id="tokenRewardModal" class="modal-overlay hidden" aria-hidden="true">
+    <div class="modal-window token-reward-window" role="dialog" aria-modal="true" aria-labelledby="tokenRewardModalTitle">
+      <div class="modal-header">
+        <div>
+          <h2 id="tokenRewardModalTitle">Token Earned</h2>
+          <div class="muted">Progress rewards help you open more packs.</div>
+        </div>
+
+        <button id="closeTokenRewardModalBtn" class="secondary small-button">Close</button>
+      </div>
+
+      <div id="tokenRewardModalBody" class="token-reward-body"></div>
+
+      <label class="option-check-row token-reward-checkbox" for="suppressTokenPopupsCheckbox">
+        <input id="suppressTokenPopupsCheckbox" type="checkbox" />
+        <span>Do not show token reward popups</span>
+      </label>
+    </div>
+  </div>
+
   <!-- ======================================================
        Options Modal
   ======================================================= -->
@@ -304,6 +328,11 @@
             <option value="default">Multiverse Default</option>
           </select>
           <span id="themeDescription" class="option-description">Choose a visual theme for the game interface.</span>
+        </label>
+
+        <label class="option-check-row" for="optionsSuppressTokenPopupsCheckbox">
+          <input id="optionsSuppressTokenPopupsCheckbox" type="checkbox" />
+          <span>Do not show token reward popups</span>
         </label>
       </div>
     </div>
