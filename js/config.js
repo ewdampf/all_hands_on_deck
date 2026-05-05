@@ -10,7 +10,8 @@ const CONFIG = {
     GAME_TICK_MS: 1000,
     STARTING_CREDITS: 0,
     STARTING_TOKENS: 1,
-    AUTO_SAVE_KEY: "allHandsOnDeckSave"
+    AUTO_SAVE_KEY: "allHandsOnDeckSave",
+    THEME_SAVE_KEY: "allHandsOnDeckTheme"
   },
 
   ECONOMY: {
@@ -120,9 +121,18 @@ const CONFIG = {
     TECHNO_UNION: "techno_union",
     KAMINOAN_CLONING_FACILITY: "kaminoan_cloning_facility",
 
-    PLANET_EXPRESS: "planet_express",
-    MOMCORP: "momcorp",
-    ROBOT_ARMS_APARTMENTS: "robot_arms_apartments",
+PANUCCIS_PIZZA: "panuccis_pizza",
+FISHY_JOES: "fishy_joes",
+ROBOT_ASYLUM: "robot_asylum",
+
+MARS_UNIVERSITY: "mars_university",
+APPLIED_CRYOGENICS: "applied_cryogenics",
+NNYPD: "nnypd",
+CHANNEL_6_NEWS: "channel_6_news",
+HEAD_MUSEUM: "head_museum",
+
+DOOP_ARMY: "doop_army",
+SLURM_FACTORY: "slurm_factory",
 
     POTATO_FARM: "potato_farm",
     TECH_SUPPORT_CENTER: "tech_support_center",
@@ -389,6 +399,39 @@ BUSINESS_TAG_RULES: {
   },
 
   THEMES: {
-    DEFAULT: "default"
+    DEFAULT: {
+      id: "default",
+      name: "Multiverse Default",
+      className: "theme-default",
+      description: "Original cosmic arcade theme."
+    },
+
+    STAR_WARS: {
+      id: "star_wars",
+      name: "Star Wars",
+      className: "theme-star-wars",
+      description: "Deep space panels with gold and saber-inspired accents."
+    },
+
+    FUTURAMA: {
+      id: "futurama",
+      name: "Futurama",
+      className: "theme-futurama",
+      description: "Bright future-tech colors with Planet Express energy."
+    },
+
+    FRIENDS: {
+      id: "friends",
+      name: "Friends",
+      className: "theme-friends",
+      description: "Warm sitcom tones inspired by coffeehouse comfort."
+    },
+
+    GENERIC: {
+      id: "generic",
+      name: "Original / Generic",
+      className: "theme-generic",
+      description: "Clean neutral theme for non-franchise workers and businesses."
+    }
   }
 };

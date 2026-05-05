@@ -58,6 +58,103 @@ function initializePackResults() {
 
 
 // ==========================================================
+// Options / Themes
+// ==========================================================
+
+function getThemeDefinitions() {
+  if (!CONFIG.THEMES || typeof CONFIG.THEMES !== "object") return [];
+  return Object.values(CONFIG.THEMES).filter(theme => theme && theme.id && theme.className);
+}
+
+function getThemeById(themeId) {
+  const themes = getThemeDefinitions();
+  return themes.find(theme => theme.id === themeId) || CONFIG.THEMES.DEFAULT;
+}
+
+function clearAppliedThemeClasses() {
+  getThemeDefinitions().forEach(theme => {
+    document.body.classList.remove(theme.className);
+  });
+}
+
+function applyTheme(themeId) {
+  const theme = getThemeById(themeId);
+  if (!theme) return;
+
+  clearAppliedThemeClasses();
+  document.body.classList.add(theme.className);
+  document.body.dataset.theme = theme.id;
+}
+
+function saveThemePreference(themeId) {
+  try {
+    localStorage.setItem(CONFIG.GAME.THEME_SAVE_KEY, themeId);
+  } catch (error) {
+    console.error("Failed to save theme preference:", error);
+  }
+}
+
+function loadThemePreference() {
+  try {
+    return localStorage.getItem(CONFIG.GAME.THEME_SAVE_KEY) || CONFIG.THEMES.DEFAULT.id;
+  } catch (error) {
+    console.error("Failed to load theme preference:", error);
+    return CONFIG.THEMES.DEFAULT.id;
+  }
+}
+
+function populateThemeSelect() {
+  const themeSelect = document.getElementById("themeSelect");
+  if (!themeSelect) return;
+
+  themeSelect.innerHTML = "";
+
+  getThemeDefinitions().forEach(theme => {
+    const option = document.createElement("option");
+    option.value = theme.id;
+    option.textContent = theme.name;
+    themeSelect.appendChild(option);
+  });
+
+  themeSelect.value = document.body.dataset.theme || CONFIG.THEMES.DEFAULT.id;
+}
+
+function updateThemeDescription(themeId) {
+  const themeDescription = document.getElementById("themeDescription");
+  if (!themeDescription) return;
+
+  const theme = getThemeById(themeId);
+  themeDescription.textContent = theme?.description || "Choose a visual theme for the game interface.";
+}
+
+function initializeTheme() {
+  const savedThemeId = loadThemePreference();
+  applyTheme(savedThemeId);
+  populateThemeSelect();
+  updateThemeDescription(savedThemeId);
+}
+
+function openOptionsModal() {
+  const optionsModal = document.getElementById("optionsModal");
+  if (!optionsModal) return;
+
+  populateThemeSelect();
+  updateThemeDescription(document.body.dataset.theme || CONFIG.THEMES.DEFAULT.id);
+
+  optionsModal.classList.remove("hidden");
+  optionsModal.setAttribute("aria-hidden", "false");
+}
+
+function closeOptionsModal() {
+  const optionsModal = document.getElementById("optionsModal");
+  if (!optionsModal) return;
+
+  optionsModal.classList.add("hidden");
+  optionsModal.setAttribute("aria-hidden", "true");
+}
+
+
+// ==========================================================
 // Button wiring
 // ==========================================================
 
@@ -69,6 +166,11 @@ function initializeButtons() {
   const saveBtn = document.getElementById("saveBtn");
   const resetBtn = document.getElementById("resetBtn");
   const devAddTokenBtn = document.getElementById("devAddTokenBtn");
+  const optionsBtn = document.getElementById("optionsBtn");
+
+  const closeOptionsModalBtn = document.getElementById("closeOptionsModalBtn");
+  const optionsModal = document.getElementById("optionsModal");
+  const themeSelect = document.getElementById("themeSelect");
 
   const closePackModalBtn = document.getElementById("closePackModalBtn");
   const packModal = document.getElementById("packModal");
@@ -179,6 +281,34 @@ function initializeButtons() {
 
       if (!confirmed) return;
       resetGame();
+    });
+  }
+
+
+  // --------------------------------------------------------
+  // Options modal
+  // --------------------------------------------------------
+
+  if (optionsBtn) {
+    optionsBtn.addEventListener("click", openOptionsModal);
+  }
+
+  if (closeOptionsModalBtn) {
+    closeOptionsModalBtn.addEventListener("click", closeOptionsModal);
+  }
+
+  if (optionsModal) {
+    optionsModal.addEventListener("click", event => {
+      if (event.target === optionsModal) closeOptionsModal();
+    });
+  }
+
+  if (themeSelect) {
+    themeSelect.addEventListener("change", () => {
+      const selectedThemeId = themeSelect.value;
+      applyTheme(selectedThemeId);
+      saveThemePreference(selectedThemeId);
+      updateThemeDescription(selectedThemeId);
     });
   }
 
@@ -419,6 +549,7 @@ function initializeGame() {
   runStartupDiagnostics();
 
   loadGame();
+  initializeTheme();
   normalizeAllBusinesses();
 
   initializeButtons();
