@@ -20,6 +20,7 @@
 const CHARACTERS = [
   ...STAR_WARS_CHARACTERS,
   ...FUTURAMA_CHARACTERS,
+  ...TED_LASSO_CHARACTERS,
   ...GENERIC_CHARACTERS
 ];
 // ==========================================================
