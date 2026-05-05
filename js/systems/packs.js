@@ -191,11 +191,13 @@ function claimDailyToken() {
     return false;
   }
 
-  if (typeof state.tokens !== "number" || Number.isNaN(state.tokens)) {
-    state.tokens = 0;
-  }
+  addTokens(
+    CONFIG.DAILY.FREE_TOKEN_AMOUNT,
+    "Daily Token Earned",
+    `You claimed your daily reward and received ${CONFIG.DAILY.FREE_TOKEN_AMOUNT} token${CONFIG.DAILY.FREE_TOKEN_AMOUNT === 1 ? "" : "s"}.`,
+    "daily"
+  );
 
-  state.tokens += CONFIG.DAILY.FREE_TOKEN_AMOUNT;
   state.freePackLastClaimedAt = Date.now();
 
   setHeadline("Daily token claimed", `You received ${CONFIG.DAILY.FREE_TOKEN_AMOUNT} token.`);
@@ -223,6 +225,8 @@ function openPackByType(packKey) {
     return [];
   }
 
+  const isFirstEverPack = !state.firstPackOpened;
+
   state.tokens -= packDef.tokenCost;
 
   const newCards = generatePack(packDef);
@@ -234,6 +238,13 @@ function openPackByType(packKey) {
   }
 
   state.cards.push(...newCards);
+
+  if (isFirstEverPack) {
+    state.firstPackOpened = true;
+    state.firstPackGuidancePending = true;
+    state.economyStarted = false;
+  }
+
   checkPackMilestones(newCards);
 
   setRecruitmentHeadline(newCards);
@@ -256,6 +267,8 @@ function grantFreePack(packKey = "BASIC") {
     return [];
   }
 
+  const isFirstEverPack = !state.firstPackOpened;
+
   const newCards = generatePack(packDef);
 
   if (!Array.isArray(newCards) || newCards.length === 0) {
@@ -264,6 +277,13 @@ function grantFreePack(packKey = "BASIC") {
   }
 
   state.cards.push(...newCards);
+
+  if (isFirstEverPack) {
+    state.firstPackOpened = true;
+    state.firstPackGuidancePending = true;
+    state.economyStarted = false;
+  }
+
   checkPackMilestones(newCards);
   saveGame();
 
@@ -394,6 +414,8 @@ function openDailySpecialFranchisePack() {
     return [];
   }
 
+  const isFirstEverPack = !state.firstPackOpened;
+
   state.tokens -= packDef.tokenCost;
 
   const newCards = generateSpecialFranchisePack(franchise);
@@ -405,6 +427,12 @@ function openDailySpecialFranchisePack() {
   }
 
   state.cards.push(...newCards);
+
+  if (isFirstEverPack) {
+    state.firstPackOpened = true;
+    state.firstPackGuidancePending = true;
+    state.economyStarted = false;
+  }
 
   setHeadline(
     `${franchise} Pack Opened`,

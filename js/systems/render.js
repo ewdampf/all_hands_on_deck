@@ -166,6 +166,20 @@ function closePackModal() {
 
   modal.classList.add("hidden");
   modal.setAttribute("aria-hidden", "true");
+
+  if (state.firstPackGuidancePending) {
+    state.firstPackGuidancePending = false;
+    state.economyStarted = true;
+    setHeadline(
+      "Business is underway",
+      "The clock is running. Assigned workers will now generate credits, and maintenance costs can now apply.",
+      "system"
+    );
+    saveGame();
+    renderAll();
+  }
+
+  openNextTokenRewardModal();
 }
 
 function renderPackModalCards(cards) {
@@ -177,7 +191,19 @@ function renderPackModalCards(cards) {
     return;
   }
 
-  container.innerHTML = cards.map(card => {
+  const firstPackGuidanceHtml = state.firstPackGuidancePending
+    ? `
+      <div class="first-pack-guidance">
+        <div class="first-pack-guidance-title">Congratulations — your first crew is aboard!</div>
+        <div>
+          You just opened your first pack and received a new set of workers.
+          You currently own a <strong>Moisture Farm</strong>. Assign your workers there to start earning credits.
+        </div>
+      </div>
+    `
+    : "";
+
+  container.innerHTML = firstPackGuidanceHtml + cards.map(card => {
     const isAssigned = !!card.assignedBusinessId;
 
     return `
@@ -1187,6 +1213,90 @@ function renderBusinessTagBadges(tags = []) {
 
 
 
+
+// ==========================================================
+// Token reward modal
+// ==========================================================
+
+let activeTokenNotification = null;
+
+function anyBlockingModalOpen() {
+  const blockingModalIds = [
+    "packModal",
+    "workerModal",
+    "businessModal",
+    "headlineModal",
+    "optionsModal"
+  ];
+
+  return blockingModalIds.some(id => {
+    const modal = document.getElementById(id);
+    return modal && !modal.classList.contains("hidden");
+  });
+}
+
+function openNextTokenRewardModal() {
+  if (state.options?.suppressTokenPopups) return;
+  if (activeTokenNotification) return;
+  if (anyBlockingModalOpen()) return;
+  if (!Array.isArray(state.pendingTokenNotifications) || state.pendingTokenNotifications.length === 0) return;
+
+  const modal = document.getElementById("tokenRewardModal");
+  const titleEl = document.getElementById("tokenRewardModalTitle");
+  const bodyEl = document.getElementById("tokenRewardModalBody");
+  const suppressCheckbox = document.getElementById("suppressTokenPopupsCheckbox");
+
+  if (!modal || !titleEl || !bodyEl) return;
+
+  activeTokenNotification = state.pendingTokenNotifications[0];
+
+  const amount = activeTokenNotification.amount || 1;
+  titleEl.textContent = activeTokenNotification.title || "Token Earned";
+  bodyEl.innerHTML = `
+    <div class="token-reward-amount">+${amount} Token${amount === 1 ? "" : "s"}</div>
+    <div>${activeTokenNotification.body || "You earned a token."}</div>
+  `;
+
+  if (suppressCheckbox) {
+    suppressCheckbox.checked = !!state.options?.suppressTokenPopups;
+  }
+
+  modal.classList.remove("hidden");
+  modal.setAttribute("aria-hidden", "false");
+}
+
+function closeTokenRewardModal() {
+  const modal = document.getElementById("tokenRewardModal");
+  const suppressCheckbox = document.getElementById("suppressTokenPopupsCheckbox");
+
+  if (suppressCheckbox && suppressCheckbox.checked) {
+    setSuppressTokenPopups(true);
+  }
+
+  if (Array.isArray(state.pendingTokenNotifications) && activeTokenNotification) {
+    state.pendingTokenNotifications.shift();
+  }
+
+  activeTokenNotification = null;
+
+  if (modal) {
+    modal.classList.add("hidden");
+    modal.setAttribute("aria-hidden", "true");
+  }
+
+  saveGame();
+  renderTopbar();
+
+  setTimeout(openNextTokenRewardModal, 0);
+}
+
+function syncOptionsControls() {
+  const optionsSuppressCheckbox = document.getElementById("optionsSuppressTokenPopupsCheckbox");
+  if (optionsSuppressCheckbox) {
+    optionsSuppressCheckbox.checked = !!state.options?.suppressTokenPopups;
+  }
+}
+
 // ==========================================================
 // Lightweight refresh
 // ==========================================================
@@ -1208,4 +1318,6 @@ function renderAll() {
   renderRoster();
   renderHeadline();
   renderInfoPanel();
+  syncOptionsControls();
+  openNextTokenRewardModal();
 }

@@ -203,7 +203,13 @@ function purchaseBusiness(businessId) {
     `${businessDef.name} is now open. Expansion reward: +1 token.`
   );
 
-  state.tokens += 1;
+  addTokens(
+    1,
+    "Expansion Token Earned",
+    `${businessDef.name} is now open. Expansion reward: +1 token.`,
+    "business_purchase"
+  );
+
   checkBusinessPurchaseMilestones(businessId);
 
   saveGame();

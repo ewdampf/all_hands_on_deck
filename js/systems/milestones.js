@@ -24,7 +24,12 @@ function awardMilestone(milestoneId, title, body, tokenReward = MILESTONE_TOKEN_
     tokenReward
   };
 
-  state.tokens += tokenReward;
+  addTokens(
+    tokenReward,
+    title,
+    `${body} Reward: +${tokenReward} token${tokenReward === 1 ? "" : "s"}.`,
+    "milestone"
+  );
 
   setHeadline(
     title,

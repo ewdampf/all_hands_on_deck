@@ -237,6 +237,48 @@ if (
 }
 
 
+
+  // --------------------------------------------------------
+  // First-run / tutorial tracking
+  // --------------------------------------------------------
+  if (typeof normalizedState.firstPackOpened !== "boolean") {
+    normalizedState.firstPackOpened = Array.isArray(normalizedState.cards) && normalizedState.cards.length > 0;
+  }
+
+  if (typeof normalizedState.firstPackGuidancePending !== "boolean") {
+    normalizedState.firstPackGuidancePending = false;
+  }
+
+  if (typeof normalizedState.economyStarted !== "boolean") {
+    normalizedState.economyStarted = normalizedState.firstPackOpened && !normalizedState.firstPackGuidancePending;
+  }
+
+  // --------------------------------------------------------
+  // Options / notification state
+  // --------------------------------------------------------
+  if (typeof normalizedState.options !== "object" || normalizedState.options === null) {
+    normalizedState.options = {};
+  }
+
+  normalizedState.options = {
+    suppressTokenPopups: !!normalizedState.options.suppressTokenPopups
+  };
+
+  if (!Array.isArray(normalizedState.pendingTokenNotifications)) {
+    normalizedState.pendingTokenNotifications = [];
+  }
+
+  normalizedState.pendingTokenNotifications = normalizedState.pendingTokenNotifications
+    .filter(item => item && typeof item.title === "string")
+    .map(item => ({
+      title: item.title,
+      body: typeof item.body === "string" ? item.body : "",
+      amount: typeof item.amount === "number" ? item.amount : 1,
+      source: typeof item.source === "string" ? item.source : "general",
+      createdAt: typeof item.createdAt === "number" ? item.createdAt : Date.now()
+    }))
+    .slice(0, 5);
+
   // --------------------------------------------------------
   // Milestone state
   // --------------------------------------------------------

@@ -38,10 +38,26 @@ function createInitialState() {
     freePackLastClaimedAt: null,
     claimedMilestones: {},
 
-dailySpecialPack: {
-  franchise: null,
-  selectedAt: null
-},
+    dailySpecialPack: {
+      franchise: null,
+      selectedAt: null
+    },
+
+    // ------------------------------------------------------
+    // First-run / tutorial tracking
+    // ------------------------------------------------------
+    firstPackOpened: false,
+    firstPackGuidancePending: false,
+    economyStarted: false,
+
+    // ------------------------------------------------------
+    // Player options / notification queue
+    // ------------------------------------------------------
+    options: {
+      suppressTokenPopups: false
+    },
+
+    pendingTokenNotifications: [],
     // ------------------------------------------------------
     // Card / roster tracking
     // ------------------------------------------------------
@@ -173,4 +189,61 @@ function getNextCardInstanceId() {
   const id = state.nextCardInstanceId;
   state.nextCardInstanceId += 1;
   return id;
+}
+
+// ==========================================================
+// Token reward helper
+// ----------------------------------------------------------
+// Centralized helper for all earned-token events.
+// This keeps token popups, headlines, and future settings
+// consistent across daily rewards, milestones, and purchases.
+// ==========================================================
+
+function addTokens(amount, title, body, source = "general") {
+  const tokenAmount = Number(amount) || 0;
+  if (tokenAmount <= 0) return false;
+
+  if (typeof state.tokens !== "number" || Number.isNaN(state.tokens)) {
+    state.tokens = 0;
+  }
+
+  state.tokens += tokenAmount;
+
+  if (!state.options || typeof state.options !== "object") {
+    state.options = { suppressTokenPopups: false };
+  }
+
+  if (!Array.isArray(state.pendingTokenNotifications)) {
+    state.pendingTokenNotifications = [];
+  }
+
+  if (!state.options.suppressTokenPopups) {
+    state.pendingTokenNotifications.push({
+      title: typeof title === "string" ? title : "Token Earned",
+      body: typeof body === "string" ? body : `You earned ${tokenAmount} token${tokenAmount === 1 ? "" : "s"}.`,
+      amount: tokenAmount,
+      source,
+      createdAt: Date.now()
+    });
+  }
+
+  if (typeof openNextTokenRewardModal === "function") {
+    openNextTokenRewardModal();
+  }
+
+  return true;
+}
+
+function setSuppressTokenPopups(value) {
+  if (!state.options || typeof state.options !== "object") {
+    state.options = { suppressTokenPopups: false };
+  }
+
+  state.options.suppressTokenPopups = !!value;
+
+  if (state.options.suppressTokenPopups) {
+    state.pendingTokenNotifications = [];
+  }
+
+  saveGame();
 }
