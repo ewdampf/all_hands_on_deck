@@ -485,16 +485,6 @@ button:disabled {
   min-width: 0;
 }
 
-.business-image {
-  width: 72px;
-  height: 72px;
-  object-fit: cover;
-  border-radius: 12px;
-  border: 1px solid var(--border-soft);
-  background: #111;
-  flex-shrink: 0;
-}
-
 .business-actions {
   margin-top: 10px;
 }
@@ -512,6 +502,90 @@ button:disabled {
   padding: 7px;
   border-radius: var(--radius-sm);
   width: 140px;
+}
+
+/* ==========================================================
+   Business Images
+========================================================== */
+
+/* Compact image used in business lists/cards */
+.business-image,
+.info-business-image {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--border-soft, #333);
+  background: #101010;
+  flex-shrink: 0;
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.28);
+}
+
+/* Larger image used inside the business modal */
+.business-modal-image {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  background: #0a0c18;
+  flex-shrink: 0;
+
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.48),
+    0 0 24px rgba(53, 214, 255, 0.18);
+}
+
+/* Optional premium frame wrapper */
+.business-modal-image-frame {
+  width: 172px;
+  height: 172px;
+  padding: 6px;
+  border-radius: 22px;
+  background:
+    linear-gradient(135deg, rgba(53, 214, 255, 0.75), rgba(143, 92, 255, 0.65), rgba(255, 159, 67, 0.55));
+  box-shadow:
+    0 14px 36px rgba(0, 0, 0, 0.5),
+    0 0 28px rgba(53, 214, 255, 0.16);
+  flex-shrink: 0;
+}
+
+.business-modal-image-frame .business-modal-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: none;
+}
+
+/* Modal layout for business details */
+.business-modal-grid {
+  display: grid;
+  grid-template-columns: 172px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.business-modal-main {
+  min-width: 0;
+}
+
+.business-modal-section {
+  margin-top: 14px;
+}
+
+@media (max-width: 650px) {
+  .business-modal-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .business-modal-image-frame {
+    width: 100%;
+    max-width: 220px;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
 }
 
 /* ==========================================================
