@@ -154,6 +154,19 @@ function getBusinessModalImageHtml(business) {
   `;
 }
 
+function getRarityStarsHtml(card) {
+  const stars = card.stars || CONFIG.RARITIES[card.rarity]?.stars || 1;
+  return "★".repeat(stars);
+}
+
+function getRarityLabel(card) {
+  return CONFIG.RARITIES[card.rarity]?.label || card.rarity;
+}
+
+function getRarityDisplay(card) {
+  return `${getRarityStarsHtml(card)} ${getRarityLabel(card)}`;
+}
+
 // ==========================================================
 // Pack modal
 // ==========================================================
@@ -444,29 +457,31 @@ function renderRoster() {
             class="worker-row ${card.rarity} ${isUnassigned ? "worker-unassigned" : ""}"
             onclick="openWorkerModal(${card.instanceId})"
           >
-            <div class="worker-row-main">
-              ${getCharacterImageHtml(card, "worker-thumb")}
+            ${getCharacterImageHtml(card, "worker-thumb")}
 
-              <div class="worker-row-text">
+            <div class="worker-main">
+              <div class="worker-identity">
                 <div class="worker-name">${card.displayName}</div>
                 ${card.subtitle ? `<div class="worker-subtitle">${card.subtitle}</div>` : ""}
-                <div class="worker-meta">${card.franchise} • ${CONFIG.RARITIES[card.rarity]?.label || card.rarity}</div>
+                <div class="worker-meta">${card.franchise} • ${getRarityStarsHtml(card)}</div>
               </div>
-            </div>
 
-            <div class="worker-row-stat">
-              <div class="worker-stat-label">Assignment</div>
-              <div class="worker-stat-value">${assignmentName}</div>
-            </div>
+              <div class="worker-stats-row">
+                <div class="worker-stat">
+                  <span class="worker-stat-label">Assignment:</span>
+                  <span class="worker-stat-value">${assignmentName}</span>
+                </div>
 
-            <div class="worker-row-stat">
-              <div class="worker-stat-label">Morale</div>
-              <div class="worker-stat-value ${getMoraleClass(card.morale)}">${card.morale}</div>
-            </div>
+                <div class="worker-stat">
+                  <span class="worker-stat-label">Morale:</span>
+                  <span class="worker-stat-value ${getMoraleClass(card.morale)}">${card.morale}</span>
+                </div>
 
-            <div class="worker-row-stat">
-              <div class="worker-stat-label">Income</div>
-              <div class="worker-stat-value">${income}/sec</div>
+                <div class="worker-stat">
+                  <span class="worker-stat-label">Income:</span>
+                  <span class="worker-stat-value">${income}/sec</span>
+                </div>
+              </div>
             </div>
           </div>
         `;
@@ -507,8 +522,7 @@ function openWorkerModal(cardInstanceId) {
 
       <div>
         <div><strong>Franchise:</strong> ${card.franchise}</div>
-        <div><strong>Rarity:</strong> ${CONFIG.RARITIES[card.rarity]?.label || card.rarity}</div>
-        <div><strong>Stars:</strong> ${card.stars || CONFIG.RARITIES[card.rarity]?.stars || 1}★</div>
+        <div><strong>Rarity:</strong> ${getRarityDisplay(card)}</div>
         <div><strong>Prestige:</strong> ${card.prestige || 1}</div>
         <div><strong>Power:</strong> ${card.basePower}</div>
         <div><strong>Morale:</strong> ${card.morale}</div>
