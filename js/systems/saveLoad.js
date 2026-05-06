@@ -37,7 +37,7 @@ function saveGame() {
 function createDefaultBusinessRuntimeState(businessDef) {
   return {
     id: businessDef.id,
-    unlocked: businessDef.unlockedByDefault,
+    unlocked: businessDef.id === CONFIG.BUSINESS_IDS.MOISTURE_FARM,
 
     capacityLevel: 0,
     efficiencyLevel: 0,
@@ -86,7 +86,7 @@ function normalizeBusinessState(loadedBusinessState, businessDef) {
   }
 
   if (typeof merged.unlocked !== "boolean") {
-    merged.unlocked = businessDef.unlockedByDefault;
+    merged.unlocked = businessDef.id === CONFIG.BUSINESS_IDS.MOISTURE_FARM;
   }
 
   return merged;
@@ -352,6 +352,21 @@ if (
     const matchingLoaded = loadedBusinesses.find(b => b.id === businessDef.id);
     return normalizeBusinessState(matchingLoaded || {}, businessDef);
   });
+
+  // If an older saved file represents a still-new game, enforce the current
+  // starting rule: only Moisture Farm begins unlocked. This prevents old
+  // business data or older saves from exposing extra starting businesses.
+  const isStillNewGame =
+    normalizedState.cards.length === 0 &&
+    normalizedState.credits === CONFIG.GAME.STARTING_CREDITS &&
+    !normalizedState.firstPackOpened;
+
+  if (isStillNewGame) {
+    normalizedState.businesses = normalizedState.businesses.map(businessState => ({
+      ...businessState,
+      unlocked: businessState.id === CONFIG.BUSINESS_IDS.MOISTURE_FARM
+    }));
+  }
 
   return normalizedState;
 }

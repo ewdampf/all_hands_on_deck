@@ -9,7 +9,7 @@ const FUTURAMA_BUSINESSES = [
   // ========================================================
 
   {
-    id: CONFIG.BUSINESS_IDS.PANUCCIS_PIZZA,
+    id: "panuccis_pizza",
     businessKey: "panuccis_pizza",
     variantKey: "default",
     franchise: "Futurama",
@@ -24,8 +24,8 @@ const FUTURAMA_BUSINESSES = [
 
     description: "Cheap pizza, long hours, and just enough dignity to keep showing up.",
 
-    unlockCost: 0,
-    unlockedByDefault: true,
+    unlockCost: 400,
+    unlockedByDefault: false,
 
     upgrades: {
       capacity: { label: "Capacity Upgrade", maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL },
@@ -35,7 +35,7 @@ const FUTURAMA_BUSINESSES = [
   },
 
   {
-    id: CONFIG.BUSINESS_IDS.FISHY_JOES,
+    id: "fishy_joes",
     businessKey: "fishy_joes",
     variantKey: "default",
     franchise: "Futurama",
@@ -61,7 +61,7 @@ const FUTURAMA_BUSINESSES = [
   },
 
   {
-    id: CONFIG.BUSINESS_IDS.ROBOT_ASYLUM,
+    id: "robot_asylum",
     businessKey: "robot_asylum",
     variantKey: "default",
     franchise: "Futurama",
@@ -91,7 +91,7 @@ const FUTURAMA_BUSINESSES = [
   // ========================================================
 
   {
-    id: CONFIG.BUSINESS_IDS.PLANET_EXPRESS,
+    id: "planet_express",
     businessKey: "planet_express",
     variantKey: "default",
     franchise: "Futurama",
@@ -117,7 +117,7 @@ const FUTURAMA_BUSINESSES = [
   },
 
   {
-    id: CONFIG.BUSINESS_IDS.MARS_UNIVERSITY,
+    id: "mars_university",
     businessKey: "mars_university",
     variantKey: "default",
     franchise: "Futurama",
@@ -143,7 +143,7 @@ const FUTURAMA_BUSINESSES = [
   },
 
   {
-    id: CONFIG.BUSINESS_IDS.CRYOGENICS,
+    id: "applied_cryogenics",
     businessKey: "applied_cryogenics",
     variantKey: "default",
     franchise: "Futurama",
@@ -169,7 +169,7 @@ const FUTURAMA_BUSINESSES = [
   },
 
   {
-    id: CONFIG.BUSINESS_IDS.NNYPD,
+    id: "nnypd",
     businessKey: "nnypd",
     variantKey: "default",
     franchise: "Futurama",
@@ -195,7 +195,7 @@ const FUTURAMA_BUSINESSES = [
   },
 
   {
-    id: CONFIG.BUSINESS_IDS.CHANNEL_6,
+    id: "channel_6_news",
     businessKey: "channel_6_news",
     variantKey: "default",
     franchise: "Futurama",
@@ -221,7 +221,7 @@ const FUTURAMA_BUSINESSES = [
   },
 
   {
-    id: CONFIG.BUSINESS_IDS.HEAD_MUSEUM,
+    id: "head_museum",
     businessKey: "head_museum",
     variantKey: "default",
     franchise: "Futurama",
@@ -251,7 +251,7 @@ const FUTURAMA_BUSINESSES = [
   // ========================================================
 
   {
-    id: CONFIG.BUSINESS_IDS.MOMCORP,
+    id: "momcorp",
     businessKey: "momcorp",
     variantKey: "default",
     franchise: "Futurama",
@@ -277,7 +277,7 @@ const FUTURAMA_BUSINESSES = [
   },
 
   {
-    id: CONFIG.BUSINESS_IDS.DOOP,
+    id: "doop_army",
     businessKey: "doop",
     variantKey: "default",
     franchise: "Futurama",
@@ -303,7 +303,7 @@ const FUTURAMA_BUSINESSES = [
   },
 
   {
-    id: CONFIG.BUSINESS_IDS.SLURM_FACTORY,
+    id: "slurm_factory",
     businessKey: "slurm_factory",
     variantKey: "default",
     franchise: "Futurama",

@@ -1,20 +1,5 @@
 // ==========================================================
 // Star Wars Businesses
-// ----------------------------------------------------------
-// Franchise business file for All Hands On Deck.
-//
-// Schema notes:
-// - id: globally unique identifier
-// - businessKey: shared identity across variants
-// - variantKey: version of the business
-// - franchise: source franchise
-// - imagePath: square image path for card display
-// - imageAlt: fallback alt text
-//
-// Important:
-// - Keep image assets square
-// - Use fallback-business.png if a specific image is missing
-// - Do not duplicate business IDs in other files
 // ==========================================================
 
 const STAR_WARS_BUSINESSES = [
@@ -24,7 +9,7 @@ const STAR_WARS_BUSINESSES = [
   // ========================================================
 
   {
-    id: CONFIG.BUSINESS_IDS.MOISTURE_FARM,
+    id: "moisture_farm",
     businessKey: "moisture_farm",
     variantKey: "default",
     franchise: "Star Wars",
@@ -34,8 +19,8 @@ const STAR_WARS_BUSINESSES = [
     imageAlt: "Moisture Farm",
 
     tier: 1,
-jobType: JOB_TYPES.PRODUCTION,
-tags: [BUSINESS_TAGS.DIRTY, BUSINESS_TAGS.VOLUME],
+    jobType: JOB_TYPES.PRODUCTION,
+    tags: [BUSINESS_TAGS.DIRTY, BUSINESS_TAGS.VOLUME],
 
     description: "Hot, dusty, and not exactly prestigious. A perfect place for bulk labor.",
 
@@ -68,8 +53,12 @@ tags: [BUSINESS_TAGS.DIRTY, BUSINESS_TAGS.VOLUME],
     imageAlt: "Spice Mine",
 
     tier: 1,
-jobType: JOB_TYPES.PRODUCTION,
-tags: [BUSINESS_TAGS.DIRTY, BUSINESS_TAGS.DANGEROUS, BUSINESS_TAGS.SHADY],
+    jobType: JOB_TYPES.PRODUCTION,
+    tags: [
+      BUSINESS_TAGS.DIRTY,
+      BUSINESS_TAGS.DANGEROUS,
+      BUSINESS_TAGS.SHADY
+    ],
 
     description: "Profitable but rough work. Good for expendable labor, not so good for morale.",
 
@@ -102,8 +91,12 @@ tags: [BUSINESS_TAGS.DIRTY, BUSINESS_TAGS.DANGEROUS, BUSINESS_TAGS.SHADY],
     imageAlt: "Mos Eisley Cantina",
 
     tier: 1,
-jobType: JOB_TYPES.SERVICE,
-tags: [BUSINESS_TAGS.SOCIAL, BUSINESS_TAGS.SHADY, BUSINESS_TAGS.NOTORIOUS],
+    jobType: JOB_TYPES.SERVICE,
+    tags: [
+      BUSINESS_TAGS.SOCIAL,
+      BUSINESS_TAGS.SHADY,
+      BUSINESS_TAGS.NOTORIOUS
+    ],
 
     description: "A lively and questionable social hub. Not safe, but people like being here more than a mine.",
 
@@ -140,8 +133,12 @@ tags: [BUSINESS_TAGS.SOCIAL, BUSINESS_TAGS.SHADY, BUSINESS_TAGS.NOTORIOUS],
     imageAlt: "Canto Bight Casino",
 
     tier: 2,
-jobType: JOB_TYPES.ENTERTAINMENT,
-tags: [BUSINESS_TAGS.RISKY, BUSINESS_TAGS.PRESTIGE, BUSINESS_TAGS.NOTORIOUS],
+    jobType: JOB_TYPES.ENTERTAINMENT,
+    tags: [
+      BUSINESS_TAGS.RISKY,
+      BUSINESS_TAGS.PRESTIGE,
+      BUSINESS_TAGS.NOTORIOUS
+    ],
 
     description: "Elegant, high-stakes, and occasionally absurdly profitable. A social job with swingy outcomes.",
 
@@ -174,8 +171,12 @@ tags: [BUSINESS_TAGS.RISKY, BUSINESS_TAGS.PRESTIGE, BUSINESS_TAGS.NOTORIOUS],
     imageAlt: "Bounty Hunters' Guild",
 
     tier: 2,
-jobType: JOB_TYPES.COVERT,
-tags: [BUSINESS_TAGS.RISKY, BUSINESS_TAGS.SHADY, BUSINESS_TAGS.SPECIALIZED],
+    jobType: JOB_TYPES.COVERT,
+    tags: [
+      BUSINESS_TAGS.RISKY,
+      BUSINESS_TAGS.SHADY,
+      BUSINESS_TAGS.SPECIALIZED
+    ],
 
     description: "A dangerous place for dangerous people. Rogues thrive here. Heroes, less so.",
 
@@ -212,8 +213,12 @@ tags: [BUSINESS_TAGS.RISKY, BUSINESS_TAGS.SHADY, BUSINESS_TAGS.SPECIALIZED],
     imageAlt: "Trade Federation",
 
     tier: 3,
-jobType: JOB_TYPES.LOGISTICS,
-tags: [BUSINESS_TAGS.NETWORKED, BUSINESS_TAGS.HIERARCHICAL, BUSINESS_TAGS.REGULATED],
+    jobType: JOB_TYPES.LOGISTICS,
+    tags: [
+      BUSINESS_TAGS.NETWORKED,
+      BUSINESS_TAGS.HIERARCHICAL,
+      BUSINESS_TAGS.REGULATED
+    ],
 
     description: "A top-tier logistics operation. Efficient, scalable, and useful for boosting other delivery businesses later.",
 
@@ -246,8 +251,12 @@ tags: [BUSINESS_TAGS.NETWORKED, BUSINESS_TAGS.HIERARCHICAL, BUSINESS_TAGS.REGULA
     imageAlt: "Techno Union",
 
     tier: 3,
-jobType: JOB_TYPES.RESEARCH,
-tags: [BUSINESS_TAGS.EXPERIMENTAL, BUSINESS_TAGS.SPECIALIZED, BUSINESS_TAGS.HIERARCHICAL],
+    jobType: JOB_TYPES.RESEARCH,
+    tags: [
+      BUSINESS_TAGS.EXPERIMENTAL,
+      BUSINESS_TAGS.SPECIALIZED,
+      BUSINESS_TAGS.HIERARCHICAL
+    ],
 
     description: "Highly technical and highly structured. Best suited for skilled labor and future robot support systems.",
 
@@ -280,8 +289,12 @@ tags: [BUSINESS_TAGS.EXPERIMENTAL, BUSINESS_TAGS.SPECIALIZED, BUSINESS_TAGS.HIER
     imageAlt: "Kaminoan Cloning Facility",
 
     tier: 3,
-jobType: JOB_TYPES.RESEARCH,
-tags: [BUSINESS_TAGS.EXPERIMENTAL, BUSINESS_TAGS.SECURE, BUSINESS_TAGS.SPECIALIZED],
+    jobType: JOB_TYPES.RESEARCH,
+    tags: [
+      BUSINESS_TAGS.EXPERIMENTAL,
+      BUSINESS_TAGS.SECURE,
+      BUSINESS_TAGS.SPECIALIZED
+    ],
 
     description: "A high-end facility with unusual workforce expansion potential. Fully staff it to enable future cloning effects.",
 
@@ -301,5 +314,44 @@ tags: [BUSINESS_TAGS.EXPERIMENTAL, BUSINESS_TAGS.SECURE, BUSINESS_TAGS.SPECIALIZ
         label: "Advertising Campaign"
       }
     }
+  },
+
+  {
+    id: "galactic_senate",
+    businessKey: "galactic_senate",
+    variantKey: "default",
+    franchise: "Star Wars",
+    name: "Galactic Senate",
+
+    imagePath: "assets/businesses/starwars/galactic-senate.png",
+    imageAlt: "Galactic Senate",
+
+    tier: 3,
+    jobType: JOB_TYPES.CORPORATE,
+    tags: [
+      BUSINESS_TAGS.INSTITUTIONAL,
+      BUSINESS_TAGS.HIERARCHICAL,
+      BUSINESS_TAGS.NETWORKED,
+      BUSINESS_TAGS.PRESTIGE
+    ],
+
+    description: "A sprawling political institution powered by bureaucracy, influence, procedure, and endless debate.",
+
+    unlockCost: 3400,
+    unlockedByDefault: false,
+
+    upgrades: {
+      capacity: {
+        label: "Capacity Upgrade",
+        maxLevel: CONFIG.UPGRADES.MAX_CAPACITY_LEVEL
+      },
+      efficiency: {
+        label: "Efficiency Upgrade",
+        maxLevel: CONFIG.UPGRADES.MAX_EFFICIENCY_LEVEL
+      },
+      advertising: {
+        label: "Advertising Campaign"
+      }
+    }
   }
-]; 
+];

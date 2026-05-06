@@ -113,32 +113,6 @@ const CONFIG = {
 
   BUSINESS_IDS: {
     MOISTURE_FARM: "moisture_farm",
-    SPICE_MINE: "spice_mine",
-    MOS_EISLEY_CANTINA: "mos_eisley_cantina",
-    CANTO_BIGHT_CASINO: "canto_bight_casino",
-    BOUNTY_HUNTERS_GUILD: "bounty_hunters_guild",
-    TRADE_FEDERATION: "trade_federation",
-    TECHNO_UNION: "techno_union",
-    KAMINOAN_CLONING_FACILITY: "kaminoan_cloning_facility",
-
-PANUCCIS_PIZZA: "panuccis_pizza",
-FISHY_JOES: "fishy_joes",
-ROBOT_ASYLUM: "robot_asylum",
-
-MARS_UNIVERSITY: "mars_university",
-APPLIED_CRYOGENICS: "applied_cryogenics",
-NNYPD: "nnypd",
-CHANNEL_6_NEWS: "channel_6_news",
-HEAD_MUSEUM: "head_museum",
-
-DOOP_ARMY: "doop_army",
-SLURM_FACTORY: "slurm_factory",
-
-    POTATO_FARM: "potato_farm",
-    TECH_SUPPORT_CENTER: "tech_support_center",
-    SUPER_SECRET_SPY_ORG: "super_secret_spy_org",
-
-    CENTRAL_PERK: "central_perk"
   },
 
   BUSINESS_TIERS: {

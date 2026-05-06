@@ -120,6 +120,10 @@ function validateBusinesses(businessList) {
       errors.push(`${label} has non-string jobType.`);
     }
 
+    if ("jobType" in business && !Object.values(JOB_TYPES).includes(business.jobType)) {
+      errors.push(`${label} references undefined jobType: ${business.jobType}`);
+    }
+
     if ("tags" in business && !Array.isArray(business.tags)) {
       errors.push(`${label} has non-array tags field.`);
     }

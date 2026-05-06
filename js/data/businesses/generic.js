@@ -2,13 +2,6 @@
 // Generic Businesses
 // ----------------------------------------------------------
 // Non-franchise / flexible businesses.
-//
-// Purpose:
-// - filler content
-// - humor-driven entries
-// - future experimental mechanics
-//
-// These are safe, expandable, and not tied to a single IP.
 // ==========================================================
 
 const GENERIC_BUSINESSES = [
@@ -18,7 +11,7 @@ const GENERIC_BUSINESSES = [
   // ========================================================
 
   {
-    id: CONFIG.BUSINESS_IDS.POTATO_FARM,
+    id: "potato_farm",
     businessKey: "potato_farm",
     variantKey: "default",
     franchise: "Generic",
@@ -28,8 +21,8 @@ const GENERIC_BUSINESSES = [
     imageAlt: "Potato Farm",
 
     tier: 1,
-jobType: JOB_TYPES.PRODUCTION,
-tags: [BUSINESS_TAGS.DIRTY, BUSINESS_TAGS.VOLUME],
+    jobType: JOB_TYPES.PRODUCTION,
+    tags: [BUSINESS_TAGS.DIRTY, BUSINESS_TAGS.VOLUME],
 
     description: "Boil 'em, mash 'em, put 'em in a stew. Reliable, simple labor work with modest returns.",
 
@@ -56,7 +49,7 @@ tags: [BUSINESS_TAGS.DIRTY, BUSINESS_TAGS.VOLUME],
   // ========================================================
 
   {
-    id: CONFIG.BUSINESS_IDS.TECH_SUPPORT_CENTER,
+    id: "tech_support_center",
     businessKey: "tech_support_center",
     variantKey: "default",
     franchise: "Generic",
@@ -66,8 +59,8 @@ tags: [BUSINESS_TAGS.DIRTY, BUSINESS_TAGS.VOLUME],
     imageAlt: "Tech Support Center",
 
     tier: 2,
-jobType: JOB_TYPES.SERVICE,
-tags: [BUSINESS_TAGS.SOCIAL, BUSINESS_TAGS.SPECIALIZED],
+    jobType: JOB_TYPES.SERVICE,
+    tags: [BUSINESS_TAGS.SOCIAL, BUSINESS_TAGS.SPECIALIZED],
 
     description: "Have you tried turning it off and on again? A steady service job with strong demand and questionable morale outcomes.",
 
@@ -94,7 +87,7 @@ tags: [BUSINESS_TAGS.SOCIAL, BUSINESS_TAGS.SPECIALIZED],
   // ========================================================
 
   {
-    id: CONFIG.BUSINESS_IDS.SUPER_SECRET_SPY_ORG,
+    id: "super_secret_spy_org",
     businessKey: "super_secret_spy_org",
     variantKey: "default",
     franchise: "Generic",
@@ -104,8 +97,8 @@ tags: [BUSINESS_TAGS.SOCIAL, BUSINESS_TAGS.SPECIALIZED],
     imageAlt: "Super Secret Spy Organization",
 
     tier: 3,
-obType: JOB_TYPES.COVERT,
-tags: [BUSINESS_TAGS.RISKY, BUSINESS_TAGS.SHADY, BUSINESS_TAGS.SECURE],
+    jobType: JOB_TYPES.COVERT,
+    tags: [BUSINESS_TAGS.RISKY, BUSINESS_TAGS.SHADY, BUSINESS_TAGS.SECURE],
 
     description: "Highly classified operations carried out by highly questionable personnel. Outcomes vary wildly.",
 

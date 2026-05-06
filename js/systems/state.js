@@ -69,7 +69,9 @@ function createInitialState() {
     // ------------------------------------------------------
     businesses: BUSINESSES.map(business => ({
       id: business.id,
-      unlocked: business.unlockedByDefault,
+
+      // Only Moisture Farm is available at the start of a new game.
+      unlocked: business.id === CONFIG.BUSINESS_IDS.MOISTURE_FARM,
 
       capacityLevel: 0,
       efficiencyLevel: 0,

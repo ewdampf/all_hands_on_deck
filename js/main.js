@@ -324,6 +324,38 @@ function initializeButtons() {
 
 
   // --------------------------------------------------------
+  // Token reward modal
+  // --------------------------------------------------------
+
+  if (closeTokenRewardModalBtn) {
+    closeTokenRewardModalBtn.addEventListener("click", closeTokenRewardModal);
+  }
+
+  if (tokenRewardModal) {
+    tokenRewardModal.addEventListener("click", event => {
+      if (event.target === tokenRewardModal) closeTokenRewardModal();
+    });
+  }
+
+  if (suppressTokenPopupsCheckbox) {
+    suppressTokenPopupsCheckbox.addEventListener("change", () => {
+      setSuppressTokenPopups(suppressTokenPopupsCheckbox.checked);
+      syncOptionsControls();
+    });
+  }
+
+  if (optionsSuppressTokenPopupsCheckbox) {
+    optionsSuppressTokenPopupsCheckbox.addEventListener("change", () => {
+      setSuppressTokenPopups(optionsSuppressTokenPopupsCheckbox.checked);
+
+      if (suppressTokenPopupsCheckbox) {
+        suppressTokenPopupsCheckbox.checked = optionsSuppressTokenPopupsCheckbox.checked;
+      }
+    });
+  }
+
+
+  // --------------------------------------------------------
   // Pack modal
   // --------------------------------------------------------
 
