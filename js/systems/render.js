@@ -141,6 +141,18 @@ function getBusinessImageHtml(business, className = "info-business-image") {
   `;
 }
 
+function getBusinessModalImageHtml(business) {
+  return `
+    <div class="business-modal-image-frame">
+      <img
+        src="${getBusinessImagePath(business)}"
+        alt="${getBusinessImageAlt(business)}"
+        class="business-modal-image"
+        onerror="this.onerror=null;this.src='${CONFIG.FALLBACKS.BUSINESS_IMAGE}';"
+      />
+    </div>
+  `;
+}
 
 // ==========================================================
 // Pack modal
@@ -979,7 +991,7 @@ function openBusinessModal(businessId) {
 
   content.innerHTML = `
     <div class="worker-modal-grid">
-      ${getBusinessImageHtml(business, "worker-modal-image")}
+      ${getBusinessModalImageHtml(business)}
 
       <div>
         <div><strong>Job Type:</strong> ${renderJobTypeBadge(business.jobType)}</div>
