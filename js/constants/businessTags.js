@@ -7,9 +7,11 @@ const BUSINESS_TAGS = {
 
   SOCIAL: "social",
   COMFORT: "comfort",
+  MORALE: "morale",
 
   INSTITUTIONAL: "institutional",
   HIERARCHICAL: "hierarchical",
+  DISCIPLINED: "disciplined",
 
   NETWORKED: "networked",
   SYNERGISTIC: "synergistic",
@@ -54,6 +56,10 @@ const BUSINESS_TAG_DEFS = {
     label: "#comfort",
     description: "Improves workplace morale"
   },
+  morale: {
+    label: "#morale",
+    description: "Boosts worker happiness"
+  },
 
   institutional: {
     label: "#institutional",
@@ -62,6 +68,10 @@ const BUSINESS_TAG_DEFS = {
   hierarchical: {
     label: "#hierarchical",
     description: "Structured chain of command"
+  },
+  disciplined: {
+    label: "#disciplined",
+    description: "Structured, low variance"
   },
 
   networked: {
