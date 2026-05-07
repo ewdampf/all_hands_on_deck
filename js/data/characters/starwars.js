@@ -1081,6 +1081,640 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
   },
 
   // ========================================================
+  // Uncommon / Minor / Secondary Characters
+  // ========================================================
+
+  {
+    id: "captain_panaka",
+    characterKey: "captain_panaka",
+    variantKey: "prequel_trilogy",
+    displayName: "Captain Panaka",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 7,
+    preferredJob: JOB_TYPES.ENFORCEMENT,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.GUARD,
+      CHARACTER_TAGS.MILITARY,
+      CHARACTER_TAGS.DISCIPLINED
+    ],
+    flavor: "Professional security leadership with very little patience for chaos."
+  },
+
+  {
+    id: "chancellor_valorum",
+    characterKey: "finis_valorum",
+    variantKey: "prequel_trilogy",
+    displayName: "Chancellor Valorum",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 6,
+    preferredJob: JOB_TYPES.CORPORATE,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.POLITICIAN,
+      CHARACTER_TAGS.BUREAUCRAT,
+      CHARACTER_TAGS.LAWFUL
+    ],
+    flavor: "An administrator overwhelmed by a system moving faster than he can manage."
+  },
+
+  {
+    id: "boss_nass",
+    characterKey: "boss_nass",
+    variantKey: "prequel_trilogy",
+    displayName: "Boss Nass",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 7,
+    preferredJob: JOB_TYPES.CORPORATE,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.LEADER,
+      CHARACTER_TAGS.POLITICIAN,
+      CHARACTER_TAGS.GOOFY
+    ],
+    flavor: "Loud, theatrical leadership that somehow still keeps the organization functioning."
+  },
+
+  {
+    id: "watto",
+    characterKey: "watto",
+    variantKey: "prequel_trilogy",
+    displayName: "Watto",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 7,
+    preferredJob: JOB_TYPES.CORPORATE,
+    traits: [TRAITS.ROGUE],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.GREEDY,
+      CHARACTER_TAGS.SALESMAN,
+      CHARACTER_TAGS.HUSTLER
+    ],
+    flavor: "Runs a questionable business with surprising efficiency and terrible ethics."
+  },
+
+  {
+    id: "nute_gunray",
+    characterKey: "nute_gunray",
+    variantKey: "prequel_trilogy",
+    displayName: "Nute Gunray",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 7,
+    preferredJob: JOB_TYPES.CORPORATE,
+    traits: [TRAITS.ROGUE],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.POLITICIAN,
+      CHARACTER_TAGS.GREEDY,
+      CHARACTER_TAGS.BUREAUCRAT
+    ],
+    flavor: "Corporate leadership powered entirely by fear, paperwork, and bad decisions."
+  },
+
+  {
+    id: "rune_haako",
+    characterKey: "rune_haako",
+    variantKey: "prequel_trilogy",
+    displayName: "Rune Haako",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 1,
+    basePower: 6,
+    preferredJob: JOB_TYPES.OFFICE,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.BUREAUCRAT,
+      CHARACTER_TAGS.ANXIOUS,
+      CHARACTER_TAGS.OFFICE_WORKER
+    ],
+    flavor: "The nervous executive assistant of galactic-scale corruption."
+  },
+
+  {
+    id: "ki_adi_mundi",
+    characterKey: "ki_adi_mundi",
+    variantKey: "prequel_trilogy",
+    displayName: "Ki-Adi-Mundi",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 3,
+    basePower: 8,
+    preferredJob: JOB_TYPES.HEROIC,
+    traits: [TRAITS.HERO, TRAITS.MORAL_CODE],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.WISE,
+      CHARACTER_TAGS.LAWFUL,
+      CHARACTER_TAGS.DISCIPLINED
+    ],
+    flavor: "A serious council member whose default setting is cautious concern."
+  },
+
+  {
+    id: "plo_koon",
+    characterKey: "plo_koon",
+    variantKey: "prequel_trilogy",
+    displayName: "Plo Koon",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 3,
+    basePower: 8,
+    preferredJob: JOB_TYPES.HEROIC,
+    traits: [TRAITS.HERO, TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.BRAVE,
+      CHARACTER_TAGS.WISE,
+      CHARACTER_TAGS.LAWFUL
+    ],
+    flavor: "Respected, calm, and one of the few managers everyone actually likes."
+  },
+
+  {
+    id: "shaak_ti",
+    characterKey: "shaak_ti",
+    variantKey: "prequel_trilogy",
+    displayName: "Shaak Ti",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 3,
+    basePower: 8,
+    preferredJob: JOB_TYPES.HEROIC,
+    traits: [TRAITS.HERO, TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.WISE,
+      CHARACTER_TAGS.DISCIPLINED,
+      CHARACTER_TAGS.LAWFUL
+    ],
+    flavor: "Handles impossible assignments with the calm of someone already expecting disaster."
+  },
+
+  {
+    id: "zam_wesell",
+    characterKey: "zam_wesell",
+    variantKey: "prequel_trilogy",
+    displayName: "Zam Wesell",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 7,
+    preferredJob: JOB_TYPES.COVERT,
+    traits: [TRAITS.ROGUE, TRAITS.SPECIALIST],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.CRIMINAL,
+      CHARACTER_TAGS.SPY,
+      CHARACTER_TAGS.DANGEROUS
+    ],
+    flavor: "Flexible identity, flexible ethics, and a very unstable employment outlook."
+  },
+
+  {
+    id: "dexter_jettster",
+    characterKey: "dexter_jettster",
+    variantKey: "prequel_trilogy",
+    displayName: "Dexter Jettster",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 7,
+    preferredJob: JOB_TYPES.SERVICE,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.CHEF,
+      CHARACTER_TAGS.CHARISMATIC,
+      CHARACTER_TAGS.CURIOUS
+    ],
+    flavor: "Restaurant owner energy combined with surprisingly useful underworld connections."
+  },
+
+  {
+    id: "bail_organa",
+    characterKey: "bail_organa",
+    variantKey: "prequel_trilogy",
+    displayName: "Bail Organa",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 3,
+    basePower: 8,
+    preferredJob: JOB_TYPES.CORPORATE,
+    traits: [TRAITS.SUPPORT, TRAITS.MORAL_CODE],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.POLITICIAN,
+      CHARACTER_TAGS.DIPLOMAT,
+      CHARACTER_TAGS.NOBLE
+    ],
+    flavor: "Professional, compassionate leadership in a workplace increasingly full of villains."
+  },
+
+  {
+    id: "mon_mothma_prequel",
+    characterKey: "mon_mothma",
+    variantKey: "prequel_trilogy",
+    displayName: "Mon Mothma",
+    subtitle: "Prequel Trilogy",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 7,
+    preferredJob: JOB_TYPES.CORPORATE,
+    traits: [TRAITS.SUPPORT, TRAITS.MORAL_CODE],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.POLITICIAN,
+      CHARACTER_TAGS.LAWFUL,
+      CHARACTER_TAGS.DIPLOMAT
+    ],
+    flavor: "Still building the reputation that will eventually make her one of the galaxy’s most trusted leaders."
+  },
+
+  {
+    id: "sio_bibble",
+    characterKey: "sio_bibble",
+    variantKey: "prequel_trilogy",
+    displayName: "Sio Bibble",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 1,
+    basePower: 6,
+    preferredJob: JOB_TYPES.OFFICE,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.BUREAUCRAT,
+      CHARACTER_TAGS.ANXIOUS,
+      CHARACTER_TAGS.POLITICIAN
+    ],
+    flavor: "Always sounds like the situation report is getting worse."
+  },
+
+  {
+    id: "ric_olie",
+    characterKey: "ric_olie",
+    variantKey: "prequel_trilogy",
+    displayName: "Ric Olié",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 7,
+    preferredJob: JOB_TYPES.LOGISTICS,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.PILOT,
+      CHARACTER_TAGS.DISCIPLINED,
+      CHARACTER_TAGS.SPACE
+    ],
+    flavor: "A dependable pilot forced to transport increasingly important passengers."
+  },
+
+  {
+    id: "captain_typho",
+    characterKey: "captain_typho",
+    variantKey: "prequel_trilogy",
+    displayName: "Captain Typho",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 7,
+    preferredJob: JOB_TYPES.ENFORCEMENT,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.GUARD,
+      CHARACTER_TAGS.MILITARY,
+      CHARACTER_TAGS.DISCIPLINED
+    ],
+    flavor: "Security detail professionalism stretched to its absolute limit."
+  },
+
+  {
+    id: "lama_su",
+    characterKey: "lama_su",
+    variantKey: "prequel_trilogy",
+    displayName: "Lama Su",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 7,
+    preferredJob: JOB_TYPES.RESEARCH,
+    traits: [TRAITS.SPECIALIST],
+    tags: [
+      CHARACTER_TAGS.KAMINOAN,
+      CHARACTER_TAGS.SCIENTIST,
+      CHARACTER_TAGS.MANAGER,
+      CHARACTER_TAGS.DISCIPLINED
+    ],
+    flavor: "Runs industrial-scale cloning operations with unsettling calm."
+  },
+
+  {
+    id: "taun_we",
+    characterKey: "taun_we",
+    variantKey: "prequel_trilogy",
+    displayName: "Taun We",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 6,
+    preferredJob: JOB_TYPES.SERVICE,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.KAMINOAN,
+      CHARACTER_TAGS.DIPLOMAT,
+      CHARACTER_TAGS.LAWFUL,
+      CHARACTER_TAGS.DISCIPLINED
+    ],
+    flavor: "Polite hospitality delivered with deeply unsettling precision."
+  },
+
+  {
+    id: "wat_tambor",
+    characterKey: "wat_tambor",
+    variantKey: "prequel_trilogy",
+    displayName: "Wat Tambor",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 7,
+    preferredJob: JOB_TYPES.CORPORATE,
+    traits: [TRAITS.ROGUE],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.ENGINEER,
+      CHARACTER_TAGS.GREEDY,
+      CHARACTER_TAGS.BUREAUCRAT
+    ],
+    flavor: "Corporate technocrat energy distilled into one breathing apparatus."
+  },
+
+  {
+    id: "san_hill",
+    characterKey: "san_hill",
+    variantKey: "prequel_trilogy",
+    displayName: "San Hill",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 1,
+    basePower: 6,
+    preferredJob: JOB_TYPES.CORPORATE,
+    traits: [TRAITS.ROGUE],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.GREEDY,
+      CHARACTER_TAGS.BUREAUCRAT,
+      CHARACTER_TAGS.CRIMINAL
+    ],
+    flavor: "The kind of banking executive nobody trusts for entirely correct reasons."
+  },
+
+  {
+    id: "passel_argente",
+    characterKey: "passel_argente",
+    variantKey: "prequel_trilogy",
+    displayName: "Passel Argente",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 1,
+    basePower: 6,
+    preferredJob: JOB_TYPES.CORPORATE,
+    traits: [TRAITS.ROGUE],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.POLITICIAN,
+      CHARACTER_TAGS.GREEDY,
+      CHARACTER_TAGS.BUREAUCRAT
+    ],
+    flavor: "Another executive helping ensure the galaxy never trusts trade organizations again."
+  },
+
+  {
+    id: "mas_amedda",
+    characterKey: "mas_amedda",
+    variantKey: "prequel_trilogy",
+    displayName: "Mas Amedda",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 7,
+    preferredJob: JOB_TYPES.OFFICE,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.POLITICIAN,
+      CHARACTER_TAGS.BUREAUCRAT,
+      CHARACTER_TAGS.LAWFUL
+    ],
+    flavor: "The indispensable senior administrator standing behind increasingly concerning leadership."
+  },
+
+  {
+    id: "agen_kolar",
+    characterKey: "agen_kolar",
+    variantKey: "prequel_trilogy",
+    displayName: "Agen Kolar",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 7,
+    preferredJob: JOB_TYPES.HEROIC,
+    traits: [TRAITS.HERO],
+    tags: [
+      CHARACTER_TAGS.ZABRAK,
+      CHARACTER_TAGS.BRAVE,
+      CHARACTER_TAGS.DISCIPLINED,
+      CHARACTER_TAGS.LAWFUL
+    ],
+    flavor: "Elite Jedi council member with a tragically short performance review meeting."
+  },
+
+  {
+    id: "saesee_tiin",
+    characterKey: "saesee_tiin",
+    variantKey: "prequel_trilogy",
+    displayName: "Saesee Tiin",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 7,
+    preferredJob: JOB_TYPES.LOGISTICS,
+    traits: [TRAITS.HERO],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.PILOT,
+      CHARACTER_TAGS.BRAVE,
+      CHARACTER_TAGS.DISCIPLINED
+    ],
+    flavor: "A Jedi known for strong piloting skills and poor odds in executive meetings."
+  },
+
+  {
+    id: "tion_medon",
+    characterKey: "tion_medon",
+    variantKey: "prequel_trilogy",
+    displayName: "Tion Medon",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 1,
+    basePower: 6,
+    preferredJob: JOB_TYPES.OFFICE,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.ANXIOUS,
+      CHARACTER_TAGS.LAWFUL,
+      CHARACTER_TAGS.OUTCAST
+    ],
+    flavor: "The local administrator who knows things are bad and would really prefer not to be involved."
+  },
+
+  {
+    id: "r4_p17",
+    characterKey: "r4_p17",
+    variantKey: "prequel_trilogy",
+    displayName: "R4-P17",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 1,
+    basePower: 6,
+    preferredJob: JOB_TYPES.RESEARCH,
+    traits: [TRAITS.SUPPORT, TRAITS.SPECIALIST],
+    tags: [
+      CHARACTER_TAGS.ROBOT,
+      CHARACTER_TAGS.MECHANIC,
+      CHARACTER_TAGS.LAWFUL,
+      CHARACTER_TAGS.DISCIPLINED
+    ],
+    flavor: "Dependable astromech support with far less chaos than certain blue counterparts."
+  },
+
+  {
+    id: "captain_antilles_prequel",
+    characterKey: "raymus_antilles",
+    variantKey: "prequel_trilogy",
+    displayName: "Captain Antilles",
+    subtitle: "Prequel Trilogy",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 1,
+    basePower: 6,
+    preferredJob: JOB_TYPES.LOGISTICS,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.MILITARY,
+      CHARACTER_TAGS.DISCIPLINED,
+      CHARACTER_TAGS.SPACE
+    ],
+    flavor: "A competent Republic officer doing his best to survive increasingly historic events."
+  },
+
+  {
+    id: "cliegg_lars",
+    characterKey: "cliegg_lars",
+    variantKey: "prequel_trilogy",
+    displayName: "Cliegg Lars",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 1,
+    basePower: 6,
+    preferredJob: JOB_TYPES.PRODUCTION,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.RURAL,
+      CHARACTER_TAGS.LOYAL,
+      CHARACTER_TAGS.FAMILY
+    ],
+    flavor: "Hard-working frontier family leadership with very bad luck."
+  },
+
+  {
+    id: "owen_lars_prequel",
+    characterKey: "owen_lars",
+    variantKey: "prequel_young",
+    displayName: "Owen Lars",
+    subtitle: "Prequel Trilogy",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 6,
+    preferredJob: JOB_TYPES.PRODUCTION,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.RURAL,
+      CHARACTER_TAGS.DISCIPLINED,
+      CHARACTER_TAGS.FAMILY
+    ],
+    flavor: "Already developing the exhausted energy of a man who will inherit somebody else’s problems."
+  },
+
+  {
+    id: "beru_whitesun_lars",
+    characterKey: "beru_lars",
+    variantKey: "prequel_young",
+    displayName: "Beru Whitesun Lars",
+    subtitle: "Prequel Trilogy",
+    franchise: "Star Wars",
+    rarity: "uncommon",
+    prestige: 2,
+    basePower: 6,
+    preferredJob: JOB_TYPES.SERVICE,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.RURAL,
+      CHARACTER_TAGS.LOYAL,
+      CHARACTER_TAGS.FAMILY
+    ],
+    flavor: "A genuinely kind and dependable worker in a franchise that rarely rewards that."
+  },
+
+  // ========================================================
   // Rare / Supporting Characters
   // ========================================================
 
@@ -1292,7 +1926,194 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.BRAVE, CHARACTER_TAGS.LAWFUL, CHARACTER_TAGS.DISCIPLINED],
     flavor: "Older, wiser, and quietly judging your staffing decisions."
   },
+  {
+    id: "qui_gon_jinn",
+    characterKey: "qui_gon_jinn",
+    variantKey: "prequel_trilogy",
+    displayName: "Qui-Gon Jinn",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "rare",
+    prestige: 3,
+    basePower: 12,
+    preferredJob: JOB_TYPES.HEROIC,
+    traits: [TRAITS.HERO, TRAITS.MORAL_CODE, TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.WISE,
+      CHARACTER_TAGS.BRAVE,
+      CHARACTER_TAGS.CURIOUS
+    ],
+    flavor: "A principled mentor who follows the mission, the Force, and only some of the paperwork."
+  },
 
+  {
+    id: "mace_windu",
+    characterKey: "mace_windu",
+    variantKey: "prequel_trilogy",
+    displayName: "Mace Windu",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "rare",
+    prestige: 3,
+    basePower: 12,
+    preferredJob: JOB_TYPES.ENFORCEMENT,
+    traits: [TRAITS.HERO, TRAITS.MORAL_CODE],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.LAWFUL,
+      CHARACTER_TAGS.DISCIPLINED,
+      CHARACTER_TAGS.MANAGER
+    ],
+    flavor: "A senior leader with elite standards and the facial expression of an annual compliance audit."
+  },
+
+  {
+    id: "anakin_skywalker_child",
+    characterKey: "anakin_skywalker",
+    variantKey: "child",
+    displayName: "Anakin Skywalker",
+    subtitle: "Child",
+    franchise: "Star Wars",
+    rarity: "rare",
+    prestige: 2,
+    basePower: 9,
+    preferredJob: JOB_TYPES.RESEARCH,
+    traits: [TRAITS.HERO, TRAITS.SPECIALIST],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.CHILD,
+      CHARACTER_TAGS.PILOT,
+      CHARACTER_TAGS.INVENTOR
+    ],
+    flavor: "Too young for most jobs, somehow already better with machines than the entire maintenance department."
+  },
+
+  {
+    id: "count_dooku",
+    characterKey: "count_dooku",
+    variantKey: "prequel_trilogy",
+    displayName: "Count Dooku",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "rare",
+    prestige: 3,
+    basePower: 12,
+    preferredJob: JOB_TYPES.COVERT,
+    traits: [TRAITS.ROGUE],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.VILLAIN,
+      CHARACTER_TAGS.NOBLE,
+      CHARACTER_TAGS.CHARISMATIC
+    ],
+    flavor: "Elegant, persuasive, and absolutely the reason legal wants every agreement reviewed twice."
+  },
+
+  {
+    id: "darth_maul",
+    characterKey: "darth_maul",
+    variantKey: "prequel_trilogy",
+    displayName: "Darth Maul",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "rare",
+    prestige: 3,
+    basePower: 12,
+    preferredJob: JOB_TYPES.ENFORCEMENT,
+    traits: [TRAITS.ROGUE],
+    tags: [
+      CHARACTER_TAGS.ZABRAK,
+      CHARACTER_TAGS.VILLAIN,
+      CHARACTER_TAGS.WARRIOR,
+      CHARACTER_TAGS.DANGEROUS
+    ],
+    flavor: "Not much for conversation, but extremely committed to performance reviews with consequences."
+  },
+
+  {
+    id: "general_grievous",
+    characterKey: "general_grievous",
+    variantKey: "prequel_trilogy",
+    displayName: "General Grievous",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "rare",
+    prestige: 3,
+    basePower: 12,
+    preferredJob: JOB_TYPES.ENFORCEMENT,
+    traits: [TRAITS.ROGUE],
+    tags: [
+      CHARACTER_TAGS.CYBORG,
+      CHARACTER_TAGS.VILLAIN,
+      CHARACTER_TAGS.MILITARY,
+      CHARACTER_TAGS.MANAGER
+    ],
+    flavor: "A coughing operations commander with too many arms and not enough conflict-resolution training."
+  },
+
+  {
+    id: "jar_jar_binks",
+    characterKey: "jar_jar_binks",
+    variantKey: "prequel_trilogy",
+    displayName: "Jar Jar Binks",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "rare",
+    prestige: 1,
+    basePower: 7,
+    preferredJob: JOB_TYPES.SERVICE,
+    traits: [TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.ALIEN_UNKNOWN,
+      CHARACTER_TAGS.GOOFY,
+      CHARACTER_TAGS.CHAOTIC,
+      CHARACTER_TAGS.DIPLOMAT
+    ],
+    flavor: "Accidentally useful often enough that management keeps extending the contract."
+  },
+
+  {
+    id: "jango_fett",
+    characterKey: "jango_fett",
+    variantKey: "prequel_trilogy",
+    displayName: "Jango Fett",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "rare",
+    prestige: 3,
+    basePower: 12,
+    preferredJob: JOB_TYPES.COVERT,
+    traits: [TRAITS.ROGUE, TRAITS.SPECIALIST],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.CRIMINAL,
+      CHARACTER_TAGS.WARRIOR,
+      CHARACTER_TAGS.DISCIPLINED
+    ],
+    flavor: "Professional, dangerous, and somehow both an independent contractor and a whole staffing pipeline."
+  },
+
+  {
+    id: "shmi_skywalker",
+    characterKey: "shmi_skywalker",
+    variantKey: "prequel_trilogy",
+    displayName: "Shmi Skywalker",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "rare",
+    prestige: 1,
+    basePower: 7,
+    preferredJob: JOB_TYPES.SERVICE,
+    traits: [TRAITS.SUPPORT, TRAITS.MORAL_CODE],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.FAMILY,
+      CHARACTER_TAGS.LOYAL,
+      CHARACTER_TAGS.RURAL
+    ],
+    flavor: "Quiet, steady, and the emotional foundation of a much larger workplace problem."
+  }
   // ========================================================
   // Ultra-Rare / Original Trilogy Stars
   // ========================================================
@@ -1379,6 +2200,90 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     traits: [TRAITS.HERO, TRAITS.MORAL_CODE, TRAITS.SUPPORT],
     tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.REBEL, CHARACTER_TAGS.ROYALTY, CHARACTER_TAGS.CHARISMATIC],
     flavor: "A leader, diplomat, strategist, and somehow still under budget pressure."
+  },
+
+  {
+    id: "anakin_skywalker_prequel",
+    characterKey: "anakin_skywalker",
+    variantKey: "prequel_jedi",
+    displayName: "Anakin Skywalker",
+    subtitle: "Prequel Trilogy",
+    franchise: "Star Wars",
+    rarity: "ultra",
+    prestige: 3,
+    basePower: 15,
+    preferredJob: JOB_TYPES.HEROIC,
+    traits: [TRAITS.HERO],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.PILOT,
+      CHARACTER_TAGS.BRAVE,
+      CHARACTER_TAGS.HOTHEADED
+    ],
+    flavor: "A wildly talented worker with enormous upside and absolutely no patience for HR-approved mentorship."
+  },
+
+  {
+    id: "obi_wan_kenobi_prequel",
+    characterKey: "obi_wan_kenobi",
+    variantKey: "prequel_jedi",
+    displayName: "Obi-Wan Kenobi",
+    subtitle: "Prequel Trilogy",
+    franchise: "Star Wars",
+    rarity: "ultra",
+    prestige: 3,
+    basePower: 14,
+    preferredJob: JOB_TYPES.HEROIC,
+    traits: [TRAITS.HERO, TRAITS.MORAL_CODE, TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.BRAVE,
+      CHARACTER_TAGS.LAWFUL,
+      CHARACTER_TAGS.DISCIPLINED
+    ],
+    flavor: "Disciplined, capable, and already tired of managing gifted employees with impulse-control issues."
+  },
+
+  {
+    id: "padme_amidala",
+    characterKey: "padme_amidala",
+    variantKey: "prequel_trilogy",
+    displayName: "Padmé Amidala",
+    subtitle: "Prequel Trilogy",
+    franchise: "Star Wars",
+    rarity: "ultra",
+    prestige: 3,
+    basePower: 13,
+    preferredJob: JOB_TYPES.CORPORATE,
+    traits: [TRAITS.HERO, TRAITS.MORAL_CODE, TRAITS.SUPPORT],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.ROYALTY,
+      CHARACTER_TAGS.POLITICIAN,
+      CHARACTER_TAGS.DIPLOMAT
+    ],
+    flavor: "Runs high-stakes negotiations, field missions, and wardrobe logistics with alarming professionalism."
+  },
+
+  {
+    id: "sheev_palpatine_prequel",
+    characterKey: "sheev_palpatine",
+    variantKey: "senator_chancellor",
+    displayName: "Sheev Palpatine",
+    subtitle: "Senator / Chancellor",
+    franchise: "Star Wars",
+    rarity: "ultra",
+    prestige: 3,
+    basePower: 14,
+    preferredJob: JOB_TYPES.COVERT,
+    traits: [TRAITS.ROGUE],
+    tags: [
+      CHARACTER_TAGS.HUMAN,
+      CHARACTER_TAGS.POLITICIAN,
+      CHARACTER_TAGS.VILLAIN,
+      CHARACTER_TAGS.CHARISMATIC
+    ],
+    flavor: "Excellent at restructuring organizations so thoroughly that no one realizes they have changed employers."
   },
 
   // ========================================================
