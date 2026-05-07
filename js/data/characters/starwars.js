@@ -2113,7 +2113,8 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
       CHARACTER_TAGS.RURAL
     ],
     flavor: "Quiet, steady, and the emotional foundation of a much larger workplace problem."
-  }
+  },
+
   // ========================================================
   // Ultra-Rare / Original Trilogy Stars
   // ========================================================
