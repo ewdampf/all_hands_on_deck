@@ -1004,7 +1004,7 @@ function openBusinessModal(businessId) {
   subtitle.textContent = `${business.franchise} • Tier ${business.tier}`;
 
   content.innerHTML = `
-    <div class="worker-modal-grid">
+    <div class="business-modal-grid">
       ${getBusinessModalImageHtml(business)}
 
       <div class="business-modal-main">
