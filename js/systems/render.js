@@ -1007,7 +1007,7 @@ function openBusinessModal(businessId) {
     <div class="worker-modal-grid">
       ${getBusinessModalImageHtml(business)}
 
-      <div>
+      <div class="business-modal-main">
         <div><strong>Job Type:</strong> ${renderJobTypeBadge(business.jobType)}</div>
         <div><strong>Tags:</strong> ${renderBusinessTagBadges(business.tags)}</div>
         <div><strong>Description:</strong> ${business.description}</div>
@@ -1038,7 +1038,7 @@ function openBusinessModal(businessId) {
     ${
       isOwned
         ? `
-          <div class="worker-modal-section">
+          <div class="business-modal-section">
             <div class="attention-title">Assigned Workers</div>
             ${
               assignedCards.length > 0
@@ -1092,7 +1092,7 @@ function renderBusinessModalOwnedActions(businessId) {
   const efficiencyCost = getUpgradeCost(businessId, "efficiency");
 
   return `
-    <div class="worker-modal-section">
+    <div class="business-modal-section">
       <div class="worker-modal-actions">
         <button
           class="secondary small-button"
@@ -1123,8 +1123,8 @@ function renderBusinessModalPurchaseActions(businessId) {
   const affordable = state.credits >= business.unlockCost;
 
   return `
-    <div class="worker-modal-section">
-      <div class="worker-modal-actions">
+    <div class="business-modal-section">
+      <div class="business-modal-actions">
         <button
           class="secondary small-button"
           onclick="purchaseBusinessFromModal('${businessId}')"
