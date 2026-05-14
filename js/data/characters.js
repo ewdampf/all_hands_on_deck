@@ -21,7 +21,8 @@ const CHARACTERS = [
   ...STAR_WARS_CHARACTERS,
   ...FUTURAMA_CHARACTERS,
   ...TED_LASSO_CHARACTERS,
-  ...GENERIC_CHARACTERS
+  ...MCU_PHASE1_CHARACTERS,
+  ...STRANGER_THINGS_CHARACTERS
 ];
 // ==========================================================
 // Species validation
