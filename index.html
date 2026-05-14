@@ -64,6 +64,36 @@
           </div>
         </div>
 
+      <div class="action-section">
+        <div class="action-section-title">Recruitment Focus</div>
+
+        <div class="focus-controls">
+          <select id="focusTypeSelect" class="assignment-select compact-select">
+            <option value="">No Focus</option>
+            <option value="franchise">Franchise</option>
+            <option value="tag">Tag</option>
+            <option value="species">Species</option>
+            <option value="job">Preferred Job</option>
+          </select>
+
+          <select id="focusTargetSelect" class="assignment-select compact-select">
+            <option value="">Select Target</option>
+          </select>
+
+          <select id="focusRerollSelect" class="assignment-select compact-select">
+            <option value="0">No Rerolls</option>
+            <option value="1">1 Reroll</option>
+            <option value="2">2 Rerolls</option>
+            <option value="3">3 Rerolls</option>
+          </select>
+        </div>
+
+        <div id="focusCostDisplay" class="small muted">
+          No recruitment focus active.
+        </div>
+      </div>
+
+
         <div class="action-section" id="specialPacksSection" style="display:none;">
           <div class="action-section-title">Special Packs</div>
           <div class="button-stack" id="specialPacksContainer"></div>
@@ -356,7 +386,8 @@
   <script src="js/data/characters/starwars.js"></script>
   <script src="js/data/characters/futurama.js"></script>
   <script src="js/data/characters/tedlasso.js"></script>
-  <script src="js/data/characters/generic.js"></script>
+  <script src="js/data/characters/strangerthings.js"></script>
+  <script src="js/data/characters/mcu/movies/mcuphase1.js"></script>
   <script src="js/data/characters.js"></script>
 
   <!-- Business Data -->
@@ -364,7 +395,8 @@
   <script src="js/data/businesses/futurama.js"></script>
   <script src="js/data/businesses/tedlasso.js"></script>
   <script src="js/data/businesses/strangerthings.js"></script>
-  <script src="js/data/businesses/generic.js"></script>
+  <script src="js/data/businesses/harrypotter.js"></script>
+  <script src="js/data/businesses/mcuphase1.js"></script>
   <script src="js/data/businesses.js"></script>
 
   <!-- Other Data -->

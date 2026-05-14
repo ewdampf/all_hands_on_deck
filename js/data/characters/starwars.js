@@ -176,7 +176,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 6,
     preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.ALIEN_UNKNOWN, CHARACTER_TAGS.GUARD, CHARACTER_TAGS.WARRIOR],
+    tags: [CHARACTER_TAGS.GAMORREAN, CHARACTER_TAGS.GUARD, CHARACTER_TAGS.WARRIOR],
     flavor: "Strong, loud, and not overly concerned with refinement."
   },
 
@@ -208,7 +208,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 6,
     preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.WARRIOR, CHARACTER_TAGS.DESERT, CHARACTER_TAGS.OUTCAST],
+    tags: [CHARACTER_TAGS.TUSKEN, CHARACTER_TAGS.WARRIOR, CHARACTER_TAGS.DESERT, CHARACTER_TAGS.OUTCAST],
     flavor: "Handles harsh environments better than most."
   },
 
@@ -224,7 +224,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 5,
     preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.ALIEN_UNKNOWN, CHARACTER_TAGS.WARRIOR, CHARACTER_TAGS.MILITARY],
+    tags: [CHARACTER_TAGS.GUNGAN, CHARACTER_TAGS.WARRIOR, CHARACTER_TAGS.MILITARY],
     flavor: "Strange, energetic, and better in groups than you’d expect."
   },
 
@@ -336,7 +336,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 8,
     preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER, TRAITS.SPECIALIST],
-    tags: [CHARACTER_TAGS.ALIEN_UNKNOWN, CHARACTER_TAGS.SCAVENGER, CHARACTER_TAGS.DESERT, CHARACTER_TAGS.MISCHIEVOUS],
+    tags: [CHARACTER_TAGS.JAWA, CHARACTER_TAGS.SCAVENGER, CHARACTER_TAGS.DESERT, CHARACTER_TAGS.MISCHIEVOUS],
     flavor: "Oddly effective in the right kind of dusty chaos."
   },
 
@@ -630,22 +630,6 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     traits: [TRAITS.SUPPORT],
     tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.MILITARY, CHARACTER_TAGS.MANAGER, CHARACTER_TAGS.ANXIOUS],
     flavor: "Middle management with impossible deadlines and a very dangerous boss."
-  },
-
-  {
-    id: "wedge_antilles",
-    characterKey: "wedge_antilles",
-    variantKey: "original_trilogy",
-    displayName: "Wedge Antilles",
-    subtitle: "",
-    franchise: "Star Wars",
-    rarity: "uncommon",
-    prestige: 3,
-    basePower: 9,
-    preferredJob: JOB_TYPES.LOGISTICS,
-    traits: [TRAITS.HERO, TRAITS.SUPPORT],
-    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.REBEL, CHARACTER_TAGS.PILOT, CHARACTER_TAGS.SPACE],
-    flavor: "One of the few pilots with both talent and survival instincts."
   },
 
   {
@@ -1322,8 +1306,8 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     displayName: "Bail Organa",
     subtitle: "",
     franchise: "Star Wars",
-    rarity: "uncommon",
-    prestige: 3,
+    rarity: "rare",
+    prestige: 1,
     basePower: 8,
     preferredJob: JOB_TYPES.CORPORATE,
     traits: [TRAITS.SUPPORT, TRAITS.MORAL_CODE],
@@ -1747,7 +1731,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     preferredJob: JOB_TYPES.COVERT,
     traits: [TRAITS.ROGUE],
     tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.VILLAIN, CHARACTER_TAGS.LAWFUL, CHARACTER_TAGS.MAGICAL],
-    flavor: "Excellent long-term planner. Terrible for morale reviews."
+    flavor: "Builds extremely effective organizations that become everyone else’s problem later."
   },
 
   {
@@ -1924,7 +1908,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     preferredJob: JOB_TYPES.HEROIC,
     traits: [TRAITS.HERO, TRAITS.MORAL_CODE, TRAITS.SUPPORT],
     tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.BRAVE, CHARACTER_TAGS.LAWFUL, CHARACTER_TAGS.DISCIPLINED],
-    flavor: "Older, wiser, and quietly judging your staffing decisions."
+    flavor: "A patient mentor carrying experience, regret, and increasingly improbable contingency plans."
   },
   {
     id: "qui_gon_jinn",
@@ -1937,7 +1921,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     prestige: 3,
     basePower: 12,
     preferredJob: JOB_TYPES.HEROIC,
-    traits: [TRAITS.HERO, TRAITS.MORAL_CODE, TRAITS.SUPPORT],
+    traits: [TRAITS.HERO, TRAITS.MORAL_CODE, TRAITS.WISE],
     tags: [
       CHARACTER_TAGS.HUMAN,
       CHARACTER_TAGS.WISE,
@@ -1958,7 +1942,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     prestige: 3,
     basePower: 12,
     preferredJob: JOB_TYPES.ENFORCEMENT,
-    traits: [TRAITS.HERO, TRAITS.MORAL_CODE],
+    traits: [TRAITS.HERO, TRAITS.DISCIPLINED],
     tags: [
       CHARACTER_TAGS.HUMAN,
       CHARACTER_TAGS.LAWFUL,
@@ -2113,6 +2097,22 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
       CHARACTER_TAGS.RURAL
     ],
     flavor: "Quiet, steady, and the emotional foundation of a much larger workplace problem."
+  },
+
+  {
+    id: "wedge_antilles",
+    characterKey: "wedge_antilles",
+    variantKey: "original_trilogy",
+    displayName: "Wedge Antilles",
+    subtitle: "",
+    franchise: "Star Wars",
+    rarity: "rare",
+    prestige: 1,
+    basePower: 9,
+    preferredJob: JOB_TYPES.LOGISTICS,
+    traits: [TRAITS.HERO, TRAITS.SUPPORT],
+    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.REBEL, CHARACTER_TAGS.PILOT, CHARACTER_TAGS.SPACE],
+    flavor: "One of the few pilots with both talent and survival instincts."
   },
 
   // ========================================================

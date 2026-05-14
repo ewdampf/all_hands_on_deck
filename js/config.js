@@ -307,7 +307,31 @@ BUSINESS_TAG_RULES: {
     RELEASE_REQUEST_CHANCE: 0.04
   },
 
-  OUTPUT: {
+ 
+PACK_FOCUS: {
+  ENABLED: true,
+
+  REROLL_COSTS: {
+    1: 25000,
+    2: 100000,
+    3: 300000
+  },
+
+  MAX_REROLLS: 3,
+
+  EXCLUDED_RARITIES: ["legendary", "mythic"],
+
+  ALLOWED_TYPES: [
+    "franchise",
+    "tag",
+    "species",
+    "job"
+  ]
+},
+
+
+
+ OUTPUT: {
     CANNON_FODDER_GROUP_BONUS: 0.06,
     CANNON_FODDER_GROUP_BONUS_CAP: 0.50,
     CANNON_FODDER_FARM_BONUS: 0.10,

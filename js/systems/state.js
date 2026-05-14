@@ -57,7 +57,15 @@ function createInitialState() {
       suppressTokenPopups: false
     },
 
-    pendingTokenNotifications: [],
+// Focus for special pulls 
+packFocus: {
+  enabled: false,
+  type: null,
+  target: null,
+  rerolls: 0
+},
+
+   pendingTokenNotifications: [],
     // ------------------------------------------------------
     // Card / roster tracking
     // ------------------------------------------------------

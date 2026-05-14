@@ -25,6 +25,10 @@ const CHARACTER_TAGS = {
   TWILEK: "twilek",
   ZABRAK: "zabrak",
   KAMINOAN: "kaminoan",
+  TUSKEN: "tusken",
+  GUNGAN: "gungan",
+  GAMORREAN: "gamorrean",
+  JAWA: "jawa",
 
   // MCU / Avatar
   KREE: "kree",
@@ -55,6 +59,8 @@ const CHARACTER_TAGS = {
   GHOST: "ghost",
   SPIRIT: "spirit",
   ZOMBIE: "zombie",
+MONSTER: "monster",
+CREATURE: "creature",
 
   // Comic / Enhanced
   MUTANT: "mutant",
@@ -93,6 +99,8 @@ const CHARACTER_TAGS = {
   MUSICIAN: "musician",
   SERVANT: "servant",
   POLITICIAN: "politician",
+  AGENT: "agent",
+  GAMER: "gamer",
 
   // ========================================================
   // Personality / Behavior
@@ -128,11 +136,13 @@ FAMILY: "family",
 HUSTLER: "hustler",
 DIPLOMAT: "diplomat",
 DANGEROUS: "dangerous",
-MUSICIAN: "musician",
-SERVANT: "servant",
-POLITICIAN: "politician",
 WISE: "wise",
 CHILD: "child",
+KIND: "kind",
+AWKWARD: "awkward",
+POPULAR: "popular",
+BULLY: "bully",
+COWARDLY: "cowardly",
 
   // ========================================================
   // Alignment / Social Role
@@ -145,11 +155,15 @@ CHILD: "child",
   MILITARY: "military",
   NOBLE: "noble",
   OUTCAST: "outcast",
+  SHADY: "shady",
+  SURVIVOR: "survivor",
 
   // ========================================================
   // Environment / Comfort
   // ========================================================
 
+FLYING: "flying",
+GROSS: "gross",
   DESERT: "desert",
   COLD: "cold",
   SPACE: "space",
@@ -158,6 +172,7 @@ CHILD: "child",
   SUPERNATURAL: "supernatural",
   URBAN: "urban",
   RURAL: "rural"
+
 };
 
 
@@ -176,6 +191,10 @@ const CHARACTER_TAG_DEFS = {
   twilek: { label: "#twilek", description: "Charismatic alien species" },
   zabrak: { label: "#zabrak", description: "Hardy horned species" },
   kaminoan: { label: "#kaminoan", description: "Elegant cloning experts" },
+tusken: { label: "#tusken", description: "Desert survivor culture" },
+gungan: { label: "#gungan", description: "Amphibious Naboo species" },
+gamorrean: { label: "#gamorrean", description: "Strong porcine species" },
+jawa: { label: "#jawa", description: "Small desert scavenger" },
 
   kree: { label: "#kree", description: "Militaristic alien empire" },
   skrull: { label: "#skrull", description: "Shapeshifting alien species" },
@@ -202,6 +221,8 @@ const CHARACTER_TAG_DEFS = {
   ghost: { label: "#ghost", description: "Lingering dead spirit" },
   spirit: { label: "#spirit", description: "Nonphysical supernatural being" },
   zombie: { label: "#zombie", description: "Reanimated dead being" },
+monster: { label: "#monster", description: "Hostile unnatural being" },
+creature: { label: "#creature", description: "Non-human beast" },
 
   mutant: { label: "#mutant", description: "Genetically altered human" },
   superhuman: { label: "#superhuman", description: "Beyond normal human" },
@@ -236,6 +257,8 @@ const CHARACTER_TAG_DEFS = {
   musician: { label: "#musician", description: "Performs music professionally" },
   servant: { label: "#servant", description: "Serves powerful people" },
   politician: { label: "#politician", description: "Navigates political systems" },
+agent: { label: "#agent", description: "Government field operative" },
+gamer: { label: "#gamer", description: "Plays games seriously" },
 
   // Personality / Behavior
   brave: { label: "#brave", description: "Faces danger willingly" },
@@ -273,6 +296,11 @@ servant: { label: "#servant", description: "Serves powerful people" },
 politician: { label: "#politician", description: "Navigates political systems" },
 wise: { label: "#wise", description: "Experienced and insightful" },
 child: { label: "#child", description: "Not fully matured" },
+kind: { label: "#kind", description: "Helpful and caring" },
+awkward: { label: "#awkward", description: "Socially uncomfortable" },
+popular: { label: "#popular", description: "High social status" },
+bully: { label: "#bully", description: "Intimidates weaker people" },
+cowardly: { label: "#cowardly", description: "Avoids real danger" },
 
   // Alignment / Social Role
   rebel: { label: "#rebel", description: "Opposes authority" },
@@ -282,8 +310,12 @@ child: { label: "#child", description: "Not fully matured" },
   military: { label: "#military", description: "Military-affiliated character" },
   noble: { label: "#noble", description: "High-status background" },
   outcast: { label: "#outcast", description: "Does not fit society" },
+shady: { label: "#shady", description: "Questionable reputation" },
+survivor: { label: "#survivor", description: "Endured serious hardship" },
 
   // Environment / Comfort
+flying: { label: "#flying", description: "Comfortable in the air" },
+gross: { label: "#gross", description: "Physically unpleasant" },
   desert: { label: "#desert", description: "Handles arid environments" },
   cold: { label: "#cold", description: "Handles cold environments" },
   space: { label: "#space", description: "Comfortable beyond planets" },

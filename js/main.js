@@ -210,6 +210,9 @@ function initializeButtons() {
   const businessFranchiseFilterSelect = document.getElementById("businessFranchiseFilter");
   const businessTagFilterSelect = document.getElementById("businessTagFilter");
 
+  const focusTypeSelect = document.getElementById("focusTypeSelect");
+  const focusTargetSelect = document.getElementById("focusTargetSelect");
+  const focusRerollSelect = document.getElementById("focusRerollSelect");
 
   // --------------------------------------------------------
   // Daily token claim
@@ -251,6 +254,24 @@ function initializeButtons() {
     });
   }
 
+if (focusTypeSelect) {
+  focusTypeSelect.addEventListener("change", () => {
+    state.packFocus.type = focusTypeSelect.value || null;
+    state.packFocus.target = null;
+    state.packFocus.rerolls = 0;
+    state.packFocus.enabled = false;
+    saveGame();
+    renderPackFocusControls();
+  });
+}
+
+if (focusTargetSelect) {
+  focusTargetSelect.addEventListener("change", updatePackFocusState);
+}
+
+if (focusRerollSelect) {
+  focusRerollSelect.addEventListener("change", updatePackFocusState);
+}
 
   // --------------------------------------------------------
   // Dev tools

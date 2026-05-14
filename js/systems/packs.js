@@ -43,6 +43,56 @@ function cloneCharacterToCard(template) {
   };
 }
 
+// Checking if card matches focus
+function cardMatchesFocus(card, focus) {
+  if (!focus?.enabled) return true;
+
+  switch (focus.type) {
+    case "franchise":
+      return card.franchise === focus.target;
+
+    case "tag":
+      return card.tags.includes(focus.target);
+
+    case "species":
+      return card.tags.includes(focus.target);
+
+    case "job":
+      return card.preferredJob === focus.target;
+
+    default:
+      return true;
+  }
+}
+function applyPackFocusToCard(card, rarity) {
+  const focus = state.packFocus;
+
+  if (!focus?.enabled) return card;
+
+  if (CONFIG.PACK_FOCUS.EXCLUDED_RARITIES.includes(rarity)) {
+    return card;
+  }
+
+  if (cardMatchesFocus(card, focus)) {
+    return card;
+  }
+
+  let rerollsRemaining = focus.rerolls;
+
+  while (rerollsRemaining > 0) {
+    const rerolled = getRandomCharacterByRarity(rarity);
+
+    if (cardMatchesFocus(rerolled, focus)) {
+      rerolled.focusMatched = true;
+      return rerolled;
+    }
+
+    card = rerolled;
+    rerollsRemaining--;
+  }
+
+  return card;
+}
 
 // ==========================================================
 // Rarity helpers
@@ -158,6 +208,7 @@ function generatePack(packDef) {
     let card = getRandomCharacterByRarity(rarity);
 
     if (card) {
+      card = applyPackFocusToCard(card, rarity);
       card = maybeApplyMythicUpgrade(card);
       results.push(card);
     }
@@ -225,10 +276,22 @@ function openPackByType(packKey) {
     return [];
   }
 
+  const focusCost = getPackFocusCost();
+
+  if (focusCost > 0 && state.credits < focusCost) {
+    setHeadline(
+      "Not enough credits",
+      `Recruitment Focus requires ${focusCost} credits.`,
+      "warning"
+    );
+    return [];
+  }
   const isFirstEverPack = !state.firstPackOpened;
 
   state.tokens -= packDef.tokenCost;
-
+  if (focusCost > 0) {
+    state.credits -= focusCost;
+  }
   const newCards = generatePack(packDef);
 
   if (!Array.isArray(newCards) || newCards.length === 0) {
@@ -254,6 +317,16 @@ function openPackByType(packKey) {
   return newCards;
 }
 
+function getPackFocusCost() {
+  const focus = state.packFocus;
+
+  if (!CONFIG.PACK_FOCUS?.ENABLED) return 0;
+  if (!focus?.enabled) return 0;
+  if (!focus.type || !focus.target) return 0;
+  if (!focus.rerolls || focus.rerolls <= 0) return 0;
+
+  return CONFIG.PACK_FOCUS.REROLL_COSTS[focus.rerolls] || 0;
+}
 
 // ==========================================================
 // Free reward packs

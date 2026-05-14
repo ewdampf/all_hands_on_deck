@@ -21,6 +21,9 @@ let businessTierFilter = "all";
 let businessFranchiseFilter = "all";
 let businessTagFilter = "all";
 
+let focusTypeFilter = "";
+let focusTargetFilter = "";
+let focusRerollFilter = "0";
 
 // ==========================================================
 // Top bar
@@ -232,12 +235,13 @@ function renderPackModalCards(cards) {
     const isAssigned = !!card.assignedBusinessId;
 
     return `
-      <div class="card ${card.rarity}">
+      <div class="card ${card.rarity} ${card.focusMatched ? "focus-success" : ""}">
         ${getCharacterImageHtml(card, "modal-character-image")}
 
         <div class="name">${card.displayName}</div>
         ${card.subtitle ? `<div class="small muted">${card.subtitle}</div>` : ""}
         <div class="muted">${card.franchise}</div>
+        ${card.focusMatched ? `<div class="focus-hit-banner">✨ Focus Match!</div>` : ""}
         <div class="small">${CONFIG.RARITIES[card.rarity]?.label || card.rarity} • ${card.stars || CONFIG.RARITIES[card.rarity]?.stars || 1}★</div>
         <div class="small">Prestige: ${card.prestige || 1}</div>
         <div class="small">Power: ${card.basePower}</div>
@@ -1346,4 +1350,96 @@ function renderAll() {
   renderInfoPanel();
   syncOptionsControls();
   openNextTokenRewardModal();
+  renderPackFocusControls();
+}
+
+// Functions for special pack opening
+function getPackFocusTargets(type) {
+  switch (type) {
+    case "franchise":
+      return [...new Set(CHARACTERS.map(character => character.franchise))]
+        .filter(Boolean)
+        .sort();
+
+    case "tag":
+    case "species":
+      return [...new Set(CHARACTERS.flatMap(character => character.tags || []))]
+        .filter(Boolean)
+        .sort();
+
+    case "job":
+      return [...new Set(CHARACTERS.map(character => character.preferredJob))]
+        .filter(Boolean)
+        .sort();
+
+    default:
+      return [];
+  }
+}
+
+function updatePackFocusState() {
+  const typeSelect = document.getElementById("focusTypeSelect");
+  const targetSelect = document.getElementById("focusTargetSelect");
+  const rerollSelect = document.getElementById("focusRerollSelect");
+
+  if (!typeSelect || !targetSelect || !rerollSelect) return;
+
+  const type = typeSelect.value || null;
+  const target = targetSelect.value || null;
+  const rerolls = Number(rerollSelect.value) || 0;
+
+  state.packFocus = {
+    enabled: !!type && !!target && rerolls > 0,
+    type,
+    target,
+    rerolls
+  };
+
+  saveGame();
+  renderPackFocusControls();
+}
+
+function renderPackFocusControls() {
+  const typeSelect = document.getElementById("focusTypeSelect");
+  const targetSelect = document.getElementById("focusTargetSelect");
+  const rerollSelect = document.getElementById("focusRerollSelect");
+  const costDisplay = document.getElementById("focusCostDisplay");
+
+  if (!typeSelect || !targetSelect || !rerollSelect || !costDisplay) return;
+
+  const focus = state.packFocus || {
+    enabled: false,
+    type: null,
+    target: null,
+    rerolls: 0
+  };
+
+  typeSelect.value = focus.type || "";
+  rerollSelect.value = String(focus.rerolls || 0);
+
+  const targets = getPackFocusTargets(focus.type);
+
+  targetSelect.innerHTML = `
+    <option value="">Select Target</option>
+    ${targets.map(target => `
+      <option value="${target}" ${target === focus.target ? "selected" : ""}>
+        ${target}
+      </option>
+    `).join("")}
+  `;
+
+  targetSelect.disabled = !focus.type;
+  rerollSelect.disabled = !focus.type || !focus.target;
+
+  const cost = typeof getPackFocusCost === "function" ? getPackFocusCost() : 0;
+
+  if (!focus.enabled || cost <= 0) {
+    costDisplay.textContent = "No recruitment focus active.";
+    costDisplay.className = "small muted";
+    return;
+  }
+
+  const affordable = state.credits >= cost;
+  costDisplay.textContent = `Focus active: ${focus.rerolls} reroll${focus.rerolls === 1 ? "" : "s"} for ${focus.target} — ${cost} credits per standard pack.`;
+  costDisplay.className = affordable ? "small good" : "small bad";
 }

@@ -1337,3 +1337,44 @@ button:disabled {
 .token-reward-checkbox {
   margin-top: 14px;
 }
+
+.focus-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.focus-success {
+  animation: focusPulse 0.8s ease;
+  border-color: var(--accent-gold) !important;
+  box-shadow:
+    0 0 28px rgba(255, 209, 102, 0.75),
+    0 0 60px rgba(255, 209, 102, 0.45);
+}
+
+@keyframes focusPulse {
+  0% {
+    transform: scale(1);
+  }
+
+  40% {
+    transform: scale(1.03);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.focus-hit-banner {
+  margin: 6px 0;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(255, 209, 102, 0.18);
+  border: 1px solid rgba(255, 209, 102, 0.6);
+  color: var(--accent-gold);
+  font-size: 12px;
+  font-weight: 900;
+  text-align: center;
+  box-shadow: var(--glow-gold);
+}

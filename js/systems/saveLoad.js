@@ -225,6 +225,39 @@ if (
   };
 }
 
+if (
+  typeof normalizedState.packFocus !== "object" ||
+  normalizedState.packFocus === null
+) {
+  normalizedState.packFocus = {
+    enabled: false,
+    type: null,
+    target: null,
+    rerolls: 0
+  };
+}
+
+if (typeof normalizedState.packFocus.enabled !== "boolean") {
+  normalizedState.packFocus.enabled = false;
+}
+
+if (typeof normalizedState.packFocus.type !== "string") {
+  normalizedState.packFocus.type = null;
+}
+
+if (typeof normalizedState.packFocus.target !== "string") {
+  normalizedState.packFocus.target = null;
+}
+
+if (
+  typeof normalizedState.packFocus.rerolls !== "number" ||
+  Number.isNaN(normalizedState.packFocus.rerolls)
+) {
+  normalizedState.packFocus.rerolls = 0;
+}
+
+
+
 if (typeof normalizedState.dailySpecialPack.franchise !== "string") {
   normalizedState.dailySpecialPack.franchise = null;
 }

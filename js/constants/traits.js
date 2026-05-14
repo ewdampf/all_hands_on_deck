@@ -46,7 +46,7 @@ const TRAITS = {
   MORAL_CODE: "moral_code",
 
   // Causes tension with structured or moral workers
-  ROGUE: "rogue"
+  ROGUE: "rogue",
 
 
   // ========================================================
