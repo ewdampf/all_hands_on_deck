@@ -568,7 +568,7 @@ tags: [
       BUSINESS_TAGS.HIERARCHICAL
     ],
 
-    description: "A grim magical prison where security is the product and morale is someone else’s problem."
+    description: "A grim magical prison where security is the product and morale is someone else’s problem.",
 
     unlockCost: 3600,
     unlockedByDefault: false,
