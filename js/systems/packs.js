@@ -1,7 +1,7 @@
 // ==========================================================
 // Pack System
 // ----------------------------------------------------------
-// Handles rarity rolls, guarantees, mythic checks, card
+// Handles rarity rolls, guarantees checks, card
 // instance creation, daily token claims, and pack opening.
 // ==========================================================
 
@@ -34,7 +34,6 @@ function cloneCharacterToCard(template) {
     tags: [...template.tags],
     flavor: template.flavor,
 
-    mythicVariantId: template.mythicVariantId || null,
     alternateOutfits: template.alternateOutfits || [],
 
     morale: CONFIG.MORALE.STARTING,
@@ -163,28 +162,6 @@ function getRandomCharacterByRarity(rarity) {
 
 
 // ==========================================================
-// Mythic hook
-// ----------------------------------------------------------
-// Placeholder. Later this can convert a rolled card into a
-// mythic variant when the base character has mythicVariantId.
-// ==========================================================
-
-function maybeApplyMythicUpgrade(card) {
-  if (!card) return card;
-
-  if (!card.mythicVariantId) return card;
-
-  if (Math.random() > CONFIG.MYTHIC.ROLL_CHANCE) return card;
-
-  const mythicTemplate = CHARACTERS.find(character => character.id === card.mythicVariantId);
-
-  if (!mythicTemplate) return card;
-
-  return cloneCharacterToCard(mythicTemplate);
-}
-
-
-// ==========================================================
 // Pack generation
 // ----------------------------------------------------------
 // Guarantees are handled by making the final card meet the
@@ -209,7 +186,6 @@ function generatePack(packDef) {
 
     if (card) {
       card = applyPackFocusToCard(card, rarity);
-      card = maybeApplyMythicUpgrade(card);
       results.push(card);
     }
   }
@@ -342,8 +318,13 @@ function grantFreePack(packKey = "BASIC") {
 
   const isFirstEverPack = !state.firstPackOpened;
 
+  const wasFocusEnabled = state.packFocus?.enabled;
+  if (state.packFocus) state.packFocus.enabled = false;
+
   const newCards = generatePack(packDef);
 
+  if (state.packFocus) state.packFocus.enabled = wasFocusEnabled;
+ 
   if (!Array.isArray(newCards) || newCards.length === 0) {
     console.error(`Free pack ${packKey} failed to generate cards.`);
     return [];
@@ -457,7 +438,6 @@ function generateSpecialFranchisePack(franchise) {
   packDef.guaranteedCards.forEach(rarity => {
     let card = getRandomCharacterByFranchiseAndRarity(franchise, rarity);
     if (card) {
-      card = maybeApplyMythicUpgrade(card);
       results.push(card);
     }
   });
@@ -466,7 +446,6 @@ function generateSpecialFranchisePack(franchise) {
   let finalCard = getRandomCharacterByFranchiseAndRarity(franchise, finalRarity);
 
   if (finalCard) {
-    finalCard = maybeApplyMythicUpgrade(finalCard);
     results.push(finalCard);
   }
 

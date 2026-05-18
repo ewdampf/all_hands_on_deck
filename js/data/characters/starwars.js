@@ -128,7 +128,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 4,
     preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.SOLDIER, CHARACTER_TAGS.MILITARY],
+    tags: [CHARACTER_TAGS.DROID, CHARACTER_TAGS.SOLDIER, CHARACTER_TAGS.MILITARY],
     flavor: "Not bright, but there are always more of them."
   },
 
@@ -288,7 +288,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 6,
     preferredJob: JOB_TYPES.PRODUCTION,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.SOLDIER, CHARACTER_TAGS.MILITARY],
+    tags: [CHARACTER_TAGS.DROID, CHARACTER_TAGS.SOLDIER, CHARACTER_TAGS.MILITARY],
     flavor: "Bulkier, tougher, and slightly less embarrassing."
   },
 
@@ -304,7 +304,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 7,
     preferredJob: JOB_TYPES.ENFORCEMENT,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.SOLDIER, CHARACTER_TAGS.MILITARY],
+    tags: [CHARACTER_TAGS.DROID, CHARACTER_TAGS.SOLDIER, CHARACTER_TAGS.MILITARY],
     flavor: "Looks extremely qualified, which helps morale in some circles."
   },
 
@@ -320,7 +320,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 7,
     preferredJob: JOB_TYPES.ENFORCEMENT,
     traits: [TRAITS.CANNON_FODDER],
-    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.GUARD, CHARACTER_TAGS.WARRIOR],
+    tags: [CHARACTER_TAGS.DROID, CHARACTER_TAGS.GUARD, CHARACTER_TAGS.WARRIOR],
     flavor: "Excellent bodyguard material, not famous for charm."
   },
 
@@ -420,7 +420,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 8,
     preferredJob: JOB_TYPES.COVERT,
     traits: [TRAITS.ROGUE, TRAITS.SPECIALIST],
-    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.CRIMINAL, CHARACTER_TAGS.WARRIOR, CHARACTER_TAGS.DISCIPLINED],
+    tags: [CHARACTER_TAGS.DROID, CHARACTER_TAGS.CRIMINAL, CHARACTER_TAGS.WARRIOR, CHARACTER_TAGS.DISCIPLINED],
     flavor: "A murder droid with excellent task focus."
   },
 
@@ -468,7 +468,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 7,
     preferredJob: JOB_TYPES.COVERT,
     traits: [TRAITS.ROGUE, TRAITS.SPECIALIST],
-    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.CRIMINAL, CHARACTER_TAGS.DETECTIVE],
+    tags: [CHARACTER_TAGS.DROID, CHARACTER_TAGS.CRIMINAL, CHARACTER_TAGS.DETECTIVE],
     flavor: "A protocol droid who chose crime. Career development is complicated."
   },
 
@@ -980,7 +980,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 6,
     preferredJob: JOB_TYPES.ENFORCEMENT,
     traits: [TRAITS.ROGUE],
-    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.VILLAIN, CHARACTER_TAGS.SERVANT],
+    tags: [CHARACTER_TAGS.DROID, CHARACTER_TAGS.VILLAIN, CHARACTER_TAGS.SERVANT],
     flavor: "Strong disciplinary instincts. Absolutely no empathy settings."
   },
 
@@ -1606,7 +1606,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     preferredJob: JOB_TYPES.RESEARCH,
     traits: [TRAITS.SUPPORT, TRAITS.SPECIALIST],
     tags: [
-      CHARACTER_TAGS.ROBOT,
+      CHARACTER_TAGS.DROID,
       CHARACTER_TAGS.MECHANIC,
       CHARACTER_TAGS.LAWFUL,
       CHARACTER_TAGS.DISCIPLINED
@@ -1810,7 +1810,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 10,
     preferredJob: JOB_TYPES.RESEARCH,
     traits: [TRAITS.SUPPORT, TRAITS.SPECIALIST],
-    tags: [CHARACTER_TAGS.ROBOT, CHARACTER_TAGS.MECHANIC, CHARACTER_TAGS.HACKER, CHARACTER_TAGS.BRAVE],
+    tags: [CHARACTER_TAGS.DROID, CHARACTER_TAGS.MECHANIC, CHARACTER_TAGS.HACKER, CHARACTER_TAGS.BRAVE],
     flavor: "Beeping, rolling, and quietly saving the entire operation."
   },
 
@@ -1826,7 +1826,7 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
     basePower: 7,
     preferredJob: JOB_TYPES.SERVICE,
     traits: [TRAITS.SUPPORT],
-    tags: [CHARACTER_TAGS.ANDROID, CHARACTER_TAGS.ANXIOUS, CHARACTER_TAGS.LAWFUL],
+    tags: [CHARACTER_TAGS.DROID, CHARACTER_TAGS.ANXIOUS, CHARACTER_TAGS.LAWFUL],
     flavor: "Polite, anxious, and far more important than his job title suggests."
   },
 
@@ -2285,42 +2285,6 @@ const STAR_WARS_CHARACTERS = applyCharacterImageDefaults([
       CHARACTER_TAGS.CHARISMATIC
     ],
     flavor: "Excellent at restructuring organizations so thoroughly that no one realizes they have changed employers."
-  },
-
-  // ========================================================
-  // Mythic / Shiny Alternate Versions
-  // ========================================================
-
-  {
-    id: "han_solo_carbonite",
-    characterKey: "han_solo",
-    variantKey: "carbonite",
-    displayName: "Han Solo",
-    subtitle: "Frozen in Carbonite",
-    franchise: "Star Wars",
-    rarity: "mythic",
-    prestige: 3,
-    basePower: 1,
-    preferredJob: JOB_TYPES.HEROIC,
-    traits: [TRAITS.ROGUE],
-    tags: [CHARACTER_TAGS.HUMAN, CHARACTER_TAGS.PILOT, CHARACTER_TAGS.CRIMINAL],
-    flavor: "Extremely prestigious. Extremely immobile. A collector’s nightmare and a manager’s problem."
-  },
-
-  {
-    id: "obi_wan_kenobi_force_ghost",
-    characterKey: "obi_wan_kenobi",
-    variantKey: "force_ghost",
-    displayName: "Obi-Wan Kenobi",
-    subtitle: "Force Ghost",
-    franchise: "Star Wars",
-    rarity: "mythic",
-    prestige: 3,
-    basePower: 4,
-    preferredJob: JOB_TYPES.HEROIC,
-    traits: [TRAITS.HERO, TRAITS.MORAL_CODE, TRAITS.SUPPORT],
-    tags: [CHARACTER_TAGS.SPIRIT, CHARACTER_TAGS.BRAVE, CHARACTER_TAGS.LAWFUL, CHARACTER_TAGS.DISCIPLINED],
-    flavor: "Cannot lift boxes. Can absolutely judge everyone lifting boxes."
   }
 
 ], "assets/characters/starwars");

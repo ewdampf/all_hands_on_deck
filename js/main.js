@@ -56,6 +56,39 @@ function initializePackResults() {
   renderPackResults(recentPackResults);
 }
 
+function devAddCharacterByKey(characterKey) {
+  const template = CHARACTERS.find(character => character.characterKey === characterKey);
+
+  if (!template) {
+    console.warn(`No character found for key: ${characterKey}`);
+    return null;
+  }
+
+  const card = cloneCharacterToCard(template);
+  state.cards.push(card);
+  return card;
+}
+
+function devSetupCarboniteHanTest() {
+  const han = devAddCharacterByKey("han_solo");
+  devAddCharacterByKey("darth_vader");
+  const boba = devAddCharacterByKey("boba_fett");
+
+  const guild = getBusinessState("bounty_hunters_guild");
+
+  if (guild && boba) {
+    guild.unlocked = true;
+    guild.assignedCardIds = guild.assignedCardIds || [];
+    guild.assignedCardIds.push(boba.instanceId);
+    boba.assignedBusinessId = "bounty_hunters_guild";
+  }
+
+  checkMythicRecipes();
+
+  saveGame();
+  renderAll();
+}
+
 
 // ==========================================================
 // Options / Themes
@@ -213,6 +246,13 @@ function initializeButtons() {
   const focusTypeSelect = document.getElementById("focusTypeSelect");
   const focusTargetSelect = document.getElementById("focusTargetSelect");
   const focusRerollSelect = document.getElementById("focusRerollSelect");
+
+
+const devSetupCarboniteHanBtn = document.getElementById("devSetupCarboniteHanBtn");
+
+if (devSetupCarboniteHanBtn) {
+  devSetupCarboniteHanBtn.addEventListener("click", devSetupCarboniteHanTest);
+}
 
   // --------------------------------------------------------
   // Daily token claim

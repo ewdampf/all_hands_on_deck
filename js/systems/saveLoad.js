@@ -253,10 +253,15 @@ if (
   typeof normalizedState.packFocus.rerolls !== "number" ||
   Number.isNaN(normalizedState.packFocus.rerolls)
 ) {
-  normalizedState.packFocus.rerolls = 0;
+normalizedState.packFocus.rerolls = Math.max(
+  0,
+  Math.min(CONFIG.PACK_FOCUS.MAX_REROLLS, normalizedState.packFocus.rerolls)
+);
 }
 
-
+if (!Array.isArray(normalizedState.unlockedMythics)) {
+  normalizedState.unlockedMythics = [];
+}
 
 if (typeof normalizedState.dailySpecialPack.franchise !== "string") {
   normalizedState.dailySpecialPack.franchise = null;

@@ -71,6 +71,7 @@ packFocus: {
     // ------------------------------------------------------
     nextCardInstanceId: 1,
     cards: [],
+    unlockedMythics: [],
 
     // ------------------------------------------------------
     // Business runtime state

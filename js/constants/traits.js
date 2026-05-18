@@ -48,6 +48,8 @@ const TRAITS = {
   // Causes tension with structured or moral workers
   ROGUE: "rogue",
 
+  // Provides calm guidance and morale stability
+  WISE: "wise"
 
   // ========================================================
   // Future expansion ideas (leave commented for now)
